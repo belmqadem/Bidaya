@@ -10,6 +10,8 @@ export const addConsultationSchema = z.object({
   followUpRequired: z.boolean().default(false),
   treatmentPrescribed: z.string().max(1000).optional(),
   followUpDate: z.string().optional().refine((v) => !v || !isNaN(Date.parse(v)), "Date invalide"),
+  source: z.enum(["manual", "voice"]).default("manual"),
+  transcript: z.string().max(10000).optional(),
 });
 
 export type AddConsultationInput = z.infer<typeof addConsultationSchema>;

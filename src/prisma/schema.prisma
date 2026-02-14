@@ -65,6 +65,8 @@ model Consultation {
   followUpRequired     Boolean   @default(false)
   treatmentPrescribed  String?   // Traitement prescrit
   followUpDate         DateTime? // Date de suivi prévue
+  source               String    @default("manual") // manual | voice
+  transcript           String?   // Transcription originale (voice uniquement)
   createdAt            DateTime  @default(now())
 
   @@index([childId])

@@ -54,6 +54,9 @@ import { addConsultationSchema } from "@/lib/schemas/consultation";
 import type { AddConsultationInput } from "@/lib/schemas/consultation";
 import type { z } from "zod";
 import { VaccinationSchedule } from "./vaccination-schedule";
+import { VoiceRecorder } from "@/features/voice/VoiceRecorder";
+import type { StructuredConsultation } from "@/features/voice/voice.types";
+import { Badge } from "@/components/ui/badge";
 
 type VaccinationFormValues = z.input<typeof addVaccinationSchema>;
 type ConsultationFormValues = z.input<typeof addConsultationSchema>;
@@ -407,6 +410,9 @@ function ConsultationList({ consultations }: { consultations: ConsultationRecord
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <p className="text-sm font-medium">{c.clinicianName}</p>
+                  {c.source === "voice" && (
+                    <Badge variant="secondary" className="gap-1 text-[10px] font-semibold">Voix</Badge>
+                  )}
                   {c.followUpRequired && (
                     <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-700">Suivi</span>
                   )}
@@ -432,6 +438,7 @@ function ConsultationForm({ childIdentifier, onAdded }: { childIdentifier: strin
   const [formError, setFormError] = useState<string | null>(null);
   const [isAdding, startAdding] = useTransition();
   const [open, setOpen] = useState(false);
+  const [voiceSource, setVoiceSource] = useState<{ transcript: string } | null>(null);
 
   const form = useForm<ConsultationFormValues>({
     resolver: zodResolver(addConsultationSchema),
@@ -445,8 +452,28 @@ function ConsultationForm({ childIdentifier, onAdded }: { childIdentifier: strin
       followUpRequired: false,
       treatmentPrescribed: "",
       followUpDate: "",
+      source: "manual",
+      transcript: "",
     },
   });
+
+  function handleVoiceResult(data: { transcript: string; structured: StructuredConsultation }) {
+    // Open the form and pre-fill with AI-structured data
+    setOpen(true);
+    setVoiceSource({ transcript: data.transcript });
+
+    form.setValue("reasonForVisit", data.structured.motif);
+    form.setValue("diagnosis", data.structured.diagnostic);
+    form.setValue("treatmentPrescribed", data.structured.traitement);
+    form.setValue("summary", data.structured.suivi);
+    form.setValue("source", "voice");
+    form.setValue("transcript", data.transcript);
+
+    // Auto-check follow-up if suivi mentions it
+    if (data.structured.suivi.trim()) {
+      form.setValue("followUpRequired", true);
+    }
+  }
 
   function onSubmit(values: ConsultationFormValues) {
     setFormError(null);
@@ -456,7 +483,8 @@ function ConsultationForm({ childIdentifier, onAdded }: { childIdentifier: strin
         childIdentifier,
       } as AddConsultationInput);
       if (result.success) {
-        form.reset({ childIdentifier, date: new Date().toISOString().split("T")[0], summary: "", clinicianName: "", reasonForVisit: "", diagnosis: "", followUpRequired: false, treatmentPrescribed: "", followUpDate: "" });
+        form.reset({ childIdentifier, date: new Date().toISOString().split("T")[0], summary: "", clinicianName: "", reasonForVisit: "", diagnosis: "", followUpRequired: false, treatmentPrescribed: "", followUpDate: "", source: "manual", transcript: "" });
+        setVoiceSource(null);
         onAdded();
         setOpen(false);
       } else {
@@ -467,9 +495,12 @@ function ConsultationForm({ childIdentifier, onAdded }: { childIdentifier: strin
 
   if (!open) {
     return (
-      <Button variant="outline" size="sm" className="w-full" onClick={() => setOpen(true)}>
-        <Plus className="mr-1.5 size-3.5" /> Ajouter une consultation
-      </Button>
+      <div className="space-y-2">
+        <VoiceRecorder onResult={handleVoiceResult} />
+        <Button variant="outline" size="sm" className="w-full" onClick={() => setOpen(true)}>
+          <Plus className="mr-1.5 size-3.5" /> Ajouter une consultation manuellement
+        </Button>
+      </div>
     );
   }
 
@@ -477,12 +508,28 @@ function ConsultationForm({ childIdentifier, onAdded }: { childIdentifier: strin
     <Card>
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2 text-sm font-medium"><Plus className="size-4" /> Nouvelle consultation</CardTitle>
-          <button type="button" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-foreground text-xs">
-            {open ? <ChevronUp className="size-4" /> : <ChevronDown className="size-4" />}
+          <div className="flex items-center gap-2">
+            <CardTitle className="flex items-center gap-2 text-sm font-medium"><Plus className="size-4" /> Nouvelle consultation</CardTitle>
+            {voiceSource && (
+              <Badge variant="secondary" className="gap-1 text-[10px] font-semibold">
+                Voix IA
+              </Badge>
+            )}
+          </div>
+          <button type="button" onClick={() => { setOpen(false); setVoiceSource(null); form.reset(); }} className="text-muted-foreground hover:text-foreground text-xs">
+            <ChevronUp className="size-4" />
           </button>
         </div>
       </CardHeader>
+
+      {/* Show original transcript if from voice */}
+      {voiceSource && (
+        <div className="mx-5 mb-3 rounded-lg border border-healthcare/20 bg-healthcare/5 p-3">
+          <p className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-healthcare">Transcription originale</p>
+          <p className="text-xs leading-relaxed text-muted-foreground">{voiceSource.transcript}</p>
+        </div>
+      )}
+
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <CardContent className="space-y-3 pt-0">
@@ -520,7 +567,7 @@ function ConsultationForm({ childIdentifier, onAdded }: { childIdentifier: strin
             </div>
             <FormField control={form.control} name="summary" render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs">Résumé</FormLabel>
+                <FormLabel className="text-xs">Résumé / Suivi</FormLabel>
                 <FormControl><Textarea placeholder="Notes de consultation…" rows={3} className="text-sm" {...field} /></FormControl>
                 <FormMessage />
               </FormItem>
@@ -556,7 +603,7 @@ function ConsultationForm({ childIdentifier, onAdded }: { childIdentifier: strin
           </CardContent>
           <div className="px-5 pb-5 pt-2">
             <Button type="submit" size="sm" disabled={isAdding} className="w-full bg-healthcare text-healthcare-foreground hover:bg-healthcare/90">
-              {isAdding ? "Enregistrement…" : "Enregistrer la consultation"}
+              {isAdding ? "Enregistrement…" : "Valider et enregistrer"}
             </Button>
           </div>
         </form>

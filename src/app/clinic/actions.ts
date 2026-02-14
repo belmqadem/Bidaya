@@ -51,6 +51,7 @@ export type ConsultationRecord = {
   followUpRequired: boolean;
   treatmentPrescribed: string | null;
   followUpDate: string | null;
+  source: string;
 };
 
 type SearchResult =
@@ -122,6 +123,7 @@ export async function searchChild(identifier: string): Promise<SearchResult> {
         followUpRequired: c.followUpRequired,
         treatmentPrescribed: c.treatmentPrescribed,
         followUpDate: c.followUpDate?.toISOString().split("T")[0] ?? null,
+        source: c.source,
       })),
     };
   } catch {
@@ -219,7 +221,7 @@ export async function addConsultation(
     return { success: false, error: msg };
   }
 
-  const { childIdentifier, date, summary, clinicianName, reasonForVisit, diagnosis, followUpRequired, treatmentPrescribed, followUpDate } = parsed.data;
+  const { childIdentifier, date, summary, clinicianName, reasonForVisit, diagnosis, followUpRequired, treatmentPrescribed, followUpDate, source, transcript } = parsed.data;
 
   try {
     const child = await prisma.child.findUnique({
@@ -241,6 +243,8 @@ export async function addConsultation(
         followUpRequired: followUpRequired ?? false,
         treatmentPrescribed: treatmentPrescribed || null,
         followUpDate: followUpDate ? new Date(followUpDate) : null,
+        source: source || "manual",
+        transcript: transcript || null,
       },
     });
 
@@ -275,6 +279,7 @@ export async function getConsultations(
       followUpRequired: c.followUpRequired,
       treatmentPrescribed: c.treatmentPrescribed,
       followUpDate: c.followUpDate?.toISOString().split("T")[0] ?? null,
+      source: c.source,
     }));
   } catch {
     return [];
