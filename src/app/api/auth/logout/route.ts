@@ -3,5 +3,5 @@ import { clearSession } from "@/lib/auth";
 
 export async function POST(_request: NextRequest) {
   await clearSession();
-  return NextResponse.redirect(new URL("/login", _request.url), 303);
+  return NextResponse.redirect(new URL("/select-role", _request.url), 303);
 }

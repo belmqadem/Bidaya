@@ -1,14 +1,19 @@
-import { getSession } from "@/lib/auth";
+import { requireParent } from "@/lib/auth";
+import { ChildDashboard } from "./child-dashboard";
 
 export default async function ParentDashboardPage() {
-  const session = await getSession();
+  const session = await requireParent();
 
   return (
-    <div className="p-4">
+    <div className="mx-auto max-w-2xl p-4">
       <h1 className="text-lg font-semibold">My child&apos;s record</h1>
       <p className="text-muted-foreground mt-1 text-sm">
-        Signed in as {session?.email}. Parent dashboard placeholder.
+        Signed in &middot; {session.childIdentifier}
       </p>
+
+      <div className="mt-6">
+        <ChildDashboard />
+      </div>
     </div>
   );
 }

@@ -12,3 +12,41 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model Child {
+  id            String         @id @default(cuid())
+  identifier    String         @unique
+  fullName      String
+  birthDate     DateTime
+  parentName    String
+  parentContact String
+  vaccinations  Vaccination[]
+  consultations Consultation[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model Vaccination {
+  id         String   @id @default(cuid())
+  childId    String
+  child      Child    @relation(fields: [childId], references: [id], onDelete: Cascade)
+  vaccine    String
+  dose       Int
+  date       DateTime
+  clinicName String
+  createdAt  DateTime @default(now())
+
+  @@index([childId])
+}
+
+model Consultation {
+  id            String   @id @default(cuid())
+  childId       String
+  child         Child    @relation(fields: [childId], references: [id], onDelete: Cascade)
+  date          DateTime
+  summary       String
+  clinicianName String
+  createdAt     DateTime @default(now())
+
+  @@index([childId])
+}
