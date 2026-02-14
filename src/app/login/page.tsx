@@ -62,7 +62,7 @@ function LoginContent() {
     router.push(data.redirect);
   }
 
-  const roleLabel = role === "clinic" ? "Personnel médical" : "Parent";
+  const roleLabel = role === "clinic" ? "Personnel médical" : "Parent / Tuteur";
 
   return (
     <div className="relative flex min-h-screen">
@@ -88,10 +88,10 @@ function LoginContent() {
           </div>
           <div className="text-center">
             <h1 className="text-2xl font-bold tracking-tight">
-              Carnet de Santé
+              Espace Clinique
             </h1>
             <p className="text-muted-foreground mt-1 text-sm">
-              Accès sécurisé aux données de vaccination et consultation
+              Gérez les dossiers de santé numériques vérifiés par votre établissement
             </p>
           </div>
         </div>
@@ -100,10 +100,10 @@ function LoginContent() {
         <div className="w-full max-w-sm rounded-2xl border bg-card p-8 shadow-xl">
           <div className="mb-6">
             <h2 className="text-lg font-semibold">
-              Connexion en tant que {roleLabel}
+              Connexion — {roleLabel}
             </h2>
             <p className="text-muted-foreground mt-1 text-sm">
-              Entrez vos identifiants pour continuer.
+              Identifiez-vous pour accéder aux dossiers et enregistrer les actes médicaux.
             </p>
           </div>
 
@@ -169,7 +169,7 @@ function LoginContent() {
               href="/select-role"
               className="text-muted-foreground hover:text-foreground text-sm transition-colors"
             >
-              &larr; Changer de rôle
+              &larr; Retour à l&apos;accueil
             </Link>
           </div>
         </div>

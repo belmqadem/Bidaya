@@ -11,9 +11,9 @@ export default async function ClinicDashboardPage() {
     <>
       <div className="flex items-end justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Tableau de bord</h1>
+          <h1 className="text-2xl font-bold tracking-tight">Dossiers de santé</h1>
           <p className="text-muted-foreground mt-1 text-sm">
-            Connecté en tant que {session.email}
+            Recherchez un dossier par identifiant unique ou inscrivez un nouvel enfant
           </p>
         </div>
         <Link href="/clinic/register">
@@ -22,7 +22,7 @@ export default async function ClinicDashboardPage() {
             className="bg-healthcare text-healthcare-foreground hover:bg-healthcare/90"
           >
             <UserPlus className="mr-1.5 size-4" />
-            Inscrire un enfant
+            Nouveau dossier
           </Button>
         </Link>
       </div>

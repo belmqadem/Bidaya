@@ -97,9 +97,9 @@ export default function ParentLoginPage() {
             <Stethoscope className="size-7" aria-hidden />
           </div>
           <div className="text-center">
-            <h1 className="text-2xl font-bold tracking-tight">Accès Parent</h1>
+            <h1 className="text-2xl font-bold tracking-tight">Espace Parent</h1>
             <p className="text-muted-foreground mt-1 text-sm">
-              Consultez le dossier de santé de votre enfant en toute sécurité
+              Accédez au carnet de santé numérique de votre enfant à l&apos;aide de son identifiant unique
             </p>
           </div>
         </div>
@@ -111,15 +111,15 @@ export default function ParentLoginPage() {
               <div>
                 <h2 className="flex items-center gap-2 text-lg font-semibold">
                   <ShieldCheck className="size-5 text-healthcare" />
-                  Vérifier l&apos;identité
+                  Identification
                 </h2>
                 <p className="text-muted-foreground mt-1 text-sm">
-                  Entrez l&apos;identifiant de votre enfant et votre numéro de téléphone.
+                  Saisissez l&apos;identifiant unique de votre enfant (remis par la clinique) et votre numéro de téléphone.
                 </p>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="identifier">Identifiant enfant</Label>
+                <Label htmlFor="identifier">Identifiant unique de l&apos;enfant</Label>
                 <Input
                   id="identifier"
                   value={identifier}
@@ -152,7 +152,7 @@ export default function ParentLoginPage() {
                 className="h-11 w-full bg-healthcare text-healthcare-foreground hover:bg-healthcare/90"
                 disabled={loading || !identifier.trim() || !phone.trim()}
               >
-                {loading ? "Vérification…" : "Envoyer le code"}
+                {loading ? "Vérification…" : "Recevoir le code de vérification"}
               </Button>
 
               <div className="text-center">
@@ -160,7 +160,7 @@ export default function ParentLoginPage() {
                   href="/select-role"
                   className="text-muted-foreground hover:text-foreground text-sm transition-colors"
                 >
-                  &larr; Changer de rôle
+                  &larr; Retour à l&apos;accueil
                 </Link>
               </div>
             </form>
@@ -169,10 +169,10 @@ export default function ParentLoginPage() {
               <div>
                 <h2 className="flex items-center gap-2 text-lg font-semibold">
                   <KeyRound className="size-5 text-healthcare" />
-                  Entrer le code de vérification
+                  Code de vérification
                 </h2>
                 <p className="text-muted-foreground mt-1 text-sm">
-                  Un code à 6 chiffres a été envoyé sur votre téléphone.
+                  Un code à 6 chiffres a été envoyé au numéro associé au dossier.
                 </p>
               </div>
 
@@ -208,7 +208,7 @@ export default function ParentLoginPage() {
                 className="h-11 w-full bg-healthcare text-healthcare-foreground hover:bg-healthcare/90"
                 disabled={loading || otp.trim().length < 6}
               >
-                {loading ? "Vérification…" : "Accéder au tableau de bord"}
+                {loading ? "Vérification…" : "Consulter le carnet de santé"}
               </Button>
 
               <div className="text-center">

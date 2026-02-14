@@ -18,7 +18,7 @@ export default async function ParentLayout({
               <Heart className="size-4" aria-hidden />
             </div>
             <span className="text-sm font-semibold tracking-tight">
-              Mon Enfant
+              Carnet de Santé
             </span>
           </Link>
           <form action="/api/auth/logout" method="POST">

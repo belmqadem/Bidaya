@@ -32,6 +32,7 @@ import {
   type ConsultationEntry,
 } from "./actions";
 import { MedicalTimeline } from "./medical-timeline";
+import { VaccinationSchedule } from "../clinic/vaccination-schedule";
 
 // ── Composant principal ──────────────────────────────────────────────────────
 
@@ -181,6 +182,14 @@ export function ChildDashboard() {
           />
         </div>
 
+        {/* ── Calendrier vaccinal ──────────────────────────────────── */}
+        <VaccinationSchedule
+          childIdentifier={child.identifier}
+          birthDate={child.birthDate}
+          vaccinations={vaccinations}
+          readOnly
+        />
+
         {/* ── En-tête chronologie ────────────────────────────────────── */}
         <div className="flex items-center gap-2.5 pt-2">
           <div className="flex size-7 items-center justify-center rounded-lg bg-healthcare/10">
@@ -286,7 +295,7 @@ function ChildProfileCard({ child }: { child: ChildProfile }) {
             <div className="flex items-start justify-between gap-3">
               <div>
                 <h1 className="text-xl font-bold tracking-tight sm:text-2xl">{child.fullName}</h1>
-                <p className="text-muted-foreground mt-0.5 text-sm">Dossier de santé enfant</p>
+                <p className="text-muted-foreground mt-0.5 text-sm">Carnet de santé numérique — vérifié par la clinique</p>
               </div>
               <button
                 type="button"

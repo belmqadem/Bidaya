@@ -50,6 +50,7 @@ import type { AddVaccinationInput } from "@/lib/schemas/vaccination";
 import { addConsultationSchema } from "@/lib/schemas/consultation";
 import type { AddConsultationInput } from "@/lib/schemas/consultation";
 import type { z } from "zod";
+import { VaccinationSchedule } from "./vaccination-schedule";
 
 type VaccinationFormValues = z.input<typeof addVaccinationSchema>;
 type ConsultationFormValues = z.input<typeof addConsultationSchema>;
@@ -129,7 +130,7 @@ export function ChildSearch() {
                 <div>
                   <CardTitle className="text-xl">{child.fullName}</CardTitle>
                   <p className="text-muted-foreground mt-0.5 text-sm">
-                    Résumé du dossier de santé
+                    Carnet de santé numérique — vérifié par la clinique
                   </p>
                 </div>
                 <span className="shrink-0 rounded-lg bg-healthcare/10 px-3 py-1.5 font-mono text-xs font-semibold tracking-wider text-healthcare">
@@ -148,6 +149,16 @@ export function ChildSearch() {
               </div>
             </CardContent>
           </Card>
+
+          {/* Calendrier vaccinal */}
+          <section className="space-y-3">
+            <VaccinationSchedule
+              childIdentifier={child.identifier}
+              birthDate={child.birthDate}
+              vaccinations={vaccinations}
+              onVaccinationAdded={refreshVaccinations}
+            />
+          </section>
 
           {/* Vaccinations */}
           <section className="space-y-3">

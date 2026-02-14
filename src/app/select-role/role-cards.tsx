@@ -6,16 +6,16 @@ import Link from "next/link";
 const roles = [
   {
     role: "parent" as const,
-    label: "Parent",
-    description: "Consultez le carnet de vaccination et l'historique des consultations de votre enfant",
+    label: "Espace Parent",
+    description: "Accédez au carnet de santé numérique de votre enfant grâce à son identifiant unique",
     image: "/patient-side.png",
     overlay: "bg-black/45",
     href: "/login/parent",
   },
   {
     role: "clinic" as const,
-    label: "Personnel Médical",
-    description: "Recherchez des dossiers, enregistrez les vaccinations et gérez les données de santé",
+    label: "Espace Clinique",
+    description: "Enregistrez les vaccinations, consultations et créez de nouveaux dossiers vérifiés",
     image: "/staff-side.png",
     overlay: "bg-black/55",
     href: "/login?role=clinic",
@@ -40,7 +40,7 @@ export function RoleCards() {
               {description}
             </span>
             <span className="mt-6 inline-block rounded-full border-2 border-white/50 px-8 py-3 text-base font-semibold text-white transition-all duration-300 group-hover:border-white group-hover:bg-white/15 group-hover:text-white md:text-lg">
-              Continuer &rarr;
+              Accéder &rarr;
             </span>
           </div>
 

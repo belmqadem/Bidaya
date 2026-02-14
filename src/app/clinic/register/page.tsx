@@ -46,7 +46,7 @@ export default function RegisterChildPage() {
       birthDate: "",
       gender: "unknown",
       birthWeight: undefined,
-      deliveryType: "normal",
+      deliveryType: "vb",
       parentName: "",
       parentContact: "",
     },
@@ -68,10 +68,9 @@ export default function RegisterChildPage() {
         <Card className="w-full max-w-sm border-t-4 border-t-healthcare shadow-lg">
           <CardHeader className="items-center text-center">
             <CheckCircle2 className="size-12 text-healthcare" />
-            <CardTitle className="mt-2">Enfant inscrit</CardTitle>
+            <CardTitle className="mt-2">Dossier créé avec succès</CardTitle>
             <CardDescription>
-              Conservez l&apos;identifiant ci-dessous. Il permet de retrouver
-              le dossier de cet enfant.
+              Voici l&apos;identifiant unique de l&apos;enfant. Remettez-le au parent — c&apos;est sa clé d&apos;accès au carnet de santé numérique.
             </CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col items-center gap-3">
@@ -96,7 +95,7 @@ export default function RegisterChildPage() {
               className="w-full bg-healthcare text-healthcare-foreground hover:bg-healthcare/90"
               onClick={() => setResult(null)}
             >
-              Inscrire un autre enfant
+              Créer un autre dossier
             </Button>
             <Link
               href="/clinic"
@@ -122,9 +121,9 @@ export default function RegisterChildPage() {
               </Button>
             </Link>
             <div>
-              <CardTitle>Inscrire un enfant</CardTitle>
+              <CardTitle>Nouveau dossier de santé</CardTitle>
               <CardDescription>
-                Remplissez les informations pour créer un nouveau dossier de santé.
+                Créez un carnet de santé numérique vérifié. Un identifiant unique sera généré automatiquement.
               </CardDescription>
             </div>
           </div>
@@ -213,7 +212,7 @@ export default function RegisterChildPage() {
                           className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs transition-colors focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
                           {...field}
                         >
-                          <option value="normal">Normal</option>
+                          <option value="vb">Voie Basse</option>
                           <option value="cesarean">Césarienne</option>
                         </select>
                       </FormControl>
@@ -262,8 +261,8 @@ export default function RegisterChildPage() {
                 disabled={form.formState.isSubmitting}
               >
                 {form.formState.isSubmitting
-                  ? "Inscription…"
-                  : "Inscrire l'enfant"}
+                  ? "Création du dossier…"
+                  : "Créer le dossier"}
               </Button>
             </CardFooter>
           </form>
