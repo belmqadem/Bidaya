@@ -20,10 +20,9 @@ export function middleware(request: NextRequest) {
   const hasSession = !!payload?.email && !!payload?.role;
   const path = request.nextUrl.pathname;
 
-  // ── Home → select-role or dashboard ─────────────────────────────────────
+  // ── Home → landing page (always accessible) ────────────────────────────
   if (path === "/") {
-    if (hasSession) return redirectTo(dashboardFor(payload!.role!), request);
-    return redirectTo(SELECT_ROLE, request);
+    return NextResponse.next();
   }
 
   // ── Select-role: public — skip if already authenticated ─────────────────
