@@ -10,9 +10,6 @@ import { requireAuth } from "@/lib/auth";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import { ChildSearch } from "./child-search";
 
@@ -91,25 +88,21 @@ export default async function ClinicDashboardPage() {
       </div>
 
       {/* ── Search section ────────────────────────────────────────────── */}
-      <Card>
-        <CardHeader className="pb-4">
-          <div className="flex items-center gap-2.5">
-            <div className="flex size-8 items-center justify-center rounded-lg bg-muted">
-              <FolderOpen className="size-4 text-muted-foreground" />
-            </div>
-            <div>
-              <CardTitle className="text-base">Dossiers de santé</CardTitle>
-              <CardDescription className="text-xs">
-                Recherchez un enfant par identifiant unique pour consulter ou
-                mettre à jour son carnet
-              </CardDescription>
-            </div>
+      <div className="space-y-4">
+        <div className="flex items-center gap-2.5">
+          <div className="flex size-8 items-center justify-center rounded-lg bg-muted">
+            <FolderOpen className="size-4 text-muted-foreground" />
           </div>
-        </CardHeader>
-        <CardContent className="pt-0">
-          <ChildSearch />
-        </CardContent>
-      </Card>
+          <div>
+            <h2 className="text-base font-semibold">Dossiers de santé</h2>
+            <p className="text-muted-foreground text-xs">
+              Recherchez un enfant par identifiant unique pour consulter ou
+              mettre à jour son carnet
+            </p>
+          </div>
+        </div>
+        <ChildSearch />
+      </div>
     </div>
   );
 }

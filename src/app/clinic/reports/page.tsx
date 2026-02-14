@@ -14,9 +14,6 @@ import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import {
   Select,
@@ -108,7 +105,7 @@ export default function ClinicReportsPage() {
           </CardContent>
         </Card>
       ) : (
-        <div className="space-y-3">
+        <div className="flex flex-col gap-3">
           {filtered.map((r) => {
             const sev = SEVERITY_LABELS[r.severity] ?? SEVERITY_LABELS.mild;
             const stat = STATUS_LABELS[r.status] ?? STATUS_LABELS.open;
