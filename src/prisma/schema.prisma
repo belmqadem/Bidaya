@@ -83,6 +83,7 @@ model SideEffectReport {
   description     String          // Description des symptômes
   severity        String          @default("mild") // mild | moderate | severe
   status          String          @default("open") // open | replied | prescribed | closed
+  imageUrl        String?         // Photo jointe (chemin relatif /uploads/...)
   messages        ReportMessage[]
   prescriptions   Prescription[]
   createdAt       DateTime        @default(now())

@@ -155,24 +155,37 @@ export function VoiceRecorder({ onResult }: VoiceRecorderProps) {
   // ── Done state — show preview of structured data ───────────────────────
 
   if (processingStep === "done" && result) {
+    const { motif, diagnostic, traitement, suivi } = result.structured;
+    const hasStructuredData = !!(motif || diagnostic || traitement || suivi);
+
     return (
       <Card className="border-green-200 bg-green-50/50">
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center gap-2 text-sm font-medium text-green-700">
             <CheckCircle2 className="size-4" />
-            Consultation structurée par IA
+            {hasStructuredData ? "Consultation structurée par IA" : "Transcription terminée"}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3 pt-0">
-          <div className="space-y-2 rounded-lg bg-white/80 p-3 text-sm">
-            <PreviewField label="Motif" value={result.structured.motif} />
-            <PreviewField label="Diagnostic" value={result.structured.diagnostic} />
-            <PreviewField label="Traitement" value={result.structured.traitement} />
-            <PreviewField label="Suivi" value={result.structured.suivi} />
-          </div>
+          {hasStructuredData ? (
+            <div className="space-y-2 rounded-lg bg-white/80 p-3 text-sm">
+              <PreviewField label="Motif" value={motif} />
+              <PreviewField label="Diagnostic" value={diagnostic} />
+              <PreviewField label="Traitement" value={traitement} />
+              <PreviewField label="Suivi" value={suivi} />
+            </div>
+          ) : (
+            <div className="rounded-lg bg-amber-50 border border-amber-200 p-3">
+              <p className="text-xs font-medium text-amber-700">
+                La structuration automatique n&apos;a pas pu extraire les champs. La transcription sera intégrée au formulaire — remplissez les champs manuellement.
+              </p>
+            </div>
+          )}
 
           <p className="text-[11px] text-muted-foreground">
-            Ces champs seront pré-remplis dans le formulaire. Vous pourrez les modifier avant de sauvegarder.
+            {hasStructuredData
+              ? "Ces champs seront pré-remplis dans le formulaire. Vous pourrez les modifier avant de sauvegarder."
+              : "La transcription sera ajoutée au résumé. Complétez les champs manuellement."}
           </p>
 
           <div className="flex gap-2">

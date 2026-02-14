@@ -31,6 +31,7 @@ export type SideEffectReportMinAggregateOutputType = {
   description: string | null
   severity: string | null
   status: string | null
+  imageUrl: string | null
   createdAt: Date | null
 }
 
@@ -41,6 +42,7 @@ export type SideEffectReportMaxAggregateOutputType = {
   description: string | null
   severity: string | null
   status: string | null
+  imageUrl: string | null
   createdAt: Date | null
 }
 
@@ -51,6 +53,7 @@ export type SideEffectReportCountAggregateOutputType = {
   description: number
   severity: number
   status: number
+  imageUrl: number
   createdAt: number
   _all: number
 }
@@ -63,6 +66,7 @@ export type SideEffectReportMinAggregateInputType = {
   description?: true
   severity?: true
   status?: true
+  imageUrl?: true
   createdAt?: true
 }
 
@@ -73,6 +77,7 @@ export type SideEffectReportMaxAggregateInputType = {
   description?: true
   severity?: true
   status?: true
+  imageUrl?: true
   createdAt?: true
 }
 
@@ -83,6 +88,7 @@ export type SideEffectReportCountAggregateInputType = {
   description?: true
   severity?: true
   status?: true
+  imageUrl?: true
   createdAt?: true
   _all?: true
 }
@@ -166,6 +172,7 @@ export type SideEffectReportGroupByOutputType = {
   description: string
   severity: string
   status: string
+  imageUrl: string | null
   createdAt: Date
   _count: SideEffectReportCountAggregateOutputType | null
   _min: SideEffectReportMinAggregateOutputType | null
@@ -197,6 +204,7 @@ export type SideEffectReportWhereInput = {
   description?: Prisma.StringFilter<"SideEffectReport"> | string
   severity?: Prisma.StringFilter<"SideEffectReport"> | string
   status?: Prisma.StringFilter<"SideEffectReport"> | string
+  imageUrl?: Prisma.StringNullableFilter<"SideEffectReport"> | string | null
   createdAt?: Prisma.DateTimeFilter<"SideEffectReport"> | Date | string
   child?: Prisma.XOR<Prisma.ChildScalarRelationFilter, Prisma.ChildWhereInput>
   vaccination?: Prisma.XOR<Prisma.VaccinationNullableScalarRelationFilter, Prisma.VaccinationWhereInput> | null
@@ -211,6 +219,7 @@ export type SideEffectReportOrderByWithRelationInput = {
   description?: Prisma.SortOrder
   severity?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   child?: Prisma.ChildOrderByWithRelationInput
   vaccination?: Prisma.VaccinationOrderByWithRelationInput
@@ -228,6 +237,7 @@ export type SideEffectReportWhereUniqueInput = Prisma.AtLeast<{
   description?: Prisma.StringFilter<"SideEffectReport"> | string
   severity?: Prisma.StringFilter<"SideEffectReport"> | string
   status?: Prisma.StringFilter<"SideEffectReport"> | string
+  imageUrl?: Prisma.StringNullableFilter<"SideEffectReport"> | string | null
   createdAt?: Prisma.DateTimeFilter<"SideEffectReport"> | Date | string
   child?: Prisma.XOR<Prisma.ChildScalarRelationFilter, Prisma.ChildWhereInput>
   vaccination?: Prisma.XOR<Prisma.VaccinationNullableScalarRelationFilter, Prisma.VaccinationWhereInput> | null
@@ -242,6 +252,7 @@ export type SideEffectReportOrderByWithAggregationInput = {
   description?: Prisma.SortOrder
   severity?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.SideEffectReportCountOrderByAggregateInput
   _max?: Prisma.SideEffectReportMaxOrderByAggregateInput
@@ -258,6 +269,7 @@ export type SideEffectReportScalarWhereWithAggregatesInput = {
   description?: Prisma.StringWithAggregatesFilter<"SideEffectReport"> | string
   severity?: Prisma.StringWithAggregatesFilter<"SideEffectReport"> | string
   status?: Prisma.StringWithAggregatesFilter<"SideEffectReport"> | string
+  imageUrl?: Prisma.StringNullableWithAggregatesFilter<"SideEffectReport"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"SideEffectReport"> | Date | string
 }
 
@@ -266,6 +278,7 @@ export type SideEffectReportCreateInput = {
   description: string
   severity?: string
   status?: string
+  imageUrl?: string | null
   createdAt?: Date | string
   child: Prisma.ChildCreateNestedOneWithoutSideEffectReportsInput
   vaccination?: Prisma.VaccinationCreateNestedOneWithoutSideEffectReportsInput
@@ -280,6 +293,7 @@ export type SideEffectReportUncheckedCreateInput = {
   description: string
   severity?: string
   status?: string
+  imageUrl?: string | null
   createdAt?: Date | string
   messages?: Prisma.ReportMessageUncheckedCreateNestedManyWithoutReportInput
   prescriptions?: Prisma.PrescriptionUncheckedCreateNestedManyWithoutReportInput
@@ -290,6 +304,7 @@ export type SideEffectReportUpdateInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   severity?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   child?: Prisma.ChildUpdateOneRequiredWithoutSideEffectReportsNestedInput
   vaccination?: Prisma.VaccinationUpdateOneWithoutSideEffectReportsNestedInput
@@ -304,6 +319,7 @@ export type SideEffectReportUncheckedUpdateInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   severity?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   messages?: Prisma.ReportMessageUncheckedUpdateManyWithoutReportNestedInput
   prescriptions?: Prisma.PrescriptionUncheckedUpdateManyWithoutReportNestedInput
@@ -316,6 +332,7 @@ export type SideEffectReportCreateManyInput = {
   description: string
   severity?: string
   status?: string
+  imageUrl?: string | null
   createdAt?: Date | string
 }
 
@@ -324,6 +341,7 @@ export type SideEffectReportUpdateManyMutationInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   severity?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -334,6 +352,7 @@ export type SideEffectReportUncheckedUpdateManyInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   severity?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -354,6 +373,7 @@ export type SideEffectReportCountOrderByAggregateInput = {
   description?: Prisma.SortOrder
   severity?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  imageUrl?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -364,6 +384,7 @@ export type SideEffectReportMaxOrderByAggregateInput = {
   description?: Prisma.SortOrder
   severity?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  imageUrl?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -374,6 +395,7 @@ export type SideEffectReportMinOrderByAggregateInput = {
   description?: Prisma.SortOrder
   severity?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  imageUrl?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -506,6 +528,7 @@ export type SideEffectReportCreateWithoutChildInput = {
   description: string
   severity?: string
   status?: string
+  imageUrl?: string | null
   createdAt?: Date | string
   vaccination?: Prisma.VaccinationCreateNestedOneWithoutSideEffectReportsInput
   messages?: Prisma.ReportMessageCreateNestedManyWithoutReportInput
@@ -518,6 +541,7 @@ export type SideEffectReportUncheckedCreateWithoutChildInput = {
   description: string
   severity?: string
   status?: string
+  imageUrl?: string | null
   createdAt?: Date | string
   messages?: Prisma.ReportMessageUncheckedCreateNestedManyWithoutReportInput
   prescriptions?: Prisma.PrescriptionUncheckedCreateNestedManyWithoutReportInput
@@ -559,6 +583,7 @@ export type SideEffectReportScalarWhereInput = {
   description?: Prisma.StringFilter<"SideEffectReport"> | string
   severity?: Prisma.StringFilter<"SideEffectReport"> | string
   status?: Prisma.StringFilter<"SideEffectReport"> | string
+  imageUrl?: Prisma.StringNullableFilter<"SideEffectReport"> | string | null
   createdAt?: Prisma.DateTimeFilter<"SideEffectReport"> | Date | string
 }
 
@@ -567,6 +592,7 @@ export type SideEffectReportCreateWithoutVaccinationInput = {
   description: string
   severity?: string
   status?: string
+  imageUrl?: string | null
   createdAt?: Date | string
   child: Prisma.ChildCreateNestedOneWithoutSideEffectReportsInput
   messages?: Prisma.ReportMessageCreateNestedManyWithoutReportInput
@@ -579,6 +605,7 @@ export type SideEffectReportUncheckedCreateWithoutVaccinationInput = {
   description: string
   severity?: string
   status?: string
+  imageUrl?: string | null
   createdAt?: Date | string
   messages?: Prisma.ReportMessageUncheckedCreateNestedManyWithoutReportInput
   prescriptions?: Prisma.PrescriptionUncheckedCreateNestedManyWithoutReportInput
@@ -615,6 +642,7 @@ export type SideEffectReportCreateWithoutMessagesInput = {
   description: string
   severity?: string
   status?: string
+  imageUrl?: string | null
   createdAt?: Date | string
   child: Prisma.ChildCreateNestedOneWithoutSideEffectReportsInput
   vaccination?: Prisma.VaccinationCreateNestedOneWithoutSideEffectReportsInput
@@ -628,6 +656,7 @@ export type SideEffectReportUncheckedCreateWithoutMessagesInput = {
   description: string
   severity?: string
   status?: string
+  imageUrl?: string | null
   createdAt?: Date | string
   prescriptions?: Prisma.PrescriptionUncheckedCreateNestedManyWithoutReportInput
 }
@@ -653,6 +682,7 @@ export type SideEffectReportUpdateWithoutMessagesInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   severity?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   child?: Prisma.ChildUpdateOneRequiredWithoutSideEffectReportsNestedInput
   vaccination?: Prisma.VaccinationUpdateOneWithoutSideEffectReportsNestedInput
@@ -666,6 +696,7 @@ export type SideEffectReportUncheckedUpdateWithoutMessagesInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   severity?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   prescriptions?: Prisma.PrescriptionUncheckedUpdateManyWithoutReportNestedInput
 }
@@ -675,6 +706,7 @@ export type SideEffectReportCreateWithoutPrescriptionsInput = {
   description: string
   severity?: string
   status?: string
+  imageUrl?: string | null
   createdAt?: Date | string
   child: Prisma.ChildCreateNestedOneWithoutSideEffectReportsInput
   vaccination?: Prisma.VaccinationCreateNestedOneWithoutSideEffectReportsInput
@@ -688,6 +720,7 @@ export type SideEffectReportUncheckedCreateWithoutPrescriptionsInput = {
   description: string
   severity?: string
   status?: string
+  imageUrl?: string | null
   createdAt?: Date | string
   messages?: Prisma.ReportMessageUncheckedCreateNestedManyWithoutReportInput
 }
@@ -713,6 +746,7 @@ export type SideEffectReportUpdateWithoutPrescriptionsInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   severity?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   child?: Prisma.ChildUpdateOneRequiredWithoutSideEffectReportsNestedInput
   vaccination?: Prisma.VaccinationUpdateOneWithoutSideEffectReportsNestedInput
@@ -726,6 +760,7 @@ export type SideEffectReportUncheckedUpdateWithoutPrescriptionsInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   severity?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   messages?: Prisma.ReportMessageUncheckedUpdateManyWithoutReportNestedInput
 }
@@ -736,6 +771,7 @@ export type SideEffectReportCreateManyChildInput = {
   description: string
   severity?: string
   status?: string
+  imageUrl?: string | null
   createdAt?: Date | string
 }
 
@@ -744,6 +780,7 @@ export type SideEffectReportUpdateWithoutChildInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   severity?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   vaccination?: Prisma.VaccinationUpdateOneWithoutSideEffectReportsNestedInput
   messages?: Prisma.ReportMessageUpdateManyWithoutReportNestedInput
@@ -756,6 +793,7 @@ export type SideEffectReportUncheckedUpdateWithoutChildInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   severity?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   messages?: Prisma.ReportMessageUncheckedUpdateManyWithoutReportNestedInput
   prescriptions?: Prisma.PrescriptionUncheckedUpdateManyWithoutReportNestedInput
@@ -767,6 +805,7 @@ export type SideEffectReportUncheckedUpdateManyWithoutChildInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   severity?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -776,6 +815,7 @@ export type SideEffectReportCreateManyVaccinationInput = {
   description: string
   severity?: string
   status?: string
+  imageUrl?: string | null
   createdAt?: Date | string
 }
 
@@ -784,6 +824,7 @@ export type SideEffectReportUpdateWithoutVaccinationInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   severity?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   child?: Prisma.ChildUpdateOneRequiredWithoutSideEffectReportsNestedInput
   messages?: Prisma.ReportMessageUpdateManyWithoutReportNestedInput
@@ -796,6 +837,7 @@ export type SideEffectReportUncheckedUpdateWithoutVaccinationInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   severity?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   messages?: Prisma.ReportMessageUncheckedUpdateManyWithoutReportNestedInput
   prescriptions?: Prisma.PrescriptionUncheckedUpdateManyWithoutReportNestedInput
@@ -807,6 +849,7 @@ export type SideEffectReportUncheckedUpdateManyWithoutVaccinationInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   severity?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -857,6 +900,7 @@ export type SideEffectReportSelect<ExtArgs extends runtime.Types.Extensions.Inte
   description?: boolean
   severity?: boolean
   status?: boolean
+  imageUrl?: boolean
   createdAt?: boolean
   child?: boolean | Prisma.ChildDefaultArgs<ExtArgs>
   vaccination?: boolean | Prisma.SideEffectReport$vaccinationArgs<ExtArgs>
@@ -872,6 +916,7 @@ export type SideEffectReportSelectCreateManyAndReturn<ExtArgs extends runtime.Ty
   description?: boolean
   severity?: boolean
   status?: boolean
+  imageUrl?: boolean
   createdAt?: boolean
   child?: boolean | Prisma.ChildDefaultArgs<ExtArgs>
   vaccination?: boolean | Prisma.SideEffectReport$vaccinationArgs<ExtArgs>
@@ -884,6 +929,7 @@ export type SideEffectReportSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   description?: boolean
   severity?: boolean
   status?: boolean
+  imageUrl?: boolean
   createdAt?: boolean
   child?: boolean | Prisma.ChildDefaultArgs<ExtArgs>
   vaccination?: boolean | Prisma.SideEffectReport$vaccinationArgs<ExtArgs>
@@ -896,10 +942,11 @@ export type SideEffectReportSelectScalar = {
   description?: boolean
   severity?: boolean
   status?: boolean
+  imageUrl?: boolean
   createdAt?: boolean
 }
 
-export type SideEffectReportOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "childId" | "vaccinationId" | "description" | "severity" | "status" | "createdAt", ExtArgs["result"]["sideEffectReport"]>
+export type SideEffectReportOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "childId" | "vaccinationId" | "description" | "severity" | "status" | "imageUrl" | "createdAt", ExtArgs["result"]["sideEffectReport"]>
 export type SideEffectReportInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   child?: boolean | Prisma.ChildDefaultArgs<ExtArgs>
   vaccination?: boolean | Prisma.SideEffectReport$vaccinationArgs<ExtArgs>
@@ -931,6 +978,7 @@ export type $SideEffectReportPayload<ExtArgs extends runtime.Types.Extensions.In
     description: string
     severity: string
     status: string
+    imageUrl: string | null
     createdAt: Date
   }, ExtArgs["result"]["sideEffectReport"]>
   composites: {}
@@ -1365,6 +1413,7 @@ export interface SideEffectReportFieldRefs {
   readonly description: Prisma.FieldRef<"SideEffectReport", 'String'>
   readonly severity: Prisma.FieldRef<"SideEffectReport", 'String'>
   readonly status: Prisma.FieldRef<"SideEffectReport", 'String'>
+  readonly imageUrl: Prisma.FieldRef<"SideEffectReport", 'String'>
   readonly createdAt: Prisma.FieldRef<"SideEffectReport", 'DateTime'>
 }
     

@@ -35,6 +35,8 @@ export type ConsultationMinAggregateOutputType = {
   followUpRequired: boolean | null
   treatmentPrescribed: string | null
   followUpDate: Date | null
+  source: string | null
+  transcript: string | null
   createdAt: Date | null
 }
 
@@ -49,6 +51,8 @@ export type ConsultationMaxAggregateOutputType = {
   followUpRequired: boolean | null
   treatmentPrescribed: string | null
   followUpDate: Date | null
+  source: string | null
+  transcript: string | null
   createdAt: Date | null
 }
 
@@ -63,6 +67,8 @@ export type ConsultationCountAggregateOutputType = {
   followUpRequired: number
   treatmentPrescribed: number
   followUpDate: number
+  source: number
+  transcript: number
   createdAt: number
   _all: number
 }
@@ -79,6 +85,8 @@ export type ConsultationMinAggregateInputType = {
   followUpRequired?: true
   treatmentPrescribed?: true
   followUpDate?: true
+  source?: true
+  transcript?: true
   createdAt?: true
 }
 
@@ -93,6 +101,8 @@ export type ConsultationMaxAggregateInputType = {
   followUpRequired?: true
   treatmentPrescribed?: true
   followUpDate?: true
+  source?: true
+  transcript?: true
   createdAt?: true
 }
 
@@ -107,6 +117,8 @@ export type ConsultationCountAggregateInputType = {
   followUpRequired?: true
   treatmentPrescribed?: true
   followUpDate?: true
+  source?: true
+  transcript?: true
   createdAt?: true
   _all?: true
 }
@@ -194,6 +206,8 @@ export type ConsultationGroupByOutputType = {
   followUpRequired: boolean
   treatmentPrescribed: string | null
   followUpDate: Date | null
+  source: string
+  transcript: string | null
   createdAt: Date
   _count: ConsultationCountAggregateOutputType | null
   _min: ConsultationMinAggregateOutputType | null
@@ -229,6 +243,8 @@ export type ConsultationWhereInput = {
   followUpRequired?: Prisma.BoolFilter<"Consultation"> | boolean
   treatmentPrescribed?: Prisma.StringNullableFilter<"Consultation"> | string | null
   followUpDate?: Prisma.DateTimeNullableFilter<"Consultation"> | Date | string | null
+  source?: Prisma.StringFilter<"Consultation"> | string
+  transcript?: Prisma.StringNullableFilter<"Consultation"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Consultation"> | Date | string
   child?: Prisma.XOR<Prisma.ChildScalarRelationFilter, Prisma.ChildWhereInput>
 }
@@ -244,6 +260,8 @@ export type ConsultationOrderByWithRelationInput = {
   followUpRequired?: Prisma.SortOrder
   treatmentPrescribed?: Prisma.SortOrderInput | Prisma.SortOrder
   followUpDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  source?: Prisma.SortOrder
+  transcript?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   child?: Prisma.ChildOrderByWithRelationInput
 }
@@ -262,6 +280,8 @@ export type ConsultationWhereUniqueInput = Prisma.AtLeast<{
   followUpRequired?: Prisma.BoolFilter<"Consultation"> | boolean
   treatmentPrescribed?: Prisma.StringNullableFilter<"Consultation"> | string | null
   followUpDate?: Prisma.DateTimeNullableFilter<"Consultation"> | Date | string | null
+  source?: Prisma.StringFilter<"Consultation"> | string
+  transcript?: Prisma.StringNullableFilter<"Consultation"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Consultation"> | Date | string
   child?: Prisma.XOR<Prisma.ChildScalarRelationFilter, Prisma.ChildWhereInput>
 }, "id">
@@ -277,6 +297,8 @@ export type ConsultationOrderByWithAggregationInput = {
   followUpRequired?: Prisma.SortOrder
   treatmentPrescribed?: Prisma.SortOrderInput | Prisma.SortOrder
   followUpDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  source?: Prisma.SortOrder
+  transcript?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.ConsultationCountOrderByAggregateInput
   _max?: Prisma.ConsultationMaxOrderByAggregateInput
@@ -297,6 +319,8 @@ export type ConsultationScalarWhereWithAggregatesInput = {
   followUpRequired?: Prisma.BoolWithAggregatesFilter<"Consultation"> | boolean
   treatmentPrescribed?: Prisma.StringNullableWithAggregatesFilter<"Consultation"> | string | null
   followUpDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Consultation"> | Date | string | null
+  source?: Prisma.StringWithAggregatesFilter<"Consultation"> | string
+  transcript?: Prisma.StringNullableWithAggregatesFilter<"Consultation"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Consultation"> | Date | string
 }
 
@@ -310,6 +334,8 @@ export type ConsultationCreateInput = {
   followUpRequired?: boolean
   treatmentPrescribed?: string | null
   followUpDate?: Date | string | null
+  source?: string
+  transcript?: string | null
   createdAt?: Date | string
   child: Prisma.ChildCreateNestedOneWithoutConsultationsInput
 }
@@ -325,6 +351,8 @@ export type ConsultationUncheckedCreateInput = {
   followUpRequired?: boolean
   treatmentPrescribed?: string | null
   followUpDate?: Date | string | null
+  source?: string
+  transcript?: string | null
   createdAt?: Date | string
 }
 
@@ -338,6 +366,8 @@ export type ConsultationUpdateInput = {
   followUpRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   treatmentPrescribed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   followUpDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  transcript?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   child?: Prisma.ChildUpdateOneRequiredWithoutConsultationsNestedInput
 }
@@ -353,6 +383,8 @@ export type ConsultationUncheckedUpdateInput = {
   followUpRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   treatmentPrescribed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   followUpDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  transcript?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -367,6 +399,8 @@ export type ConsultationCreateManyInput = {
   followUpRequired?: boolean
   treatmentPrescribed?: string | null
   followUpDate?: Date | string | null
+  source?: string
+  transcript?: string | null
   createdAt?: Date | string
 }
 
@@ -380,6 +414,8 @@ export type ConsultationUpdateManyMutationInput = {
   followUpRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   treatmentPrescribed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   followUpDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  transcript?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -394,6 +430,8 @@ export type ConsultationUncheckedUpdateManyInput = {
   followUpRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   treatmentPrescribed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   followUpDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  transcript?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -418,6 +456,8 @@ export type ConsultationCountOrderByAggregateInput = {
   followUpRequired?: Prisma.SortOrder
   treatmentPrescribed?: Prisma.SortOrder
   followUpDate?: Prisma.SortOrder
+  source?: Prisma.SortOrder
+  transcript?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -432,6 +472,8 @@ export type ConsultationMaxOrderByAggregateInput = {
   followUpRequired?: Prisma.SortOrder
   treatmentPrescribed?: Prisma.SortOrder
   followUpDate?: Prisma.SortOrder
+  source?: Prisma.SortOrder
+  transcript?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -446,6 +488,8 @@ export type ConsultationMinOrderByAggregateInput = {
   followUpRequired?: Prisma.SortOrder
   treatmentPrescribed?: Prisma.SortOrder
   followUpDate?: Prisma.SortOrder
+  source?: Prisma.SortOrder
+  transcript?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -505,6 +549,8 @@ export type ConsultationCreateWithoutChildInput = {
   followUpRequired?: boolean
   treatmentPrescribed?: string | null
   followUpDate?: Date | string | null
+  source?: string
+  transcript?: string | null
   createdAt?: Date | string
 }
 
@@ -518,6 +564,8 @@ export type ConsultationUncheckedCreateWithoutChildInput = {
   followUpRequired?: boolean
   treatmentPrescribed?: string | null
   followUpDate?: Date | string | null
+  source?: string
+  transcript?: string | null
   createdAt?: Date | string
 }
 
@@ -561,6 +609,8 @@ export type ConsultationScalarWhereInput = {
   followUpRequired?: Prisma.BoolFilter<"Consultation"> | boolean
   treatmentPrescribed?: Prisma.StringNullableFilter<"Consultation"> | string | null
   followUpDate?: Prisma.DateTimeNullableFilter<"Consultation"> | Date | string | null
+  source?: Prisma.StringFilter<"Consultation"> | string
+  transcript?: Prisma.StringNullableFilter<"Consultation"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Consultation"> | Date | string
 }
 
@@ -574,6 +624,8 @@ export type ConsultationCreateManyChildInput = {
   followUpRequired?: boolean
   treatmentPrescribed?: string | null
   followUpDate?: Date | string | null
+  source?: string
+  transcript?: string | null
   createdAt?: Date | string
 }
 
@@ -587,6 +639,8 @@ export type ConsultationUpdateWithoutChildInput = {
   followUpRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   treatmentPrescribed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   followUpDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  transcript?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -600,6 +654,8 @@ export type ConsultationUncheckedUpdateWithoutChildInput = {
   followUpRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   treatmentPrescribed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   followUpDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  transcript?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -613,6 +669,8 @@ export type ConsultationUncheckedUpdateManyWithoutChildInput = {
   followUpRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   treatmentPrescribed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   followUpDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  transcript?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -629,6 +687,8 @@ export type ConsultationSelect<ExtArgs extends runtime.Types.Extensions.Internal
   followUpRequired?: boolean
   treatmentPrescribed?: boolean
   followUpDate?: boolean
+  source?: boolean
+  transcript?: boolean
   createdAt?: boolean
   child?: boolean | Prisma.ChildDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["consultation"]>
@@ -644,6 +704,8 @@ export type ConsultationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   followUpRequired?: boolean
   treatmentPrescribed?: boolean
   followUpDate?: boolean
+  source?: boolean
+  transcript?: boolean
   createdAt?: boolean
   child?: boolean | Prisma.ChildDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["consultation"]>
@@ -659,6 +721,8 @@ export type ConsultationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   followUpRequired?: boolean
   treatmentPrescribed?: boolean
   followUpDate?: boolean
+  source?: boolean
+  transcript?: boolean
   createdAt?: boolean
   child?: boolean | Prisma.ChildDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["consultation"]>
@@ -674,10 +738,12 @@ export type ConsultationSelectScalar = {
   followUpRequired?: boolean
   treatmentPrescribed?: boolean
   followUpDate?: boolean
+  source?: boolean
+  transcript?: boolean
   createdAt?: boolean
 }
 
-export type ConsultationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "childId" | "date" | "summary" | "clinicianName" | "reasonForVisit" | "diagnosis" | "followUpRequired" | "treatmentPrescribed" | "followUpDate" | "createdAt", ExtArgs["result"]["consultation"]>
+export type ConsultationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "childId" | "date" | "summary" | "clinicianName" | "reasonForVisit" | "diagnosis" | "followUpRequired" | "treatmentPrescribed" | "followUpDate" | "source" | "transcript" | "createdAt", ExtArgs["result"]["consultation"]>
 export type ConsultationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   child?: boolean | Prisma.ChildDefaultArgs<ExtArgs>
 }
@@ -704,6 +770,8 @@ export type $ConsultationPayload<ExtArgs extends runtime.Types.Extensions.Intern
     followUpRequired: boolean
     treatmentPrescribed: string | null
     followUpDate: Date | null
+    source: string
+    transcript: string | null
     createdAt: Date
   }, ExtArgs["result"]["consultation"]>
   composites: {}
@@ -1139,6 +1207,8 @@ export interface ConsultationFieldRefs {
   readonly followUpRequired: Prisma.FieldRef<"Consultation", 'Boolean'>
   readonly treatmentPrescribed: Prisma.FieldRef<"Consultation", 'String'>
   readonly followUpDate: Prisma.FieldRef<"Consultation", 'DateTime'>
+  readonly source: Prisma.FieldRef<"Consultation", 'String'>
+  readonly transcript: Prisma.FieldRef<"Consultation", 'String'>
   readonly createdAt: Prisma.FieldRef<"Consultation", 'DateTime'>
 }
     

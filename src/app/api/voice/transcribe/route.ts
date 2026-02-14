@@ -9,6 +9,8 @@ const MINIMAX_BASE_URL =
   process.env.MINIMAX_BASE_URL ?? "https://api.minimax.io/v1/chat/completions";
 const MINIMAX_MODEL = process.env.MINIMAX_MODEL ?? "MiniMax-M2.5";
 
+const IS_DEV = process.env.NODE_ENV !== "production";
+
 // Max audio file size: 10 MB
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
@@ -35,23 +37,29 @@ function checkRateLimit(email: string): boolean {
 
 // ── MiniMax prompt ───────────────────────────────────────────────────────────
 
-const STRUCTURING_PROMPT = `Tu es un assistant clinique pédiatrique.
-Convertis la transcription de consultation suivante en JSON structuré avec exactement ces 4 champs :
-- motif (string) : le motif de la consultation
-- diagnostic (string) : le diagnostic posé
-- traitement (string) : le traitement prescrit
-- suivi (string) : les instructions de suivi
+const STRUCTURING_PROMPT = `Tu es un extracteur JSON. Tu ne réfléchis pas. Tu ne commentes pas. Tu retournes UNIQUEMENT un objet JSON.
 
-Règles :
-- Retourne UNIQUEMENT du JSON valide, sans texte autour.
-- Si un champ n'est pas mentionné dans la transcription, mets une chaîne vide "".
+Extrais les informations de la transcription médicale et retourne ce JSON exact :
+
+{"motif":"...","diagnostic":"...","traitement":"...","suivi":"..."}
+
+Règles STRICTES :
+- motif = raison de la consultation. Si absente, mets "".
+- diagnostic = diagnostic posé. Si absent, mets "".
+- traitement = traitement prescrit. Si absent, mets "".
+- suivi = instructions de suivi. Si absent, mets "".
 - Rédige en français.
-- Sois concis et clinique.`;
+- NE METS AUCUN texte avant ou après le JSON.
+- NE METS PAS de blocs <think>.
+- Ta réponse COMPLÈTE doit être parsable par JSON.parse().`;
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
-function jsonError(message: string, status: number, retryable = false) {
-  return NextResponse.json({ error: message, retryable }, { status });
+function jsonError(message: string, status: number, retryable = false, detail?: string) {
+  return NextResponse.json(
+    { error: message, retryable, ...(IS_DEV && detail ? { detail } : {}) },
+    { status },
+  );
 }
 
 interface StructuredResult {
@@ -81,11 +89,14 @@ function validateStructured(obj: unknown): StructuredResult | null {
 export async function POST(request: NextRequest) {
   const startTime = Date.now();
 
-  // ── 1. Auth: require clinic role ─────────────────────────────────────────
+  // ── 1. Auth: require parent or clinic role ────────────────────────────────
   const session = await getSession();
-  if (!session || session.role !== "clinic") {
-    return jsonError("Non autorisé. Accès réservé à l'espace clinique.", 403);
+  if (!session || (session.role !== "clinic" && session.role !== "parent")) {
+    return jsonError("Non autorisé.", 403);
   }
+
+  // Check mode: "transcribe" (transcript only) or "full" (transcript + structuring)
+  const mode = request.nextUrl.searchParams.get("mode") === "full" ? "full" : "transcribe";
 
   // ── 2. Rate limit ────────────────────────────────────────────────────────
   if (!checkRateLimit(session.email)) {
@@ -96,7 +107,7 @@ export async function POST(request: NextRequest) {
   if (!ELEVENLABS_API_KEY) {
     return jsonError("ELEVENLABS_API_KEY non configurée sur le serveur.", 500);
   }
-  if (!MINIMAX_API_KEY) {
+  if (mode === "full" && !MINIMAX_API_KEY) {
     return jsonError("MINIMAX_API_KEY non configurée sur le serveur.", 500);
   }
 
@@ -121,13 +132,32 @@ export async function POST(request: NextRequest) {
     return jsonError("Le fichier audio est vide.", 400);
   }
 
-  // ── 5. Call ElevenLabs Speech-to-Text ────────────────────────────────────
+  // ── 5. Convert to Buffer-backed File for reliable forwarding ─────────────
+  // The incoming Blob from Next.js formData may not forward bytes correctly
+  // to outgoing fetch calls. Reading into an ArrayBuffer and creating a new
+  // Blob ensures the data is fully materialized.
+  let audioBuffer: ArrayBuffer;
+  try {
+    audioBuffer = await audioFile.arrayBuffer();
+  } catch {
+    return jsonError("Impossible de lire le fichier audio.", 400);
+  }
+
+  const audioBlob = new Blob([audioBuffer], { type: audioFile.type || "audio/webm" });
+
+  if (IS_DEV) {
+    console.log(
+      `[voice] Audio received: ${audioBlob.size} bytes, type=${audioBlob.type}`,
+    );
+  }
+
+  // ── 6. Call ElevenLabs Speech-to-Text ────────────────────────────────────
   let transcript: string;
   let detectedLanguage: string | undefined;
 
   try {
     const sttForm = new FormData();
-    sttForm.append("file", audioFile, "recording.webm");
+    sttForm.append("file", audioBlob, "recording.webm");
     sttForm.append("model_id", "scribe_v1");
 
     const sttRes = await fetch("https://api.elevenlabs.io/v1/speech-to-text", {
@@ -145,12 +175,19 @@ export async function POST(request: NextRequest) {
         "Échec de la transcription audio. Veuillez réessayer.",
         502,
         true,
+        `ElevenLabs HTTP ${sttRes.status}: ${errText.slice(0, 500)}`,
       );
     }
 
     const sttData = await sttRes.json();
     transcript = sttData.text ?? "";
     detectedLanguage = sttData.language_code;
+
+    if (IS_DEV) {
+      console.log(
+        `[voice] Transcript (${detectedLanguage}): "${transcript.slice(0, 120)}…"`,
+      );
+    }
 
     if (!transcript.trim()) {
       return jsonError(
@@ -164,98 +201,97 @@ export async function POST(request: NextRequest) {
       "Erreur réseau lors de la transcription. Vérifiez votre connexion.",
       502,
       true,
+      String(e),
     );
   }
 
-  // ── 6. Call MiniMax for structuring ──────────────────────────────────────
-  let structured: StructuredResult | null = null;
+  // ── 7. Optionally call MiniMax for structuring (full mode only) ─────────
+  let structured: StructuredResult | undefined;
 
-  try {
-    const mmRes = await fetch(MINIMAX_BASE_URL, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${MINIMAX_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: MINIMAX_MODEL,
-        messages: [
-          { role: "system", content: STRUCTURING_PROMPT },
-          { role: "user", content: `Transcription de la consultation :\n\n${transcript}` },
-        ],
-        max_tokens: 2000,
-        temperature: 0.1,
-      }),
-    });
+  if (mode === "full") {
+    const emptyResult: StructuredResult = { motif: "", diagnostic: "", traitement: "", suivi: "" };
+    structured = emptyResult;
 
-    if (!mmRes.ok) {
-      const errText = await mmRes.text().catch(() => "");
-      console.error("MiniMax error:", mmRes.status, errText);
-      return jsonError(
-        "Échec de la structuration IA. Veuillez réessayer.",
-        502,
-        true,
-      );
-    }
-
-    const mmData = await mmRes.json();
-    const raw: string = mmData?.choices?.[0]?.message?.content ?? "";
-
-    // Strip <think>...</think> blocks (MiniMax reasoning artifacts)
-    let cleaned = raw.replace(/<think>[\s\S]*?<\/think>/g, "");
-    cleaned = cleaned.replace(/<think>[\s\S]*/g, "");
-    cleaned = cleaned.trim();
-
-    // Strategy 1: parse cleaned text directly
     try {
-      structured = validateStructured(JSON.parse(cleaned));
-    } catch {
-      // Strategy 2: extract JSON from text
-      const jsonMatch = cleaned.match(/\{[\s\S]*\}/);
-      if (jsonMatch) {
+      const mmRes = await fetch(MINIMAX_BASE_URL, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${MINIMAX_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: MINIMAX_MODEL,
+          messages: [
+            { role: "system", content: STRUCTURING_PROMPT },
+            {
+              role: "user",
+              content: `Transcription :\n"""${transcript}"""\n\nRetourne le JSON maintenant :`,
+            },
+          ],
+          max_tokens: 4000,
+          temperature: 0,
+        }),
+      });
+
+      if (!mmRes.ok) {
+        const errText = await mmRes.text().catch(() => "");
+        console.error("[voice] MiniMax HTTP error:", mmRes.status, errText);
+      } else {
+        const mmData = await mmRes.json();
+        const raw: string = mmData?.choices?.[0]?.message?.content ?? "";
+
+        if (IS_DEV) {
+          console.log(`[voice] MiniMax raw (${raw.length} chars): "${raw.slice(0, 400)}"`);
+        }
+
+        // Strip <think>...</think> blocks (closed and unclosed)
+        let cleaned = raw.replace(/<think>[\s\S]*?<\/think>/g, "");
+        cleaned = cleaned.replace(/<think>[\s\S]*/g, "");
+        cleaned = cleaned.trim();
+
+        let parsed: StructuredResult | null = null;
         try {
-          structured = validateStructured(JSON.parse(jsonMatch[0]));
+          parsed = validateStructured(JSON.parse(cleaned));
         } catch {
-          // continue to fallback
+          const jsonMatch = cleaned.match(/\{[\s\S]*\}/);
+          if (jsonMatch) {
+            try {
+              parsed = validateStructured(JSON.parse(jsonMatch[0]));
+            } catch { /* continue */ }
+          }
+        }
+
+        if (!parsed) {
+          const rawMatch = raw.match(/\{[\s\S]*"motif"[\s\S]*?\}/);
+          if (rawMatch) {
+            try {
+              parsed = validateStructured(JSON.parse(rawMatch[0]));
+            } catch { /* give up */ }
+          }
+        }
+
+        if (parsed) {
+          structured = parsed;
+        } else {
+          console.warn("[voice] MiniMax could not produce valid JSON — falling back to empty fields");
         }
       }
+    } catch (e) {
+      console.error("[voice] MiniMax network error:", e);
     }
-
-    // Strategy 3: search raw output
-    if (!structured) {
-      const rawMatch = raw.match(/\{[\s\S]*"motif"[\s\S]*\}/);
-      if (rawMatch) {
-        try {
-          structured = validateStructured(JSON.parse(rawMatch[0]));
-        } catch {
-          // give up
-        }
-      }
-    }
-
-    if (!structured) {
-      return jsonError(
-        "L'IA n'a pas pu structurer la consultation. Veuillez réessayer.",
-        502,
-        true,
-      );
-    }
-  } catch (e) {
-    console.error("MiniMax network error:", e);
-    return jsonError(
-      "Erreur réseau lors de la structuration IA.",
-      502,
-      true,
-    );
   }
 
-  // ── 7. Return successful response ────────────────────────────────────────
+  // ── 8. Return successful response ────────────────────────────────────────
 
   const processingTimeMs = Date.now() - startTime;
 
+  if (IS_DEV) {
+    console.log(`[voice] Done in ${processingTimeMs}ms (mode=${mode})`);
+  }
+
   return NextResponse.json({
     transcript,
-    structured,
+    ...(structured ? { structured } : {}),
     processingTimeMs,
     ...(detectedLanguage ? { detectedLanguage } : {}),
   });

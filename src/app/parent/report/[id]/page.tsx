@@ -12,6 +12,7 @@ import {
   FileText,
   Copy,
   Check,
+  ImageIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -127,8 +128,22 @@ export default function ReportDetailPage() {
 
       {/* Description */}
       <Card>
-        <CardContent className="py-4">
+        <CardContent className="py-4 space-y-3">
           <p className="text-sm leading-relaxed">{report.description}</p>
+          {report.imageUrl && (
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+                <ImageIcon className="size-3.5" />
+                Photo jointe
+              </div>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={report.imageUrl}
+                alt="Photo des symptômes"
+                className="w-full rounded-lg border object-cover"
+              />
+            </div>
+          )}
         </CardContent>
       </Card>
 

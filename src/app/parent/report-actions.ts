@@ -21,6 +21,7 @@ export type ReportDetail = {
   description: string;
   severity: string;
   status: string;
+  imageUrl: string | null;
   vaccineName: string | null;
   vaccineDate: string | null;
   createdAt: string;
@@ -80,10 +81,11 @@ export async function createReport(input: {
   vaccinationId?: string;
   description: string;
   severity: string;
+  imageUrl?: string;
 }): Promise<ActionResult> {
   const session = await requireParent();
 
-  const { description, severity, vaccinationId } = input;
+  const { description, severity, vaccinationId, imageUrl } = input;
   if (!description?.trim()) {
     return { success: false, error: "Veuillez décrire les symptômes." };
   }
@@ -100,6 +102,7 @@ export async function createReport(input: {
         vaccinationId: vaccinationId || null,
         description: description.trim(),
         severity: severity || "mild",
+        imageUrl: imageUrl || null,
       },
     });
 
@@ -177,6 +180,7 @@ export async function getReport(reportId: string): Promise<ReportDetail | null> 
       description: report.description,
       severity: report.severity,
       status: report.status,
+      imageUrl: report.imageUrl,
       vaccineName: report.vaccination?.vaccine ?? null,
       vaccineDate: report.vaccination?.date.toISOString().split("T")[0] ?? null,
       createdAt: report.createdAt.toISOString().split("T")[0],

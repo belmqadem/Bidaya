@@ -25,6 +25,7 @@ export type ClinicReportDetail = {
   description: string;
   severity: string;
   status: string;
+  imageUrl: string | null;
   vaccineName: string | null;
   vaccineDate: string | null;
   createdAt: string;
@@ -127,6 +128,7 @@ export async function getClinicReport(
       description: report.description,
       severity: report.severity,
       status: report.status,
+      imageUrl: report.imageUrl,
       vaccineName: report.vaccination?.vaccine ?? null,
       vaccineDate:
         report.vaccination?.date.toISOString().split("T")[0] ?? null,

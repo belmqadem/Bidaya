@@ -7,7 +7,7 @@ import type {
   StructuredConsultation,
 } from "./voice.types";
 import { MAX_RECORDING_SECONDS, ACCEPTED_AUDIO_TYPE } from "./voice.types";
-import { transcribeAndStructure } from "./voice.service";
+import { transcribeAudio } from "./voice.service";
 
 export interface UseVoiceRecorderReturn {
   /** Current recording state. */
@@ -143,7 +143,7 @@ export function useVoiceRecorder(): UseVoiceRecorderReturn {
     setElapsed(0);
   }, [stopTimer, releaseStream]);
 
-  // ── Process audio (upload → transcribe → structure) ──────────────────────
+  // ── Process audio (upload → transcribe) ──────────────────────────────────
 
   async function processAudio() {
     const blob = new Blob(chunksRef.current, { type: ACCEPTED_AUDIO_TYPE });
@@ -154,17 +154,14 @@ export function useVoiceRecorder(): UseVoiceRecorderReturn {
     }
 
     try {
-      setProcessingStep("uploading");
-
-      // Small visual delay so user sees "Envoi..." before jumping to next step
       setProcessingStep("transcribing");
 
-      const response = await transcribeAndStructure(blob);
+      const response = await transcribeAudio(blob);
 
       setProcessingStep("done");
       setResult({
         transcript: response.transcript,
-        structured: response.structured,
+        structured: { motif: "", diagnostic: "", traitement: "", suivi: "" },
       });
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Erreur inconnue.";

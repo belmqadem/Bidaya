@@ -124,6 +124,8 @@ export const ConsultationScalarFieldEnum = {
   followUpRequired: 'followUpRequired',
   treatmentPrescribed: 'treatmentPrescribed',
   followUpDate: 'followUpDate',
+  source: 'source',
+  transcript: 'transcript',
   createdAt: 'createdAt'
 } as const
 
@@ -137,6 +139,7 @@ export const SideEffectReportScalarFieldEnum = {
   description: 'description',
   severity: 'severity',
   status: 'status',
+  imageUrl: 'imageUrl',
   createdAt: 'createdAt'
 } as const
 
