@@ -22,6 +22,8 @@ export async function POST(request: NextRequest) {
 
   await setSession({ email, role });
 
-  const redirect = role === "parent" ? "/parent" : "/clinic";
+  let redirect = "/clinic";
+  if (role === "parent") redirect = "/parent";
+  if (role === "pharmacy") redirect = "/pharmacy";
   return NextResponse.json({ redirect });
 }

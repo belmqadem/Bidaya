@@ -9,7 +9,9 @@ function redirectTo(path: string, request: NextRequest) {
 }
 
 function dashboardFor(role: string) {
-  return role === "parent" ? "/parent" : "/clinic";
+  if (role === "parent") return "/parent";
+  if (role === "pharmacy") return "/pharmacy";
+  return "/clinic";
 }
 
 export function middleware(request: NextRequest) {
@@ -39,14 +41,21 @@ export function middleware(request: NextRequest) {
   // ── Protected: /parent/* ────────────────────────────────────────────────
   if (path.startsWith("/parent")) {
     if (!hasSession) return redirectTo("/login/parent", request);
-    if (payload!.role !== "parent") return redirectTo("/clinic", request);
+    if (payload!.role !== "parent") return redirectTo(dashboardFor(payload!.role!), request);
     return NextResponse.next();
   }
 
   // ── Protected: /clinic/* ────────────────────────────────────────────────
   if (path.startsWith("/clinic")) {
     if (!hasSession) return redirectTo(SELECT_ROLE, request);
-    if (payload!.role !== "clinic") return redirectTo("/parent", request);
+    if (payload!.role !== "clinic") return redirectTo(dashboardFor(payload!.role!), request);
+    return NextResponse.next();
+  }
+
+  // ── Protected: /pharmacy/* ──────────────────────────────────────────────
+  if (path.startsWith("/pharmacy")) {
+    if (!hasSession) return redirectTo(SELECT_ROLE, request);
+    if (payload!.role !== "pharmacy") return redirectTo(dashboardFor(payload!.role!), request);
     return NextResponse.next();
   }
 
@@ -61,5 +70,6 @@ export const config = {
     "/select-role",
     "/parent/:path*",
     "/clinic/:path*",
+    "/pharmacy/:path*",
   ],
 };

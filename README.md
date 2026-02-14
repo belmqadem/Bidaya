@@ -1,14 +1,14 @@
 # Bidaya
 
-Carnet de santé numérique de l'enfant, vérifié par la clinique.
+Carnet de santé numérique de l'enfant, vérifié par la clinique — avec communication post-vaccination entre parent, médecin et pharmacie.
 
 ## Le problème
 
-Au Maroc, le suivi médical des enfants repose encore largement sur des carnets de santé papier. Ces documents se perdent, s'abîment, et ne sont pas accessibles à distance. Les parents n'ont aucun moyen simple de consulter l'historique vaccinal ou les consultations de leur enfant.
+Au Maroc, le suivi médical des enfants repose encore largement sur des carnets de santé papier. Ces documents se perdent, s'abîment, et ne sont pas accessibles à distance. Les parents n'ont aucun moyen simple de consulter l'historique vaccinal de leur enfant. En cas d'effets secondaires après une vaccination, le parent doit se déplacer physiquement à la clinique, et la communication entre médecin et pharmacie se fait par des ordonnances papier facilement falsifiables ou réutilisables.
 
 ## Notre solution
 
-Une application web qui numérise le carnet de santé de l'enfant. Chaque dossier est créé et vérifié par la clinique, puis accessible au parent via un identifiant unique.
+Une application web qui numérise le carnet de santé de l'enfant et met en place un circuit de communication sécurisé entre trois acteurs : **le parent**, **la clinique** et **la pharmacie**. Chaque dossier est créé et vérifié par la clinique, puis accessible au parent via un identifiant unique.
 
 ## Comment ça marche
 
@@ -41,13 +41,33 @@ Le personnel clinique peut rechercher un enfant par identifiant et :
 - Suivre le calendrier vaccinal officiel marocain
 - Marquer les vaccins comme administrés
 
-### 4. Analyse IA du risque néonatal
+### 4. Communication post-vaccination
+
+C'est le cœur de l'innovation de Bidaya. Quand un enfant présente des effets secondaires après une vaccination :
+
+1. **Le parent signale** les symptômes depuis l'application (description, sévérité, vaccination concernée)
+2. **Le médecin reçoit** le signalement dans son tableau de bord, consulte les détails et **répond au parent** via un fil de messages
+3. **Le médecin crée une ordonnance numérique** avec un code unique (format ORD-XXXX-XXXX)
+4. **Le parent** voit l'ordonnance et le code directement dans l'application, et le communique à sa pharmacie
+5. **La pharmacie** entre le code, vérifie l'ordonnance, dispense les médicaments et **marque l'ordonnance comme utilisée**
+
+Ce circuit empêche la réutilisation frauduleuse des ordonnances : une fois dispensée, l'ordonnance est verrouillée et ne peut plus être utilisée dans une autre pharmacie.
+
+### 5. Analyse IA du risque néonatal
 
 Un outil d'intelligence artificielle intégré permet d'estimer le risque néonatal à partir des données maternelles :
 - Durée de gestation, parité, âge maternel
 - Taille et poids de la mère, tabagisme
 
-Le modèle prédit le poids de naissance estimé et classe le risque en trois niveaux : **faible**, **modéré** ou **élevé**. Cet outil aide le personnel clinique dans sa prise de décision, sans remplacer le jugement médical.
+Le modèle prédit le poids de naissance estimé et classe le risque en trois niveaux : **faible**, **modéré** ou **élevé**.
+
+## Les 3 espaces
+
+| Espace | Accès | Fonctionnalités principales |
+|--------|-------|----------------------------|
+| **Parent** | Identifiant enfant + téléphone + OTP | Consulter le carnet, signaler des effets, voir les ordonnances, communiquer avec le médecin |
+| **Clinique** | Email | Créer des dossiers, gérer vaccinations/consultations, répondre aux signalements, émettre des ordonnances |
+| **Pharmacie** | Email | Rechercher une ordonnance par code, vérifier les détails, marquer comme dispensée |
 
 ## Stack technique
 

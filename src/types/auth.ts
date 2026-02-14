@@ -1,10 +1,10 @@
 /**
  * Role-based auth types.
- * Roles: parent | clinic.
+ * Roles: parent | clinic | pharmacy.
  * Parent sessions are linked to a specific child via childIdentifier.
  */
 
-export const ROLES = ["parent", "clinic"] as const;
+export const ROLES = ["parent", "clinic", "pharmacy"] as const;
 export type UserRole = (typeof ROLES)[number];
 
 export type Session = {

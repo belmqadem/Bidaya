@@ -62,7 +62,12 @@ function LoginContent() {
     router.push(data.redirect);
   }
 
-  const roleLabel = role === "clinic" ? "Personnel médical" : "Parent / Tuteur";
+  const roleLabels: Record<string, string> = {
+    clinic: "Personnel médical",
+    pharmacy: "Pharmacie",
+    parent: "Parent / Tuteur",
+  };
+  const roleLabel = roleLabels[role] ?? "Utilisateur";
 
   return (
     <div className="relative flex min-h-screen">
@@ -88,10 +93,12 @@ function LoginContent() {
           </div>
           <div className="text-center">
             <h1 className="text-2xl font-bold tracking-tight">
-              Espace Clinique
+              {role === "pharmacy" ? "Espace Pharmacie" : "Espace Clinique"}
             </h1>
             <p className="text-muted-foreground mt-1 text-sm">
-              Gérez les dossiers de santé numériques vérifiés par votre établissement
+              {role === "pharmacy"
+                ? "Vérifiez et dispensez les ordonnances numériques"
+                : "Gérez les dossiers de santé numériques vérifiés par votre établissement"}
             </p>
           </div>
         </div>

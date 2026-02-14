@@ -273,6 +273,7 @@ export type VaccinationWhereInput = {
   notes?: Prisma.StringNullableFilter<"Vaccination"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Vaccination"> | Date | string
   child?: Prisma.XOR<Prisma.ChildScalarRelationFilter, Prisma.ChildWhereInput>
+  sideEffectReports?: Prisma.SideEffectReportListRelationFilter
 }
 
 export type VaccinationOrderByWithRelationInput = {
@@ -289,6 +290,7 @@ export type VaccinationOrderByWithRelationInput = {
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   child?: Prisma.ChildOrderByWithRelationInput
+  sideEffectReports?: Prisma.SideEffectReportOrderByRelationAggregateInput
 }
 
 export type VaccinationWhereUniqueInput = Prisma.AtLeast<{
@@ -308,6 +310,7 @@ export type VaccinationWhereUniqueInput = Prisma.AtLeast<{
   notes?: Prisma.StringNullableFilter<"Vaccination"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Vaccination"> | Date | string
   child?: Prisma.XOR<Prisma.ChildScalarRelationFilter, Prisma.ChildWhereInput>
+  sideEffectReports?: Prisma.SideEffectReportListRelationFilter
 }, "id">
 
 export type VaccinationOrderByWithAggregationInput = {
@@ -361,6 +364,7 @@ export type VaccinationCreateInput = {
   notes?: string | null
   createdAt?: Date | string
   child: Prisma.ChildCreateNestedOneWithoutVaccinationsInput
+  sideEffectReports?: Prisma.SideEffectReportCreateNestedManyWithoutVaccinationInput
 }
 
 export type VaccinationUncheckedCreateInput = {
@@ -376,6 +380,7 @@ export type VaccinationUncheckedCreateInput = {
   injectionSite?: string | null
   notes?: string | null
   createdAt?: Date | string
+  sideEffectReports?: Prisma.SideEffectReportUncheckedCreateNestedManyWithoutVaccinationInput
 }
 
 export type VaccinationUpdateInput = {
@@ -391,6 +396,7 @@ export type VaccinationUpdateInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   child?: Prisma.ChildUpdateOneRequiredWithoutVaccinationsNestedInput
+  sideEffectReports?: Prisma.SideEffectReportUpdateManyWithoutVaccinationNestedInput
 }
 
 export type VaccinationUncheckedUpdateInput = {
@@ -406,6 +412,7 @@ export type VaccinationUncheckedUpdateInput = {
   injectionSite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sideEffectReports?: Prisma.SideEffectReportUncheckedUpdateManyWithoutVaccinationNestedInput
 }
 
 export type VaccinationCreateManyInput = {
@@ -515,6 +522,11 @@ export type VaccinationSumOrderByAggregateInput = {
   dose?: Prisma.SortOrder
 }
 
+export type VaccinationNullableScalarRelationFilter = {
+  is?: Prisma.VaccinationWhereInput | null
+  isNot?: Prisma.VaccinationWhereInput | null
+}
+
 export type VaccinationCreateNestedManyWithoutChildInput = {
   create?: Prisma.XOR<Prisma.VaccinationCreateWithoutChildInput, Prisma.VaccinationUncheckedCreateWithoutChildInput> | Prisma.VaccinationCreateWithoutChildInput[] | Prisma.VaccinationUncheckedCreateWithoutChildInput[]
   connectOrCreate?: Prisma.VaccinationCreateOrConnectWithoutChildInput | Prisma.VaccinationCreateOrConnectWithoutChildInput[]
@@ -569,6 +581,22 @@ export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
 }
 
+export type VaccinationCreateNestedOneWithoutSideEffectReportsInput = {
+  create?: Prisma.XOR<Prisma.VaccinationCreateWithoutSideEffectReportsInput, Prisma.VaccinationUncheckedCreateWithoutSideEffectReportsInput>
+  connectOrCreate?: Prisma.VaccinationCreateOrConnectWithoutSideEffectReportsInput
+  connect?: Prisma.VaccinationWhereUniqueInput
+}
+
+export type VaccinationUpdateOneWithoutSideEffectReportsNestedInput = {
+  create?: Prisma.XOR<Prisma.VaccinationCreateWithoutSideEffectReportsInput, Prisma.VaccinationUncheckedCreateWithoutSideEffectReportsInput>
+  connectOrCreate?: Prisma.VaccinationCreateOrConnectWithoutSideEffectReportsInput
+  upsert?: Prisma.VaccinationUpsertWithoutSideEffectReportsInput
+  disconnect?: Prisma.VaccinationWhereInput | boolean
+  delete?: Prisma.VaccinationWhereInput | boolean
+  connect?: Prisma.VaccinationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.VaccinationUpdateToOneWithWhereWithoutSideEffectReportsInput, Prisma.VaccinationUpdateWithoutSideEffectReportsInput>, Prisma.VaccinationUncheckedUpdateWithoutSideEffectReportsInput>
+}
+
 export type VaccinationCreateWithoutChildInput = {
   id?: string
   vaccine: string
@@ -581,6 +609,7 @@ export type VaccinationCreateWithoutChildInput = {
   injectionSite?: string | null
   notes?: string | null
   createdAt?: Date | string
+  sideEffectReports?: Prisma.SideEffectReportCreateNestedManyWithoutVaccinationInput
 }
 
 export type VaccinationUncheckedCreateWithoutChildInput = {
@@ -595,6 +624,7 @@ export type VaccinationUncheckedCreateWithoutChildInput = {
   injectionSite?: string | null
   notes?: string | null
   createdAt?: Date | string
+  sideEffectReports?: Prisma.SideEffectReportUncheckedCreateNestedManyWithoutVaccinationInput
 }
 
 export type VaccinationCreateOrConnectWithoutChildInput = {
@@ -641,6 +671,82 @@ export type VaccinationScalarWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Vaccination"> | Date | string
 }
 
+export type VaccinationCreateWithoutSideEffectReportsInput = {
+  id?: string
+  vaccine: string
+  dose: number
+  date: Date | string
+  clinicName: string
+  nextDoseDate?: Date | string | null
+  healthcareProfessionalName?: string | null
+  batchNumber?: string | null
+  injectionSite?: string | null
+  notes?: string | null
+  createdAt?: Date | string
+  child: Prisma.ChildCreateNestedOneWithoutVaccinationsInput
+}
+
+export type VaccinationUncheckedCreateWithoutSideEffectReportsInput = {
+  id?: string
+  childId: string
+  vaccine: string
+  dose: number
+  date: Date | string
+  clinicName: string
+  nextDoseDate?: Date | string | null
+  healthcareProfessionalName?: string | null
+  batchNumber?: string | null
+  injectionSite?: string | null
+  notes?: string | null
+  createdAt?: Date | string
+}
+
+export type VaccinationCreateOrConnectWithoutSideEffectReportsInput = {
+  where: Prisma.VaccinationWhereUniqueInput
+  create: Prisma.XOR<Prisma.VaccinationCreateWithoutSideEffectReportsInput, Prisma.VaccinationUncheckedCreateWithoutSideEffectReportsInput>
+}
+
+export type VaccinationUpsertWithoutSideEffectReportsInput = {
+  update: Prisma.XOR<Prisma.VaccinationUpdateWithoutSideEffectReportsInput, Prisma.VaccinationUncheckedUpdateWithoutSideEffectReportsInput>
+  create: Prisma.XOR<Prisma.VaccinationCreateWithoutSideEffectReportsInput, Prisma.VaccinationUncheckedCreateWithoutSideEffectReportsInput>
+  where?: Prisma.VaccinationWhereInput
+}
+
+export type VaccinationUpdateToOneWithWhereWithoutSideEffectReportsInput = {
+  where?: Prisma.VaccinationWhereInput
+  data: Prisma.XOR<Prisma.VaccinationUpdateWithoutSideEffectReportsInput, Prisma.VaccinationUncheckedUpdateWithoutSideEffectReportsInput>
+}
+
+export type VaccinationUpdateWithoutSideEffectReportsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  vaccine?: Prisma.StringFieldUpdateOperationsInput | string
+  dose?: Prisma.IntFieldUpdateOperationsInput | number
+  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clinicName?: Prisma.StringFieldUpdateOperationsInput | string
+  nextDoseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  healthcareProfessionalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  batchNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  injectionSite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  child?: Prisma.ChildUpdateOneRequiredWithoutVaccinationsNestedInput
+}
+
+export type VaccinationUncheckedUpdateWithoutSideEffectReportsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  childId?: Prisma.StringFieldUpdateOperationsInput | string
+  vaccine?: Prisma.StringFieldUpdateOperationsInput | string
+  dose?: Prisma.IntFieldUpdateOperationsInput | number
+  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clinicName?: Prisma.StringFieldUpdateOperationsInput | string
+  nextDoseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  healthcareProfessionalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  batchNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  injectionSite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type VaccinationCreateManyChildInput = {
   id?: string
   vaccine: string
@@ -667,6 +773,7 @@ export type VaccinationUpdateWithoutChildInput = {
   injectionSite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sideEffectReports?: Prisma.SideEffectReportUpdateManyWithoutVaccinationNestedInput
 }
 
 export type VaccinationUncheckedUpdateWithoutChildInput = {
@@ -681,6 +788,7 @@ export type VaccinationUncheckedUpdateWithoutChildInput = {
   injectionSite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sideEffectReports?: Prisma.SideEffectReportUncheckedUpdateManyWithoutVaccinationNestedInput
 }
 
 export type VaccinationUncheckedUpdateManyWithoutChildInput = {
@@ -698,6 +806,35 @@ export type VaccinationUncheckedUpdateManyWithoutChildInput = {
 }
 
 
+/**
+ * Count Type VaccinationCountOutputType
+ */
+
+export type VaccinationCountOutputType = {
+  sideEffectReports: number
+}
+
+export type VaccinationCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  sideEffectReports?: boolean | VaccinationCountOutputTypeCountSideEffectReportsArgs
+}
+
+/**
+ * VaccinationCountOutputType without action
+ */
+export type VaccinationCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the VaccinationCountOutputType
+   */
+  select?: Prisma.VaccinationCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * VaccinationCountOutputType without action
+ */
+export type VaccinationCountOutputTypeCountSideEffectReportsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SideEffectReportWhereInput
+}
+
 
 export type VaccinationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -713,6 +850,8 @@ export type VaccinationSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   notes?: boolean
   createdAt?: boolean
   child?: boolean | Prisma.ChildDefaultArgs<ExtArgs>
+  sideEffectReports?: boolean | Prisma.Vaccination$sideEffectReportsArgs<ExtArgs>
+  _count?: boolean | Prisma.VaccinationCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["vaccination"]>
 
 export type VaccinationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -765,6 +904,8 @@ export type VaccinationSelectScalar = {
 export type VaccinationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "childId" | "vaccine" | "dose" | "date" | "clinicName" | "nextDoseDate" | "healthcareProfessionalName" | "batchNumber" | "injectionSite" | "notes" | "createdAt", ExtArgs["result"]["vaccination"]>
 export type VaccinationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   child?: boolean | Prisma.ChildDefaultArgs<ExtArgs>
+  sideEffectReports?: boolean | Prisma.Vaccination$sideEffectReportsArgs<ExtArgs>
+  _count?: boolean | Prisma.VaccinationCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type VaccinationIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   child?: boolean | Prisma.ChildDefaultArgs<ExtArgs>
@@ -777,6 +918,7 @@ export type $VaccinationPayload<ExtArgs extends runtime.Types.Extensions.Interna
   name: "Vaccination"
   objects: {
     child: Prisma.$ChildPayload<ExtArgs>
+    sideEffectReports: Prisma.$SideEffectReportPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1186,6 +1328,7 @@ readonly fields: VaccinationFieldRefs;
 export interface Prisma__VaccinationClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   child<T extends Prisma.ChildDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ChildDefaultArgs<ExtArgs>>): Prisma.Prisma__ChildClient<runtime.Types.Result.GetResult<Prisma.$ChildPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  sideEffectReports<T extends Prisma.Vaccination$sideEffectReportsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Vaccination$sideEffectReportsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SideEffectReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1620,6 +1763,30 @@ export type VaccinationDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * Limit how many Vaccinations to delete.
    */
   limit?: number
+}
+
+/**
+ * Vaccination.sideEffectReports
+ */
+export type Vaccination$sideEffectReportsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SideEffectReport
+   */
+  select?: Prisma.SideEffectReportSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SideEffectReport
+   */
+  omit?: Prisma.SideEffectReportOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SideEffectReportInclude<ExtArgs> | null
+  where?: Prisma.SideEffectReportWhereInput
+  orderBy?: Prisma.SideEffectReportOrderByWithRelationInput | Prisma.SideEffectReportOrderByWithRelationInput[]
+  cursor?: Prisma.SideEffectReportWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SideEffectReportScalarFieldEnum | Prisma.SideEffectReportScalarFieldEnum[]
 }
 
 /**

@@ -14,38 +14,41 @@ datasource db {
 }
 
 model Child {
-  id                        String         @id @default(cuid())
-  identifier                String         @unique
+  id                        String             @id @default(cuid())
+  identifier                String             @unique
   fullName                  String
   birthDate                 DateTime
-  gender                    String         @default("unknown")
+  gender                    String             @default("unknown")
   birthWeight               Float?
-  birthLength               Float?         // Taille à la naissance (cm)
-  headCircumferenceAtBirth  Float?         // Périmètre crânien à la naissance (cm)
-  placeOfBirth              String?        // Lieu de naissance
-  deliveryType              String         @default("normal")
+  birthLength               Float?             // Taille à la naissance (cm)
+  headCircumferenceAtBirth  Float?             // Périmètre crânien à la naissance (cm)
+  placeOfBirth              String?            // Lieu de naissance
+  deliveryType              String             @default("normal")
   parentName                String
   parentContact             String
   vaccinations              Vaccination[]
   consultations             Consultation[]
-  createdAt                 DateTime       @default(now())
-  updatedAt                 DateTime       @updatedAt
+  sideEffectReports         SideEffectReport[]
+  prescriptions             Prescription[]
+  createdAt                 DateTime           @default(now())
+  updatedAt                 DateTime           @updatedAt
 }
 
 model Vaccination {
-  id                         String    @id @default(cuid())
+  id                         String             @id @default(cuid())
   childId                    String
-  child                      Child     @relation(fields: [childId], references: [id], onDelete: Cascade)
+  child                      Child              @relation(fields: [childId], references: [id], onDelete: Cascade)
   vaccine                    String
   dose                       Int
   date                       DateTime
   clinicName                 String
   nextDoseDate               DateTime?
   healthcareProfessionalName String?
-  batchNumber                String?   // Numéro de lot du vaccin
-  injectionSite              String?   // Site d'injection (ex : cuisse gauche, bras droit)
-  notes                      String?   // Observations complémentaires
-  createdAt                  DateTime  @default(now())
+  batchNumber                String?            // Numéro de lot du vaccin
+  injectionSite              String?            // Site d'injection (ex : cuisse gauche, bras droit)
+  notes                      String?            // Observations complémentaires
+  sideEffectReports          SideEffectReport[]
+  createdAt                  DateTime           @default(now())
 
   @@index([childId])
 }
@@ -65,4 +68,53 @@ model Consultation {
   createdAt            DateTime  @default(now())
 
   @@index([childId])
+}
+
+// ── Communication post-vaccination ──────────────────────────────────────────
+
+model SideEffectReport {
+  id              String          @id @default(cuid())
+  childId         String
+  child           Child           @relation(fields: [childId], references: [id], onDelete: Cascade)
+  vaccinationId   String?
+  vaccination     Vaccination?    @relation(fields: [vaccinationId], references: [id])
+  description     String          // Description des symptômes
+  severity        String          @default("mild") // mild | moderate | severe
+  status          String          @default("open") // open | replied | prescribed | closed
+  messages        ReportMessage[]
+  prescriptions   Prescription[]
+  createdAt       DateTime        @default(now())
+
+  @@index([childId])
+}
+
+model ReportMessage {
+  id         String           @id @default(cuid())
+  reportId   String
+  report     SideEffectReport @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  senderRole String           // parent | clinic
+  content    String
+  createdAt  DateTime         @default(now())
+
+  @@index([reportId])
+}
+
+model Prescription {
+  id           String            @id @default(cuid())
+  code         String            @unique // ORD-XXXXXXXX
+  reportId     String?
+  report       SideEffectReport? @relation(fields: [reportId], references: [id])
+  childId      String
+  child        Child             @relation(fields: [childId], references: [id], onDelete: Cascade)
+  doctorName   String
+  medications  String            // Liste des médicaments
+  instructions String            // Posologie et instructions
+  notes        String?
+  status       String            @default("active") // active | dispensed | expired
+  dispensedAt  DateTime?
+  dispensedBy  String?           // Nom de la pharmacie
+  createdAt    DateTime          @default(now())
+
+  @@index([childId])
+  @@index([code])
 }

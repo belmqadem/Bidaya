@@ -4,9 +4,9 @@ import {
   Brain,
   FolderOpen,
   Stethoscope,
+  MessageCircleWarning,
 } from "lucide-react";
 import { requireAuth } from "@/lib/auth";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -40,7 +40,7 @@ export default async function ClinicDashboardPage() {
       </div>
 
       {/* ── Quick actions ─────────────────────────────────────────────── */}
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="grid gap-3 sm:grid-cols-3">
         <Link href="/clinic/register" className="group">
           <Card className="h-full border-transparent transition-all hover:border-healthcare/30 hover:shadow-md">
             <CardContent className="flex items-start gap-3.5 p-4">
@@ -51,6 +51,22 @@ export default async function ClinicDashboardPage() {
                 <p className="text-sm font-semibold">Nouveau dossier</p>
                 <p className="text-muted-foreground mt-0.5 text-xs leading-relaxed">
                   Inscrire un nouveau-né et générer un identifiant unique
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </Link>
+
+        <Link href="/clinic/reports" className="group">
+          <Card className="h-full border-transparent transition-all hover:border-amber-300/40 hover:shadow-md">
+            <CardContent className="flex items-start gap-3.5 p-4">
+              <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-amber-100/60 transition-colors group-hover:bg-amber-100">
+                <MessageCircleWarning className="size-5 text-amber-600" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-sm font-semibold">Signalements</p>
+                <p className="text-muted-foreground mt-0.5 text-xs leading-relaxed">
+                  Voir les signalements post-vaccination des parents
                 </p>
               </div>
             </CardContent>

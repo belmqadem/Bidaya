@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useTransition } from "react";
+import Link from "next/link";
 import {
   User,
   Calendar,
@@ -18,8 +19,12 @@ import {
   Truck,
   Ruler,
   MapPin,
+  MessageCircleWarning,
+  FileText,
+  ChevronRight,
 } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
   getMyChild,
@@ -27,6 +32,7 @@ import {
   type VaccinationEntry,
   type ConsultationEntry,
 } from "./actions";
+import { getMyReports, type ReportSummary } from "./report-actions";
 import { MedicalTimeline } from "./medical-timeline";
 import { VaccinationSchedule } from "../clinic/vaccination-schedule";
 
@@ -37,6 +43,7 @@ export function ChildDashboard() {
   const [child, setChild] = useState<ChildProfile | null>(null);
   const [vaccinations, setVaccinations] = useState<VaccinationEntry[]>([]);
   const [consultations, setConsultations] = useState<ConsultationEntry[]>([]);
+  const [reports, setReports] = useState<ReportSummary[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   // Sticky header visibility
@@ -45,14 +52,18 @@ export function ChildDashboard() {
 
   useEffect(() => {
     startTransition(async () => {
-      const result = await getMyChild();
-      if (result.found) {
-        setChild(result.child);
-        setVaccinations(result.vaccinations);
-        setConsultations(result.consultations);
+      const [childResult, reportsResult] = await Promise.all([
+        getMyChild(),
+        getMyReports(),
+      ]);
+      if (childResult.found) {
+        setChild(childResult.child);
+        setVaccinations(childResult.vaccinations);
+        setConsultations(childResult.consultations);
       } else {
-        setError(result.error);
+        setError(childResult.error);
       }
+      setReports(reportsResult);
     });
   }, []);
 
@@ -188,6 +199,71 @@ export function ChildDashboard() {
             }
           />
         </div>
+
+        {/* ── Signalements post-vaccination ─────────────────────────── */}
+        <Card>
+          <CardHeader className="pb-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <MessageCircleWarning className="size-4 text-amber-500" />
+                <CardTitle className="text-sm">Signalements post-vaccination</CardTitle>
+                {reports.length > 0 && (
+                  <Badge variant="secondary" className="text-[10px]">{reports.length}</Badge>
+                )}
+              </div>
+              <Link href="/parent/report/new">
+                <Button size="sm" variant="outline" className="gap-1.5 text-xs">
+                  <AlertTriangle className="size-3.5" />
+                  Signaler un effet
+                </Button>
+              </Link>
+            </div>
+          </CardHeader>
+          <CardContent className="pt-0">
+            {reports.length === 0 ? (
+              <p className="text-muted-foreground py-6 text-center text-xs">
+                Aucun signalement. Si votre enfant présente des effets
+                indésirables après une vaccination, signalez-le ici.
+              </p>
+            ) : (
+              <div className="divide-y">
+                {reports.map((r) => (
+                  <Link
+                    key={r.id}
+                    href={`/parent/report/${r.id}`}
+                    className="flex items-center gap-3 py-3 transition-colors hover:bg-muted/50 -mx-2 px-2 rounded-lg"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <p className="text-sm font-medium truncate">
+                          {r.vaccineName ?? "Vaccination non précisée"}
+                        </p>
+                        <Badge className={`text-[10px] ${
+                          r.status === "open" ? "bg-blue-100 text-blue-800" :
+                          r.status === "replied" ? "bg-emerald-100 text-emerald-800" :
+                          r.status === "prescribed" ? "bg-purple-100 text-purple-800" :
+                          "bg-gray-100 text-gray-800"
+                        }`}>
+                          {r.status === "open" ? "En attente" :
+                           r.status === "replied" ? "Répondu" :
+                           r.status === "prescribed" ? "Ordonnance" : "Fermé"}
+                        </Badge>
+                        {r.hasPrescription && (
+                          <FileText className="size-3.5 text-purple-500" />
+                        )}
+                      </div>
+                      <p className="text-muted-foreground text-xs mt-0.5 truncate">
+                        {r.description}
+                      </p>
+                    </div>
+                    <span className="text-muted-foreground text-[11px] shrink-0">{r.createdAt}</span>
+                    <ChevronRight className="size-4 text-muted-foreground shrink-0" />
+                  </Link>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
         {/* ── Calendrier vaccinal ──────────────────────────────────── */}
         <VaccinationSchedule

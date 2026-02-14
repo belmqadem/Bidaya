@@ -54,3 +54,18 @@ export type Vaccination = Prisma.VaccinationModel
  * 
  */
 export type Consultation = Prisma.ConsultationModel
+/**
+ * Model SideEffectReport
+ * 
+ */
+export type SideEffectReport = Prisma.SideEffectReportModel
+/**
+ * Model ReportMessage
+ * 
+ */
+export type ReportMessage = Prisma.ReportMessageModel
+/**
+ * Model Prescription
+ * 
+ */
+export type Prescription = Prisma.PrescriptionModel

@@ -298,6 +298,8 @@ export type ChildWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Child"> | Date | string
   vaccinations?: Prisma.VaccinationListRelationFilter
   consultations?: Prisma.ConsultationListRelationFilter
+  sideEffectReports?: Prisma.SideEffectReportListRelationFilter
+  prescriptions?: Prisma.PrescriptionListRelationFilter
 }
 
 export type ChildOrderByWithRelationInput = {
@@ -317,6 +319,8 @@ export type ChildOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   vaccinations?: Prisma.VaccinationOrderByRelationAggregateInput
   consultations?: Prisma.ConsultationOrderByRelationAggregateInput
+  sideEffectReports?: Prisma.SideEffectReportOrderByRelationAggregateInput
+  prescriptions?: Prisma.PrescriptionOrderByRelationAggregateInput
 }
 
 export type ChildWhereUniqueInput = Prisma.AtLeast<{
@@ -339,6 +343,8 @@ export type ChildWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Child"> | Date | string
   vaccinations?: Prisma.VaccinationListRelationFilter
   consultations?: Prisma.ConsultationListRelationFilter
+  sideEffectReports?: Prisma.SideEffectReportListRelationFilter
+  prescriptions?: Prisma.PrescriptionListRelationFilter
 }, "id" | "identifier">
 
 export type ChildOrderByWithAggregationInput = {
@@ -400,6 +406,8 @@ export type ChildCreateInput = {
   updatedAt?: Date | string
   vaccinations?: Prisma.VaccinationCreateNestedManyWithoutChildInput
   consultations?: Prisma.ConsultationCreateNestedManyWithoutChildInput
+  sideEffectReports?: Prisma.SideEffectReportCreateNestedManyWithoutChildInput
+  prescriptions?: Prisma.PrescriptionCreateNestedManyWithoutChildInput
 }
 
 export type ChildUncheckedCreateInput = {
@@ -419,6 +427,8 @@ export type ChildUncheckedCreateInput = {
   updatedAt?: Date | string
   vaccinations?: Prisma.VaccinationUncheckedCreateNestedManyWithoutChildInput
   consultations?: Prisma.ConsultationUncheckedCreateNestedManyWithoutChildInput
+  sideEffectReports?: Prisma.SideEffectReportUncheckedCreateNestedManyWithoutChildInput
+  prescriptions?: Prisma.PrescriptionUncheckedCreateNestedManyWithoutChildInput
 }
 
 export type ChildUpdateInput = {
@@ -438,6 +448,8 @@ export type ChildUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   vaccinations?: Prisma.VaccinationUpdateManyWithoutChildNestedInput
   consultations?: Prisma.ConsultationUpdateManyWithoutChildNestedInput
+  sideEffectReports?: Prisma.SideEffectReportUpdateManyWithoutChildNestedInput
+  prescriptions?: Prisma.PrescriptionUpdateManyWithoutChildNestedInput
 }
 
 export type ChildUncheckedUpdateInput = {
@@ -457,6 +469,8 @@ export type ChildUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   vaccinations?: Prisma.VaccinationUncheckedUpdateManyWithoutChildNestedInput
   consultations?: Prisma.ConsultationUncheckedUpdateManyWithoutChildNestedInput
+  sideEffectReports?: Prisma.SideEffectReportUncheckedUpdateManyWithoutChildNestedInput
+  prescriptions?: Prisma.PrescriptionUncheckedUpdateManyWithoutChildNestedInput
 }
 
 export type ChildCreateManyInput = {
@@ -626,6 +640,34 @@ export type ChildUpdateOneRequiredWithoutConsultationsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ChildUpdateToOneWithWhereWithoutConsultationsInput, Prisma.ChildUpdateWithoutConsultationsInput>, Prisma.ChildUncheckedUpdateWithoutConsultationsInput>
 }
 
+export type ChildCreateNestedOneWithoutSideEffectReportsInput = {
+  create?: Prisma.XOR<Prisma.ChildCreateWithoutSideEffectReportsInput, Prisma.ChildUncheckedCreateWithoutSideEffectReportsInput>
+  connectOrCreate?: Prisma.ChildCreateOrConnectWithoutSideEffectReportsInput
+  connect?: Prisma.ChildWhereUniqueInput
+}
+
+export type ChildUpdateOneRequiredWithoutSideEffectReportsNestedInput = {
+  create?: Prisma.XOR<Prisma.ChildCreateWithoutSideEffectReportsInput, Prisma.ChildUncheckedCreateWithoutSideEffectReportsInput>
+  connectOrCreate?: Prisma.ChildCreateOrConnectWithoutSideEffectReportsInput
+  upsert?: Prisma.ChildUpsertWithoutSideEffectReportsInput
+  connect?: Prisma.ChildWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ChildUpdateToOneWithWhereWithoutSideEffectReportsInput, Prisma.ChildUpdateWithoutSideEffectReportsInput>, Prisma.ChildUncheckedUpdateWithoutSideEffectReportsInput>
+}
+
+export type ChildCreateNestedOneWithoutPrescriptionsInput = {
+  create?: Prisma.XOR<Prisma.ChildCreateWithoutPrescriptionsInput, Prisma.ChildUncheckedCreateWithoutPrescriptionsInput>
+  connectOrCreate?: Prisma.ChildCreateOrConnectWithoutPrescriptionsInput
+  connect?: Prisma.ChildWhereUniqueInput
+}
+
+export type ChildUpdateOneRequiredWithoutPrescriptionsNestedInput = {
+  create?: Prisma.XOR<Prisma.ChildCreateWithoutPrescriptionsInput, Prisma.ChildUncheckedCreateWithoutPrescriptionsInput>
+  connectOrCreate?: Prisma.ChildCreateOrConnectWithoutPrescriptionsInput
+  upsert?: Prisma.ChildUpsertWithoutPrescriptionsInput
+  connect?: Prisma.ChildWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ChildUpdateToOneWithWhereWithoutPrescriptionsInput, Prisma.ChildUpdateWithoutPrescriptionsInput>, Prisma.ChildUncheckedUpdateWithoutPrescriptionsInput>
+}
+
 export type ChildCreateWithoutVaccinationsInput = {
   id?: string
   identifier: string
@@ -642,6 +684,8 @@ export type ChildCreateWithoutVaccinationsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   consultations?: Prisma.ConsultationCreateNestedManyWithoutChildInput
+  sideEffectReports?: Prisma.SideEffectReportCreateNestedManyWithoutChildInput
+  prescriptions?: Prisma.PrescriptionCreateNestedManyWithoutChildInput
 }
 
 export type ChildUncheckedCreateWithoutVaccinationsInput = {
@@ -660,6 +704,8 @@ export type ChildUncheckedCreateWithoutVaccinationsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   consultations?: Prisma.ConsultationUncheckedCreateNestedManyWithoutChildInput
+  sideEffectReports?: Prisma.SideEffectReportUncheckedCreateNestedManyWithoutChildInput
+  prescriptions?: Prisma.PrescriptionUncheckedCreateNestedManyWithoutChildInput
 }
 
 export type ChildCreateOrConnectWithoutVaccinationsInput = {
@@ -694,6 +740,8 @@ export type ChildUpdateWithoutVaccinationsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   consultations?: Prisma.ConsultationUpdateManyWithoutChildNestedInput
+  sideEffectReports?: Prisma.SideEffectReportUpdateManyWithoutChildNestedInput
+  prescriptions?: Prisma.PrescriptionUpdateManyWithoutChildNestedInput
 }
 
 export type ChildUncheckedUpdateWithoutVaccinationsInput = {
@@ -712,6 +760,8 @@ export type ChildUncheckedUpdateWithoutVaccinationsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   consultations?: Prisma.ConsultationUncheckedUpdateManyWithoutChildNestedInput
+  sideEffectReports?: Prisma.SideEffectReportUncheckedUpdateManyWithoutChildNestedInput
+  prescriptions?: Prisma.PrescriptionUncheckedUpdateManyWithoutChildNestedInput
 }
 
 export type ChildCreateWithoutConsultationsInput = {
@@ -730,6 +780,8 @@ export type ChildCreateWithoutConsultationsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   vaccinations?: Prisma.VaccinationCreateNestedManyWithoutChildInput
+  sideEffectReports?: Prisma.SideEffectReportCreateNestedManyWithoutChildInput
+  prescriptions?: Prisma.PrescriptionCreateNestedManyWithoutChildInput
 }
 
 export type ChildUncheckedCreateWithoutConsultationsInput = {
@@ -748,6 +800,8 @@ export type ChildUncheckedCreateWithoutConsultationsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   vaccinations?: Prisma.VaccinationUncheckedCreateNestedManyWithoutChildInput
+  sideEffectReports?: Prisma.SideEffectReportUncheckedCreateNestedManyWithoutChildInput
+  prescriptions?: Prisma.PrescriptionUncheckedCreateNestedManyWithoutChildInput
 }
 
 export type ChildCreateOrConnectWithoutConsultationsInput = {
@@ -782,6 +836,8 @@ export type ChildUpdateWithoutConsultationsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   vaccinations?: Prisma.VaccinationUpdateManyWithoutChildNestedInput
+  sideEffectReports?: Prisma.SideEffectReportUpdateManyWithoutChildNestedInput
+  prescriptions?: Prisma.PrescriptionUpdateManyWithoutChildNestedInput
 }
 
 export type ChildUncheckedUpdateWithoutConsultationsInput = {
@@ -800,6 +856,200 @@ export type ChildUncheckedUpdateWithoutConsultationsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   vaccinations?: Prisma.VaccinationUncheckedUpdateManyWithoutChildNestedInput
+  sideEffectReports?: Prisma.SideEffectReportUncheckedUpdateManyWithoutChildNestedInput
+  prescriptions?: Prisma.PrescriptionUncheckedUpdateManyWithoutChildNestedInput
+}
+
+export type ChildCreateWithoutSideEffectReportsInput = {
+  id?: string
+  identifier: string
+  fullName: string
+  birthDate: Date | string
+  gender?: string
+  birthWeight?: number | null
+  birthLength?: number | null
+  headCircumferenceAtBirth?: number | null
+  placeOfBirth?: string | null
+  deliveryType?: string
+  parentName: string
+  parentContact: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  vaccinations?: Prisma.VaccinationCreateNestedManyWithoutChildInput
+  consultations?: Prisma.ConsultationCreateNestedManyWithoutChildInput
+  prescriptions?: Prisma.PrescriptionCreateNestedManyWithoutChildInput
+}
+
+export type ChildUncheckedCreateWithoutSideEffectReportsInput = {
+  id?: string
+  identifier: string
+  fullName: string
+  birthDate: Date | string
+  gender?: string
+  birthWeight?: number | null
+  birthLength?: number | null
+  headCircumferenceAtBirth?: number | null
+  placeOfBirth?: string | null
+  deliveryType?: string
+  parentName: string
+  parentContact: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  vaccinations?: Prisma.VaccinationUncheckedCreateNestedManyWithoutChildInput
+  consultations?: Prisma.ConsultationUncheckedCreateNestedManyWithoutChildInput
+  prescriptions?: Prisma.PrescriptionUncheckedCreateNestedManyWithoutChildInput
+}
+
+export type ChildCreateOrConnectWithoutSideEffectReportsInput = {
+  where: Prisma.ChildWhereUniqueInput
+  create: Prisma.XOR<Prisma.ChildCreateWithoutSideEffectReportsInput, Prisma.ChildUncheckedCreateWithoutSideEffectReportsInput>
+}
+
+export type ChildUpsertWithoutSideEffectReportsInput = {
+  update: Prisma.XOR<Prisma.ChildUpdateWithoutSideEffectReportsInput, Prisma.ChildUncheckedUpdateWithoutSideEffectReportsInput>
+  create: Prisma.XOR<Prisma.ChildCreateWithoutSideEffectReportsInput, Prisma.ChildUncheckedCreateWithoutSideEffectReportsInput>
+  where?: Prisma.ChildWhereInput
+}
+
+export type ChildUpdateToOneWithWhereWithoutSideEffectReportsInput = {
+  where?: Prisma.ChildWhereInput
+  data: Prisma.XOR<Prisma.ChildUpdateWithoutSideEffectReportsInput, Prisma.ChildUncheckedUpdateWithoutSideEffectReportsInput>
+}
+
+export type ChildUpdateWithoutSideEffectReportsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  identifier?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  birthDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gender?: Prisma.StringFieldUpdateOperationsInput | string
+  birthWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  birthLength?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  headCircumferenceAtBirth?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  placeOfBirth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryType?: Prisma.StringFieldUpdateOperationsInput | string
+  parentName?: Prisma.StringFieldUpdateOperationsInput | string
+  parentContact?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  vaccinations?: Prisma.VaccinationUpdateManyWithoutChildNestedInput
+  consultations?: Prisma.ConsultationUpdateManyWithoutChildNestedInput
+  prescriptions?: Prisma.PrescriptionUpdateManyWithoutChildNestedInput
+}
+
+export type ChildUncheckedUpdateWithoutSideEffectReportsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  identifier?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  birthDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gender?: Prisma.StringFieldUpdateOperationsInput | string
+  birthWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  birthLength?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  headCircumferenceAtBirth?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  placeOfBirth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryType?: Prisma.StringFieldUpdateOperationsInput | string
+  parentName?: Prisma.StringFieldUpdateOperationsInput | string
+  parentContact?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  vaccinations?: Prisma.VaccinationUncheckedUpdateManyWithoutChildNestedInput
+  consultations?: Prisma.ConsultationUncheckedUpdateManyWithoutChildNestedInput
+  prescriptions?: Prisma.PrescriptionUncheckedUpdateManyWithoutChildNestedInput
+}
+
+export type ChildCreateWithoutPrescriptionsInput = {
+  id?: string
+  identifier: string
+  fullName: string
+  birthDate: Date | string
+  gender?: string
+  birthWeight?: number | null
+  birthLength?: number | null
+  headCircumferenceAtBirth?: number | null
+  placeOfBirth?: string | null
+  deliveryType?: string
+  parentName: string
+  parentContact: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  vaccinations?: Prisma.VaccinationCreateNestedManyWithoutChildInput
+  consultations?: Prisma.ConsultationCreateNestedManyWithoutChildInput
+  sideEffectReports?: Prisma.SideEffectReportCreateNestedManyWithoutChildInput
+}
+
+export type ChildUncheckedCreateWithoutPrescriptionsInput = {
+  id?: string
+  identifier: string
+  fullName: string
+  birthDate: Date | string
+  gender?: string
+  birthWeight?: number | null
+  birthLength?: number | null
+  headCircumferenceAtBirth?: number | null
+  placeOfBirth?: string | null
+  deliveryType?: string
+  parentName: string
+  parentContact: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  vaccinations?: Prisma.VaccinationUncheckedCreateNestedManyWithoutChildInput
+  consultations?: Prisma.ConsultationUncheckedCreateNestedManyWithoutChildInput
+  sideEffectReports?: Prisma.SideEffectReportUncheckedCreateNestedManyWithoutChildInput
+}
+
+export type ChildCreateOrConnectWithoutPrescriptionsInput = {
+  where: Prisma.ChildWhereUniqueInput
+  create: Prisma.XOR<Prisma.ChildCreateWithoutPrescriptionsInput, Prisma.ChildUncheckedCreateWithoutPrescriptionsInput>
+}
+
+export type ChildUpsertWithoutPrescriptionsInput = {
+  update: Prisma.XOR<Prisma.ChildUpdateWithoutPrescriptionsInput, Prisma.ChildUncheckedUpdateWithoutPrescriptionsInput>
+  create: Prisma.XOR<Prisma.ChildCreateWithoutPrescriptionsInput, Prisma.ChildUncheckedCreateWithoutPrescriptionsInput>
+  where?: Prisma.ChildWhereInput
+}
+
+export type ChildUpdateToOneWithWhereWithoutPrescriptionsInput = {
+  where?: Prisma.ChildWhereInput
+  data: Prisma.XOR<Prisma.ChildUpdateWithoutPrescriptionsInput, Prisma.ChildUncheckedUpdateWithoutPrescriptionsInput>
+}
+
+export type ChildUpdateWithoutPrescriptionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  identifier?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  birthDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gender?: Prisma.StringFieldUpdateOperationsInput | string
+  birthWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  birthLength?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  headCircumferenceAtBirth?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  placeOfBirth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryType?: Prisma.StringFieldUpdateOperationsInput | string
+  parentName?: Prisma.StringFieldUpdateOperationsInput | string
+  parentContact?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  vaccinations?: Prisma.VaccinationUpdateManyWithoutChildNestedInput
+  consultations?: Prisma.ConsultationUpdateManyWithoutChildNestedInput
+  sideEffectReports?: Prisma.SideEffectReportUpdateManyWithoutChildNestedInput
+}
+
+export type ChildUncheckedUpdateWithoutPrescriptionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  identifier?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  birthDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gender?: Prisma.StringFieldUpdateOperationsInput | string
+  birthWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  birthLength?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  headCircumferenceAtBirth?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  placeOfBirth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryType?: Prisma.StringFieldUpdateOperationsInput | string
+  parentName?: Prisma.StringFieldUpdateOperationsInput | string
+  parentContact?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  vaccinations?: Prisma.VaccinationUncheckedUpdateManyWithoutChildNestedInput
+  consultations?: Prisma.ConsultationUncheckedUpdateManyWithoutChildNestedInput
+  sideEffectReports?: Prisma.SideEffectReportUncheckedUpdateManyWithoutChildNestedInput
 }
 
 
@@ -810,11 +1060,15 @@ export type ChildUncheckedUpdateWithoutConsultationsInput = {
 export type ChildCountOutputType = {
   vaccinations: number
   consultations: number
+  sideEffectReports: number
+  prescriptions: number
 }
 
 export type ChildCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   vaccinations?: boolean | ChildCountOutputTypeCountVaccinationsArgs
   consultations?: boolean | ChildCountOutputTypeCountConsultationsArgs
+  sideEffectReports?: boolean | ChildCountOutputTypeCountSideEffectReportsArgs
+  prescriptions?: boolean | ChildCountOutputTypeCountPrescriptionsArgs
 }
 
 /**
@@ -841,6 +1095,20 @@ export type ChildCountOutputTypeCountConsultationsArgs<ExtArgs extends runtime.T
   where?: Prisma.ConsultationWhereInput
 }
 
+/**
+ * ChildCountOutputType without action
+ */
+export type ChildCountOutputTypeCountSideEffectReportsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SideEffectReportWhereInput
+}
+
+/**
+ * ChildCountOutputType without action
+ */
+export type ChildCountOutputTypeCountPrescriptionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PrescriptionWhereInput
+}
+
 
 export type ChildSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -859,6 +1127,8 @@ export type ChildSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   updatedAt?: boolean
   vaccinations?: boolean | Prisma.Child$vaccinationsArgs<ExtArgs>
   consultations?: boolean | Prisma.Child$consultationsArgs<ExtArgs>
+  sideEffectReports?: boolean | Prisma.Child$sideEffectReportsArgs<ExtArgs>
+  prescriptions?: boolean | Prisma.Child$prescriptionsArgs<ExtArgs>
   _count?: boolean | Prisma.ChildCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["child"]>
 
@@ -917,6 +1187,8 @@ export type ChildOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = ru
 export type ChildInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   vaccinations?: boolean | Prisma.Child$vaccinationsArgs<ExtArgs>
   consultations?: boolean | Prisma.Child$consultationsArgs<ExtArgs>
+  sideEffectReports?: boolean | Prisma.Child$sideEffectReportsArgs<ExtArgs>
+  prescriptions?: boolean | Prisma.Child$prescriptionsArgs<ExtArgs>
   _count?: boolean | Prisma.ChildCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ChildIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -927,6 +1199,8 @@ export type $ChildPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   objects: {
     vaccinations: Prisma.$VaccinationPayload<ExtArgs>[]
     consultations: Prisma.$ConsultationPayload<ExtArgs>[]
+    sideEffectReports: Prisma.$SideEffectReportPayload<ExtArgs>[]
+    prescriptions: Prisma.$PrescriptionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1339,6 +1613,8 @@ export interface Prisma__ChildClient<T, Null = never, ExtArgs extends runtime.Ty
   readonly [Symbol.toStringTag]: "PrismaPromise"
   vaccinations<T extends Prisma.Child$vaccinationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Child$vaccinationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VaccinationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   consultations<T extends Prisma.Child$consultationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Child$consultationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConsultationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  sideEffectReports<T extends Prisma.Child$sideEffectReportsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Child$sideEffectReportsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SideEffectReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  prescriptions<T extends Prisma.Child$prescriptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Child$prescriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PrescriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1815,6 +2091,54 @@ export type Child$consultationsArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.ConsultationScalarFieldEnum | Prisma.ConsultationScalarFieldEnum[]
+}
+
+/**
+ * Child.sideEffectReports
+ */
+export type Child$sideEffectReportsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SideEffectReport
+   */
+  select?: Prisma.SideEffectReportSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SideEffectReport
+   */
+  omit?: Prisma.SideEffectReportOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SideEffectReportInclude<ExtArgs> | null
+  where?: Prisma.SideEffectReportWhereInput
+  orderBy?: Prisma.SideEffectReportOrderByWithRelationInput | Prisma.SideEffectReportOrderByWithRelationInput[]
+  cursor?: Prisma.SideEffectReportWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SideEffectReportScalarFieldEnum | Prisma.SideEffectReportScalarFieldEnum[]
+}
+
+/**
+ * Child.prescriptions
+ */
+export type Child$prescriptionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Prescription
+   */
+  select?: Prisma.PrescriptionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Prescription
+   */
+  omit?: Prisma.PrescriptionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PrescriptionInclude<ExtArgs> | null
+  where?: Prisma.PrescriptionWhereInput
+  orderBy?: Prisma.PrescriptionOrderByWithRelationInput | Prisma.PrescriptionOrderByWithRelationInput[]
+  cursor?: Prisma.PrescriptionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PrescriptionScalarFieldEnum | Prisma.PrescriptionScalarFieldEnum[]
 }
 
 /**

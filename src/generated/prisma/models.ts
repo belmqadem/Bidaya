@@ -11,4 +11,7 @@
 export type * from './models/Child'
 export type * from './models/Vaccination'
 export type * from './models/Consultation'
+export type * from './models/SideEffectReport'
+export type * from './models/ReportMessage'
+export type * from './models/Prescription'
 export type * from './commonInputTypes'

@@ -88,7 +88,9 @@ export async function requireAuth(): Promise<Session> {
 export async function requireRole(role: UserRole): Promise<Session> {
   const session = await requireAuth();
   if (session.role !== role) {
-    redirect(session.role === "parent" ? "/parent" : "/clinic");
+    if (session.role === "parent") redirect("/parent");
+    if (session.role === "pharmacy") redirect("/pharmacy");
+    redirect("/clinic");
   }
   return session;
 }

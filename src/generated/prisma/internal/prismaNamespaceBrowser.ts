@@ -53,7 +53,10 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   Child: 'Child',
   Vaccination: 'Vaccination',
-  Consultation: 'Consultation'
+  Consultation: 'Consultation',
+  SideEffectReport: 'SideEffectReport',
+  ReportMessage: 'ReportMessage',
+  Prescription: 'Prescription'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -125,6 +128,48 @@ export const ConsultationScalarFieldEnum = {
 } as const
 
 export type ConsultationScalarFieldEnum = (typeof ConsultationScalarFieldEnum)[keyof typeof ConsultationScalarFieldEnum]
+
+
+export const SideEffectReportScalarFieldEnum = {
+  id: 'id',
+  childId: 'childId',
+  vaccinationId: 'vaccinationId',
+  description: 'description',
+  severity: 'severity',
+  status: 'status',
+  createdAt: 'createdAt'
+} as const
+
+export type SideEffectReportScalarFieldEnum = (typeof SideEffectReportScalarFieldEnum)[keyof typeof SideEffectReportScalarFieldEnum]
+
+
+export const ReportMessageScalarFieldEnum = {
+  id: 'id',
+  reportId: 'reportId',
+  senderRole: 'senderRole',
+  content: 'content',
+  createdAt: 'createdAt'
+} as const
+
+export type ReportMessageScalarFieldEnum = (typeof ReportMessageScalarFieldEnum)[keyof typeof ReportMessageScalarFieldEnum]
+
+
+export const PrescriptionScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  reportId: 'reportId',
+  childId: 'childId',
+  doctorName: 'doctorName',
+  medications: 'medications',
+  instructions: 'instructions',
+  notes: 'notes',
+  status: 'status',
+  dispensedAt: 'dispensedAt',
+  dispensedBy: 'dispensedBy',
+  createdAt: 'createdAt'
+} as const
+
+export type PrescriptionScalarFieldEnum = (typeof PrescriptionScalarFieldEnum)[keyof typeof PrescriptionScalarFieldEnum]
 
 
 export const SortOrder = {
