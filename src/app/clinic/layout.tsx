@@ -1,15 +1,11 @@
-import { redirect } from "next/navigation";
-import { getSession } from "@/lib/auth";
+import { requireRole } from "@/lib/auth";
 
 export default async function ClinicLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getSession();
-  if (!session || session.role !== "clinic") {
-    redirect("/login");
-  }
+  await requireRole("clinic");
 
   return (
     <div className="min-h-screen bg-background">

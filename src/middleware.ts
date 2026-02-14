@@ -2,58 +2,64 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { SESSION_COOKIE, decodeSession } from "@/lib/auth";
 
-const LOGIN = "/login";
 const SELECT_ROLE = "/select-role";
 
+function redirectTo(path: string, request: NextRequest) {
+  return NextResponse.redirect(new URL(path, request.url));
+}
+
+function dashboardFor(role: string) {
+  return role === "parent" ? "/parent" : "/clinic";
+}
+
 export function middleware(request: NextRequest) {
-  const sessionCookie = request.cookies.get(SESSION_COOKIE)?.value;
-  const payload = sessionCookie ? decodeSession(sessionCookie) : null;
+  const raw = request.cookies.get(SESSION_COOKIE)?.value;
+  const payload = raw ? decodeSession(raw) : null;
+  const hasSession = !!payload?.email && !!payload?.role;
   const path = request.nextUrl.pathname;
 
-  // Public routes
-  if (path === LOGIN || path.startsWith("/api/auth/login")) {
-    if (payload?.email && payload.role) {
-      return NextResponse.redirect(new URL(payload.role === "parent" ? "/parent" : "/clinic", request.url));
-    }
-    if (payload?.email) {
-      return NextResponse.redirect(new URL(SELECT_ROLE, request.url));
-    }
-    return NextResponse.next();
-  }
-
-  if (path === SELECT_ROLE || path.startsWith("/api/auth/select-role")) {
-    if (!payload?.email) return NextResponse.redirect(new URL(LOGIN, request.url));
-    if (payload.role) {
-      return NextResponse.redirect(new URL(payload.role === "parent" ? "/parent" : "/clinic", request.url));
-    }
-    return NextResponse.next();
-  }
-
-  // Protected role routes
-  if (path.startsWith("/parent")) {
-    if (!payload?.email) return NextResponse.redirect(new URL(LOGIN, request.url));
-    if (!payload.role) return NextResponse.redirect(new URL(SELECT_ROLE, request.url));
-    if (payload.role !== "parent") return NextResponse.redirect(new URL("/clinic", request.url));
-    return NextResponse.next();
-  }
-
-  if (path.startsWith("/clinic")) {
-    if (!payload?.email) return NextResponse.redirect(new URL(LOGIN, request.url));
-    if (!payload.role) return NextResponse.redirect(new URL(SELECT_ROLE, request.url));
-    if (payload.role !== "clinic") return NextResponse.redirect(new URL("/parent", request.url));
-    return NextResponse.next();
-  }
-
-  // Home: redirect to login or role-specific dashboard
+  // ── Home → select-role or dashboard ─────────────────────────────────────
   if (path === "/") {
-    if (!payload?.email) return NextResponse.redirect(new URL(LOGIN, request.url));
-    if (!payload.role) return NextResponse.redirect(new URL(SELECT_ROLE, request.url));
-    return NextResponse.redirect(new URL(payload.role === "parent" ? "/parent" : "/clinic", request.url));
+    if (hasSession) return redirectTo(dashboardFor(payload!.role!), request);
+    return redirectTo(SELECT_ROLE, request);
+  }
+
+  // ── Select-role: public — skip if already authenticated ─────────────────
+  if (path === SELECT_ROLE) {
+    if (hasSession) return redirectTo(dashboardFor(payload!.role!), request);
+    return NextResponse.next();
+  }
+
+  // ── Login pages: public — skip if already authenticated ─────────────────
+  if (path === "/login" || path === "/login/parent") {
+    if (hasSession) return redirectTo(dashboardFor(payload!.role!), request);
+    return NextResponse.next();
+  }
+
+  // ── Protected: /parent/* ────────────────────────────────────────────────
+  if (path.startsWith("/parent")) {
+    if (!hasSession) return redirectTo("/login/parent", request);
+    if (payload!.role !== "parent") return redirectTo("/clinic", request);
+    return NextResponse.next();
+  }
+
+  // ── Protected: /clinic/* ────────────────────────────────────────────────
+  if (path.startsWith("/clinic")) {
+    if (!hasSession) return redirectTo(SELECT_ROLE, request);
+    if (payload!.role !== "clinic") return redirectTo("/parent", request);
+    return NextResponse.next();
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/", "/login", "/select-role", "/parent/:path*", "/clinic/:path*", "/api/auth/login", "/api/auth/select-role"],
+  matcher: [
+    "/",
+    "/login",
+    "/login/parent",
+    "/select-role",
+    "/parent/:path*",
+    "/clinic/:path*",
+  ],
 };

@@ -1,15 +1,11 @@
-import { redirect } from "next/navigation";
-import { getSession } from "@/lib/auth";
+import { requireParent } from "@/lib/auth";
 
 export default async function ParentLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getSession();
-  if (!session || session.role !== "parent") {
-    redirect("/login");
-  }
+  await requireParent();
 
   return (
     <div className="min-h-screen bg-background">
