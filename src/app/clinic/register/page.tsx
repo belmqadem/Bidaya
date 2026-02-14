@@ -347,7 +347,7 @@ export default function RegisterChildPage() {
                 <p className="text-destructive text-sm">{result.error}</p>
               )}
             </CardContent>
-            <CardFooter className="pt-2">
+            <CardFooter className="pt-4">
               <Button
                 type="submit"
                 className="w-full bg-healthcare text-healthcare-foreground hover:bg-healthcare/90"

@@ -141,7 +141,7 @@ export function NeonatalRiskPanel() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleAnalyze)}>
           <CardContent className="space-y-4 pt-0">
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
                 name="gestationWeeks"
@@ -191,7 +191,7 @@ export function NeonatalRiskPanel() {
               />
             </div>
 
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-3 gap-4">
               <FormField
                 control={form.control}
                 name="maternalAge"
@@ -325,7 +325,7 @@ function RiskResultCard({ result }: { result: NeonatalRiskResult }) {
 
   return (
     <div
-      className={`rounded-lg border-l-4 ${cfg.borderClass} border bg-background p-4 space-y-3`}
+      className={`rounded-lg border-l-4 ${cfg.borderClass} border bg-background p-5 space-y-3`}
     >
       {/* Badge + Weight */}
       <div className="flex items-center justify-between">

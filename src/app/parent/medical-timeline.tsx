@@ -254,7 +254,7 @@ export function MedicalTimeline({
           {groups.map((group) => (
             <div key={group.label} className="timeline-group">
               {/* Libellé de période */}
-              <div className="mb-4 flex items-center gap-3">
+              <div className="mb-5 flex items-center gap-3">
                 <div className="flex size-6 shrink-0 items-center justify-center rounded-md bg-muted">
                   <CalendarClock className="size-3 text-muted-foreground" />
                 </div>
@@ -280,7 +280,7 @@ export function MedicalTimeline({
                   return (
                     <div
                       key={id}
-                      className={`relative pb-6 last:pb-0 print:pb-3 ${idx === 0 ? "timeline-enter" : ""}`}
+                      className={`relative pb-7 last:pb-0 print:pb-3 ${idx === 0 ? "timeline-enter" : ""}`}
                     >
                       {/* Point avec icône */}
                       <div
@@ -313,7 +313,7 @@ export function MedicalTimeline({
                               : "border-primary/10 bg-linear-to-r from-primary/3 to-transparent hover:border-primary/25 hover:shadow-md"
                           } ${isExpanded ? (isVacc ? "border-healthcare/20 shadow-sm" : "border-primary/20 shadow-sm") : ""}`}
                         >
-                          <div className="px-4 py-3">
+                          <div className="px-4 py-3.5">
                             {isVacc ? (
                               <VaccinationCard
                                 v={event.data as VaccinationEntry}

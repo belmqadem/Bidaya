@@ -80,7 +80,7 @@ export default function PharmacyDashboard() {
   return (
     <div className="space-y-6">
       {/* Hero */}
-      <div className="rounded-xl bg-linear-to-br from-emerald-600/8 via-emerald-600/4 to-transparent px-6 py-6">
+      <div className="rounded-xl bg-linear-to-br from-emerald-600/8 via-emerald-600/4 to-transparent px-6 py-8">
         <div className="flex items-center gap-3">
           <div className="flex size-11 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-sm">
             <Pill className="size-5" />
@@ -167,7 +167,7 @@ export default function PharmacyDashboard() {
               </Badge>
             </div>
           </CardHeader>
-          <CardContent className="space-y-4 pt-0">
+          <CardContent className="space-y-5 pt-0">
             {/* Patient info */}
             <div className="grid grid-cols-2 gap-4 rounded-lg bg-muted/50 p-4">
               <div>
@@ -226,7 +226,7 @@ export default function PharmacyDashboard() {
 
           {/* Dispense action */}
           {prescription.status === "active" && (
-            <CardFooter className="flex-col gap-3 border-t pt-5">
+            <CardFooter className="flex-col gap-4 border-t pt-6">
               {dispenseSuccess ? (
                 <div className="flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-50 p-3 text-emerald-700">
                   <CheckCircle2 className="size-5" />

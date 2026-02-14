@@ -22,7 +22,7 @@ export default async function ClinicDashboardPage() {
   return (
     <div className="space-y-8">
       {/* ── Hero ──────────────────────────────────────────────────────── */}
-      <div className="rounded-xl bg-linear-to-br from-healthcare/8 via-healthcare/4 to-transparent px-6 py-6">
+      <div className="rounded-xl bg-linear-to-br from-healthcare/8 via-healthcare/4 to-transparent px-6 py-8">
         <div className="flex items-center gap-3">
           <div className="flex size-11 items-center justify-center rounded-xl bg-healthcare text-healthcare-foreground shadow-sm">
             <Stethoscope className="size-5" />
@@ -40,10 +40,10 @@ export default async function ClinicDashboardPage() {
       </div>
 
       {/* ── Quick actions ─────────────────────────────────────────────── */}
-      <div className="grid gap-3 sm:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-3">
         <Link href="/clinic/register" className="group">
           <Card className="h-full border-transparent transition-all hover:border-healthcare/30 hover:shadow-md">
-            <CardContent className="flex items-start gap-3.5 p-4">
+            <CardContent className="flex items-start gap-3.5 p-5">
               <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-healthcare/10 transition-colors group-hover:bg-healthcare/20">
                 <UserPlus className="size-5 text-healthcare" />
               </div>
@@ -59,7 +59,7 @@ export default async function ClinicDashboardPage() {
 
         <Link href="/clinic/reports" className="group">
           <Card className="h-full border-transparent transition-all hover:border-amber-300/40 hover:shadow-md">
-            <CardContent className="flex items-start gap-3.5 p-4">
+            <CardContent className="flex items-start gap-3.5 p-5">
               <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-amber-100/60 transition-colors group-hover:bg-amber-100">
                 <MessageCircleWarning className="size-5 text-amber-600" />
               </div>
@@ -75,7 +75,7 @@ export default async function ClinicDashboardPage() {
 
         <Link href="/clinic/risk" className="group">
           <Card className="h-full border-transparent transition-all hover:border-purple-300/40 hover:shadow-md">
-            <CardContent className="flex items-start gap-3.5 p-4">
+            <CardContent className="flex items-start gap-3.5 p-5">
               <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-purple-100/60 transition-colors group-hover:bg-purple-100">
                 <Brain className="size-5 text-purple-600" />
               </div>

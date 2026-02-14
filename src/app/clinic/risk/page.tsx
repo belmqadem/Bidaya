@@ -9,7 +9,7 @@ export default async function RiskAnalysisPage() {
 
   return (
     <div className="mx-auto max-w-lg">
-      <div className="mb-6 flex items-center gap-2">
+      <div className="mb-8 flex items-center gap-3">
         <Link href="/clinic">
           <Button variant="ghost" size="icon-sm">
             <ArrowLeft className="size-4" />

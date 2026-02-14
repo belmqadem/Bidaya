@@ -142,7 +142,7 @@ export default function NewReportPage() {
 
   return (
     <Card className="border-t-4 border-t-amber-500">
-      <CardHeader className="pb-4">
+      <CardHeader className="pb-5">
         <div className="flex items-center gap-3">
           <Link href="/parent">
             <Button variant="ghost" size="icon-sm">
@@ -268,7 +268,7 @@ export default function NewReportPage() {
 
           {error && <p className="text-destructive text-sm">{error}</p>}
         </CardContent>
-        <CardFooter className="pt-2">
+        <CardFooter className="pt-4">
           <Button
             type="submit"
             className="w-full bg-amber-500 text-white hover:bg-amber-600"

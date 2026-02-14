@@ -145,7 +145,7 @@ export function ChildSearch() {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
                 <InfoCell icon={Calendar} label="Date de naissance" value={child.birthDate} />
                 <InfoCell icon={Baby} label="Sexe" value={child.gender} />
                 <InfoCell icon={Weight} label="Poids" value={child.birthWeight ? `${child.birthWeight} kg` : "N/D"} />
@@ -170,14 +170,14 @@ export function ChildSearch() {
           </section>
 
           {/* Vaccinations */}
-          <section className="space-y-3">
+          <section className="space-y-4">
             <SectionHeading icon={Syringe} title="Vaccinations" count={vaccinations.length} />
             <VaccinationList vaccinations={vaccinations} />
             <VaccinationForm childIdentifier={child.identifier} onAdded={refreshVaccinations} />
           </section>
 
           {/* Consultations */}
-          <section className="space-y-3">
+          <section className="space-y-4">
             <SectionHeading icon={ClipboardList} title="Consultations" count={consultations.length} />
             <ConsultationList consultations={consultations} />
             <ConsultationForm childIdentifier={child.identifier} onAdded={refreshConsultations} />
@@ -220,7 +220,7 @@ function VaccinationList({ vaccinations }: { vaccinations: VaccinationRecord[] }
       <CardContent className="p-0">
         <div className="divide-y">
           {vaccinations.map((v) => (
-            <div key={v.id} className="flex items-center justify-between px-5 py-3.5">
+            <div key={v.id} className="flex items-center justify-between px-5 py-4">
               <div className="min-w-0">
                 <p className="text-sm font-medium">{v.vaccine}</p>
                 <p className="text-muted-foreground mt-0.5 text-xs">
@@ -308,7 +308,7 @@ function VaccinationForm({ childIdentifier, onAdded }: { childIdentifier: string
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <CardContent className="grid grid-cols-2 gap-3 pt-0">
+          <CardContent className="grid grid-cols-2 gap-4 pt-0">
             <FormField control={form.control} name="vaccine" render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs">Nom du vaccin</FormLabel>
@@ -374,7 +374,7 @@ function VaccinationForm({ childIdentifier, onAdded }: { childIdentifier: string
             )} />
             {formError && <p className="col-span-2 text-destructive text-sm">{formError}</p>}
           </CardContent>
-          <div className="px-5 pb-5 pt-2">
+          <div className="px-6 pb-6 pt-3">
             <Button type="submit" size="sm" disabled={isAdding} className="w-full bg-healthcare text-healthcare-foreground hover:bg-healthcare/90">
               {isAdding ? "Enregistrement…" : "Enregistrer la vaccination"}
             </Button>
@@ -403,7 +403,7 @@ function ConsultationList({ consultations }: { consultations: ConsultationRecord
       <CardContent className="p-0">
         <div className="divide-y">
           {consultations.map((c) => (
-            <div key={c.id} className="px-5 py-3.5">
+            <div key={c.id} className="px-5 py-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <p className="text-sm font-medium">{c.clinicianName}</p>
@@ -485,8 +485,8 @@ function ConsultationForm({ childIdentifier, onAdded }: { childIdentifier: strin
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <CardContent className="space-y-3 pt-0">
-            <div className="grid grid-cols-2 gap-3">
+          <CardContent className="space-y-4 pt-0">
+            <div className="grid grid-cols-2 gap-4">
               <FormField control={form.control} name="date" render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-xs">Date</FormLabel>
@@ -502,7 +502,7 @@ function ConsultationForm({ childIdentifier, onAdded }: { childIdentifier: strin
                 </FormItem>
               )} />
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-4">
               <FormField control={form.control} name="reasonForVisit" render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-xs">Motif de visite</FormLabel>
@@ -532,7 +532,7 @@ function ConsultationForm({ childIdentifier, onAdded }: { childIdentifier: strin
                 <FormMessage />
               </FormItem>
             )} />
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-4">
               <FormField control={form.control} name="followUpDate" render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-xs">Date de suivi</FormLabel>
@@ -554,7 +554,7 @@ function ConsultationForm({ childIdentifier, onAdded }: { childIdentifier: strin
             </div>
             {formError && <p className="text-destructive text-sm">{formError}</p>}
           </CardContent>
-          <div className="px-5 pb-5 pt-2">
+          <div className="px-6 pb-6 pt-3">
             <Button type="submit" size="sm" disabled={isAdding} className="w-full bg-healthcare text-healthcare-foreground hover:bg-healthcare/90">
               {isAdding ? "Enregistrement…" : "Enregistrer la consultation"}
             </Button>
@@ -569,7 +569,7 @@ function ConsultationForm({ childIdentifier, onAdded }: { childIdentifier: strin
 
 function InfoCell({ icon: Icon, label, value }: { icon: React.ComponentType<{ className?: string }>; label: string; value: string }) {
   return (
-    <div className="flex items-start gap-2.5 rounded-lg bg-muted/50 px-3 py-2.5">
+    <div className="flex items-start gap-2.5 rounded-lg bg-muted/50 px-3.5 py-3">
       <Icon className="text-muted-foreground mt-0.5 size-4 shrink-0" />
       <div className="min-w-0">
         <p className="text-muted-foreground text-[11px] font-medium uppercase tracking-wide">{label}</p>

@@ -142,14 +142,14 @@ export function ChildDashboard() {
         </div>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-8">
         {/* ── Carte profil ───────────────────────────────────────────── */}
         <div ref={profileRef}>
           <ChildProfileCard child={child} />
         </div>
 
         {/* ── Résumé rapide ──────────────────────────────────────────── */}
-        <div className="grid gap-3 sm:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-2">
           <SummaryCard
             icon={Syringe}
             iconBg="bg-healthcare/10"
@@ -202,7 +202,7 @@ export function ChildDashboard() {
 
         {/* ── Signalements post-vaccination ─────────────────────────── */}
         <Card>
-          <CardHeader className="pb-3">
+          <CardHeader className="pb-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <MessageCircleWarning className="size-4 text-amber-500" />
@@ -231,7 +231,7 @@ export function ChildDashboard() {
                   <Link
                     key={r.id}
                     href={`/parent/report/${r.id}`}
-                    className="flex items-center gap-3 py-3 transition-colors hover:bg-muted/50 -mx-2 px-2 rounded-lg"
+                    className="flex items-center gap-3 py-3.5 transition-colors hover:bg-muted/50 -mx-2 px-2 rounded-lg"
                   >
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
@@ -274,7 +274,7 @@ export function ChildDashboard() {
         />
 
         {/* ── En-tête chronologie ────────────────────────────────────── */}
-        <div className="flex items-center gap-2.5 pt-2">
+        <div className="flex items-center gap-2.5 pt-4">
           <div className="flex size-7 items-center justify-center rounded-lg bg-healthcare/10">
             <Activity className="size-3.5 text-healthcare" />
           </div>
@@ -421,13 +421,13 @@ function ChildProfileCard({ child }: { child: ChildProfile }) {
         </div>
       </div>
 
-      <CardContent className="pt-5">
+      <CardContent className="pt-6">
         {/* Info enfant */}
-        <div className="mb-4">
+        <div className="mb-5">
           <p className="text-muted-foreground mb-2 text-[11px] font-semibold uppercase tracking-wider">
             Informations enfant
           </p>
-          <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             <InfoCell
               icon={Calendar}
               label="Naissance"
@@ -473,7 +473,7 @@ function ChildProfileCard({ child }: { child: ChildProfile }) {
           <p className="text-muted-foreground mb-2 text-[11px] font-semibold uppercase tracking-wider">
             Informations parent
           </p>
-          <div className="grid grid-cols-2 gap-2.5">
+          <div className="grid grid-cols-2 gap-3">
             <InfoCell icon={User} label="Nom" value={child.parentName} />
             <InfoCell
               icon={Phone}
@@ -499,7 +499,7 @@ function InfoCell({
   value: string;
 }) {
   return (
-    <div className="flex items-center gap-2.5 rounded-lg bg-muted/40 px-3 py-2">
+    <div className="flex items-center gap-2.5 rounded-lg bg-muted/40 px-3.5 py-2.5">
       <Icon className="text-muted-foreground size-3.5 shrink-0" />
       <div className="min-w-0">
         <p className="text-muted-foreground text-[10px] font-medium uppercase tracking-wide">

@@ -60,7 +60,7 @@ export default function ClinicReportsPage() {
   const openCount = reports.filter((r) => r.status === "open").length;
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       <div className="flex items-center gap-3">
         <Link href="/clinic">
           <Button variant="ghost" size="icon-sm">
@@ -108,7 +108,7 @@ export default function ClinicReportsPage() {
           </CardContent>
         </Card>
       ) : (
-        <div className="space-y-2.5">
+        <div className="space-y-3">
           {filtered.map((r) => {
             const sev = SEVERITY_LABELS[r.severity] ?? SEVERITY_LABELS.mild;
             const stat = STATUS_LABELS[r.status] ?? STATUS_LABELS.open;
@@ -116,7 +116,7 @@ export default function ClinicReportsPage() {
             return (
               <Link key={r.id} href={`/clinic/reports/${r.id}`}>
                 <Card className="hover:bg-muted/30 transition-colors cursor-pointer">
-                  <CardContent className="py-3 flex items-center gap-3">
+                  <CardContent className="py-4 flex items-center gap-3">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <p className="text-sm font-medium truncate">

@@ -146,7 +146,7 @@ export default function ClinicReportDetailPage() {
   const stat = STATUS_LABELS[report.status] ?? STATUS_LABELS.open;
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center gap-3">
         <Link href="/clinic/reports">
@@ -300,7 +300,7 @@ export default function ClinicReportDetailPage() {
 
           {/* Send message */}
           {report.status !== "closed" && (
-            <form onSubmit={handleSendMessage} className="flex gap-2 pt-3 border-t">
+            <form onSubmit={handleSendMessage} className="flex gap-2 pt-4 border-t">
               <Textarea
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}

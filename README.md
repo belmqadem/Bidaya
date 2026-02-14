@@ -46,7 +46,9 @@ Le personnel clinique peut rechercher un enfant par identifiant et :
 C'est le cœur de l'innovation de Bidaya. Quand un enfant présente des effets secondaires après une vaccination :
 
 1. **Le parent signale** les symptômes depuis l'application (description, sévérité, vaccination concernée)
-2. **Le médecin reçoit** le signalement dans son tableau de bord, consulte les détails et **répond au parent** via un fil de messages
+   - Il peut dicter les symptômes grâce à la **saisie vocale** (transcription automatique via ElevenLabs)
+   - Il peut joindre une **photo** pour illustrer les symptômes (JPG, PNG, WebP — max 5 Mo)
+2. **Le médecin reçoit** le signalement dans son tableau de bord, consulte les détails, la photo jointe et **répond au parent** via un fil de messages
 3. **Le médecin crée une ordonnance numérique** avec un code unique (format ORD-XXXX-XXXX)
 4. **Le parent** voit l'ordonnance et le code directement dans l'application, et le communique à sa pharmacie
 5. **La pharmacie** entre le code, vérifie l'ordonnance, dispense les médicaments et **marque l'ordonnance comme utilisée**
@@ -65,7 +67,7 @@ Le modèle prédit le poids de naissance estimé et classe le risque en trois ni
 
 | Espace | Accès | Fonctionnalités principales |
 |--------|-------|----------------------------|
-| **Parent** | Identifiant enfant + téléphone + OTP | Consulter le carnet, signaler des effets, voir les ordonnances, communiquer avec le médecin |
+| **Parent** | Identifiant enfant + téléphone + OTP | Consulter le carnet, signaler des effets (voix + photo), voir les ordonnances, communiquer avec le médecin |
 | **Clinique** | Email | Créer des dossiers, gérer vaccinations/consultations, répondre aux signalements, émettre des ordonnances |
 | **Pharmacie** | Email | Rechercher une ordonnance par code, vérifier les détails, marquer comme dispensée |
 
@@ -75,6 +77,7 @@ Le modèle prédit le poids de naissance estimé et classe le risque en trois ni
 - **Backend** : Next.js API Routes, Server Actions
 - **Base de données** : PostgreSQL (Neon) + Prisma ORM
 - **IA** : MiniMax M2.5 (API LLM) pour la prédiction néonatale
+- **Voix** : ElevenLabs Speech-to-Text pour la saisie vocale des symptômes
 - **ML** : Python (pandas, scikit-learn) pour l'analyse exploratoire des données
 
 ## Lancer le projet
@@ -84,7 +87,7 @@ Le modèle prédit le poids de naissance estimé et classe le risque en trois ni
 npm install
 
 # Configurer les variables d'environnement
-# Créer un fichier .env avec DATABASE_URL et MINIMAX_API_KEY
+# Créer un fichier .env avec DATABASE_URL, MINIMAX_API_KEY et ELEVENLABS_API_KEY
 
 # Initialiser la base de données
 npm run db:push

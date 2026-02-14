@@ -12,7 +12,7 @@ export default async function PharmacyLayout({
   return (
     <div className="min-h-screen bg-muted/30">
       <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur-sm">
-        <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-3">
+        <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-3.5">
           <Link href="/pharmacy" className="flex items-center gap-2.5">
             <div className="flex size-8 items-center justify-center rounded-lg bg-emerald-600 text-white">
               <Pill className="size-4" aria-hidden />
