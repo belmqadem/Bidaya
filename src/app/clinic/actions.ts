@@ -106,7 +106,7 @@ export async function addVaccination(
 
   const parsed = addVaccinationSchema.safeParse(input);
   if (!parsed.success) {
-    const msg = parsed.error.errors.map((e) => e.message).join(", ");
+    const msg = parsed.error.issues.map((e) => e.message).join(", ");
     return { success: false, error: msg };
   }
 
@@ -173,7 +173,7 @@ export async function addConsultation(
 
   const parsed = addConsultationSchema.safeParse(input);
   if (!parsed.success) {
-    const msg = parsed.error.errors.map((e) => e.message).join(", ");
+    const msg = parsed.error.issues.map((e) => e.message).join(", ");
     return { success: false, error: msg };
   }
 

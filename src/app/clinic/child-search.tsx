@@ -41,14 +41,14 @@ import {
   type VaccinationRecord,
   type ConsultationRecord,
 } from "./actions";
-import {
-  addVaccinationSchema,
-  type AddVaccinationInput,
-} from "@/lib/schemas/vaccination";
-import {
-  addConsultationSchema,
-  type AddConsultationInput,
-} from "@/lib/schemas/consultation";
+import { addVaccinationSchema } from "@/lib/schemas/vaccination";
+import type { AddVaccinationInput } from "@/lib/schemas/vaccination";
+import { addConsultationSchema } from "@/lib/schemas/consultation";
+import type { AddConsultationInput } from "@/lib/schemas/consultation";
+import type { z } from "zod";
+
+type VaccinationFormValues = z.input<typeof addVaccinationSchema>;
+type ConsultationFormValues = z.input<typeof addConsultationSchema>;
 
 // ── Main component ───────────────────────────────────────────────────────────
 
@@ -214,7 +214,7 @@ function VaccinationForm({
   const [formError, setFormError] = useState<string | null>(null);
   const [isAdding, startAdding] = useTransition();
 
-  const form = useForm<AddVaccinationInput>({
+  const form = useForm<VaccinationFormValues>({
     resolver: zodResolver(addVaccinationSchema),
     defaultValues: {
       childIdentifier,
@@ -225,10 +225,14 @@ function VaccinationForm({
     },
   });
 
-  function onSubmit(values: AddVaccinationInput) {
+  function onSubmit(values: VaccinationFormValues) {
     setFormError(null);
     startAdding(async () => {
-      const result = await addVaccination({ ...values, childIdentifier });
+      const result = await addVaccination({
+        ...values,
+        childIdentifier,
+        dose: Number(values.dose),
+      } as AddVaccinationInput);
       if (result.success) {
         form.reset({
           childIdentifier,
@@ -275,7 +279,7 @@ function VaccinationForm({
                 <FormItem>
                   <FormLabel>Dose number</FormLabel>
                   <FormControl>
-                    <Input type="number" min={1} max={10} {...field} />
+                    <Input type="number" min={1} max={10} {...field} value={Number(field.value) || ""} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -380,7 +384,7 @@ function ConsultationForm({
   const [formError, setFormError] = useState<string | null>(null);
   const [isAdding, startAdding] = useTransition();
 
-  const form = useForm<AddConsultationInput>({
+  const form = useForm<ConsultationFormValues>({
     resolver: zodResolver(addConsultationSchema),
     defaultValues: {
       childIdentifier,
@@ -390,10 +394,13 @@ function ConsultationForm({
     },
   });
 
-  function onSubmit(values: AddConsultationInput) {
+  function onSubmit(values: ConsultationFormValues) {
     setFormError(null);
     startAdding(async () => {
-      const result = await addConsultation({ ...values, childIdentifier });
+      const result = await addConsultation({
+        ...values,
+        childIdentifier,
+      } as AddConsultationInput);
       if (result.success) {
         form.reset({
           childIdentifier,

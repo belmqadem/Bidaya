@@ -16,7 +16,7 @@ export async function registerChild(input: RegisterChildInput): Promise<ActionRe
   // Validate
   const parsed = registerChildSchema.safeParse(input);
   if (!parsed.success) {
-    const msg = parsed.error.errors.map((e) => e.message).join(", ");
+    const msg = parsed.error.issues.map((e) => e.message).join(", ");
     return { success: false, error: msg };
   }
 
