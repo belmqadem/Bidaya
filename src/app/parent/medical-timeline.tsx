@@ -29,7 +29,9 @@ type FilterMode = "all" | "vaccination" | "consultation";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
-function groupByPeriod(events: TimelineEvent[]): { label: string; events: TimelineEvent[] }[] {
+function groupByPeriod(
+  events: TimelineEvent[],
+): { label: string; events: TimelineEvent[] }[] {
   const now = new Date();
   const thisMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
   const threeMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 3, 1);
@@ -70,7 +72,11 @@ function ordinalFr(n: number) {
 
 function formatDateFr(dateStr: string) {
   const d = new Date(dateStr);
-  return d.toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" });
+  return d.toLocaleDateString("fr-FR", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
 }
 
 // ── Composant principal ──────────────────────────────────────────────────────
@@ -88,9 +94,19 @@ export function MedicalTimeline({
 
   // Fusionner et trier
   const allEvents = useMemo<TimelineEvent[]>(() => {
-    const vacc: TimelineEvent[] = vaccinations.map((v) => ({ type: "vaccination", date: v.date, data: v }));
-    const cons: TimelineEvent[] = consultations.map((c) => ({ type: "consultation", date: c.date, data: c }));
-    return [...vacc, ...cons].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    const vacc: TimelineEvent[] = vaccinations.map((v) => ({
+      type: "vaccination",
+      date: v.date,
+      data: v,
+    }));
+    const cons: TimelineEvent[] = consultations.map((c) => ({
+      type: "consultation",
+      date: c.date,
+      data: c,
+    }));
+    return [...vacc, ...cons].sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+    );
   }, [vaccinations, consultations]);
 
   // Filtrer
@@ -146,7 +162,8 @@ export function MedicalTimeline({
           </div>
           <p className="font-medium">Aucun événement médical</p>
           <p className="text-muted-foreground mt-1 max-w-xs text-center text-sm">
-            Les vaccinations et consultations apparaîtront ici une fois enregistrées par votre clinique.
+            Les vaccinations et consultations apparaîtront ici une fois
+            enregistrées par votre clinique.
           </p>
         </CardContent>
       </Card>
@@ -184,25 +201,38 @@ export function MedicalTimeline({
         <div className="flex items-center gap-2">
           <div className="flex items-center rounded-lg border bg-muted/30 p-0.5">
             <Filter className="text-muted-foreground ml-2 mr-1 size-3.5" />
-            {(["all", "vaccination", "consultation"] as FilterMode[]).map((f) => (
-              <button
-                key={f}
-                type="button"
-                onClick={() => setFilter(f)}
-                className={`relative rounded-md px-3 py-1.5 text-xs font-medium transition-all ${
-                  filter === f
-                    ? "bg-background text-foreground shadow-sm"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {f === "all" ? "Tout" : f === "vaccination" ? "Vaccins" : "Consult."}
-                <span className={`ml-1 text-[10px] ${filter === f ? "text-muted-foreground" : "text-muted-foreground/60"}`}>
-                  {filterCounts[f]}
-                </span>
-              </button>
-            ))}
+            {(["all", "vaccination", "consultation"] as FilterMode[]).map(
+              (f) => (
+                <button
+                  key={f}
+                  type="button"
+                  onClick={() => setFilter(f)}
+                  className={`relative rounded-md px-3 py-1.5 text-xs font-medium transition-all ${
+                    filter === f
+                      ? "bg-background text-foreground shadow-sm"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {f === "all"
+                    ? "Tout"
+                    : f === "vaccination"
+                      ? "Vaccins"
+                      : "Consult."}
+                  <span
+                    className={`ml-1 text-[10px] ${filter === f ? "text-muted-foreground" : "text-muted-foreground/60"}`}
+                  >
+                    {filterCounts[f]}
+                  </span>
+                </button>
+              ),
+            )}
           </div>
-          <Button variant="outline" size="sm" onClick={handlePrint} className="h-8 gap-1.5">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handlePrint}
+            className="h-8 gap-1.5"
+          >
             <Printer className="size-3.5" />
             <span className="hidden sm:inline">Imprimer</span>
           </Button>
@@ -214,7 +244,9 @@ export function MedicalTimeline({
         <Card className="border-dashed">
           <CardContent className="flex flex-col items-center py-12">
             <Search className="text-muted-foreground mb-2 size-6" />
-            <p className="text-muted-foreground text-sm">Aucun événement ne correspond à votre recherche.</p>
+            <p className="text-muted-foreground text-sm">
+              Aucun événement ne correspond à votre recherche.
+            </p>
           </CardContent>
         </Card>
       ) : (
@@ -277,8 +309,8 @@ export function MedicalTimeline({
                         <div
                           className={`rounded-xl border transition-all duration-200 ${
                             isVacc
-                              ? "border-healthcare/10 bg-gradient-to-r from-healthcare/[0.03] to-transparent hover:border-healthcare/25 hover:shadow-md"
-                              : "border-primary/10 bg-gradient-to-r from-primary/[0.03] to-transparent hover:border-primary/25 hover:shadow-md"
+                              ? "border-healthcare/10 bg-linear-to-r from-healthcare/3 to-transparent hover:border-healthcare/25 hover:shadow-md"
+                              : "border-primary/10 bg-linear-to-r from-primary/3 to-transparent hover:border-primary/25 hover:shadow-md"
                           } ${isExpanded ? (isVacc ? "border-healthcare/20 shadow-sm" : "border-primary/20 shadow-sm") : ""}`}
                         >
                           <div className="px-4 py-3">
@@ -310,7 +342,13 @@ export function MedicalTimeline({
 
 // ── Carte vaccination ────────────────────────────────────────────────────────
 
-function VaccinationCard({ v, isExpanded }: { v: VaccinationEntry; isExpanded: boolean }) {
+function VaccinationCard({
+  v,
+  isExpanded,
+}: {
+  v: VaccinationEntry;
+  isExpanded: boolean;
+}) {
   const hasUpcoming = v.nextDoseDate && new Date(v.nextDoseDate) > new Date();
   const isOverdue = v.nextDoseDate && new Date(v.nextDoseDate) < new Date();
 
@@ -320,7 +358,10 @@ function VaccinationCard({ v, isExpanded }: { v: VaccinationEntry; isExpanded: b
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-1.5">
-            <Badge variant="outline" className="border-healthcare/20 bg-healthcare/5 text-healthcare text-[10px] font-semibold">
+            <Badge
+              variant="outline"
+              className="border-healthcare/20 bg-healthcare/5 text-healthcare text-[10px] font-semibold"
+            >
               Vaccination
             </Badge>
             {isOverdue && (
@@ -330,7 +371,8 @@ function VaccinationCard({ v, isExpanded }: { v: VaccinationEntry; isExpanded: b
             )}
             {hasUpcoming && !isOverdue && (
               <Badge variant="secondary" className="gap-0.5 text-[9px]">
-                <CalendarClock className="size-2" /> Prochaine : {formatDateFr(v.nextDoseDate!)}
+                <CalendarClock className="size-2" /> Prochaine :{" "}
+                {formatDateFr(v.nextDoseDate!)}
               </Badge>
             )}
           </div>
@@ -355,7 +397,10 @@ function VaccinationCard({ v, isExpanded }: { v: VaccinationEntry; isExpanded: b
         <div className="space-y-1.5 border-t border-border/50 pt-3 text-xs">
           <DetailRow label="Clinique" value={v.clinicName} />
           {v.healthcareProfessionalName && (
-            <DetailRow label="Administré par" value={v.healthcareProfessionalName} />
+            <DetailRow
+              label="Administré par"
+              value={v.healthcareProfessionalName}
+            />
           )}
           {v.batchNumber && (
             <DetailRow label="N° de lot" value={v.batchNumber} />
@@ -363,11 +408,12 @@ function VaccinationCard({ v, isExpanded }: { v: VaccinationEntry; isExpanded: b
           {v.injectionSite && (
             <DetailRow label="Site d'injection" value={v.injectionSite} />
           )}
-          {v.notes && (
-            <DetailRow label="Notes" value={v.notes} />
-          )}
+          {v.notes && <DetailRow label="Notes" value={v.notes} />}
           {v.nextDoseDate && (
-            <DetailRow label="Prochaine dose" value={formatDateFr(v.nextDoseDate)} />
+            <DetailRow
+              label="Prochaine dose"
+              value={formatDateFr(v.nextDoseDate)}
+            />
           )}
         </div>
       </div>
@@ -377,14 +423,23 @@ function VaccinationCard({ v, isExpanded }: { v: VaccinationEntry; isExpanded: b
 
 // ── Carte consultation ───────────────────────────────────────────────────────
 
-function ConsultationCard({ c, isExpanded }: { c: ConsultationEntry; isExpanded: boolean }) {
+function ConsultationCard({
+  c,
+  isExpanded,
+}: {
+  c: ConsultationEntry;
+  isExpanded: boolean;
+}) {
   return (
     <div>
       {/* Header */}
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-1.5">
-            <Badge variant="outline" className="border-primary/20 bg-primary/5 text-primary text-[10px] font-semibold">
+            <Badge
+              variant="outline"
+              className="border-primary/20 bg-primary/5 text-primary text-[10px] font-semibold"
+            >
               Consultation
             </Badge>
             {c.followUpRequired && (
@@ -393,7 +448,9 @@ function ConsultationCard({ c, isExpanded }: { c: ConsultationEntry; isExpanded:
               </Badge>
             )}
             {c.reasonForVisit && (
-              <Badge variant="secondary" className="text-[9px]">{c.reasonForVisit}</Badge>
+              <Badge variant="secondary" className="text-[9px]">
+                {c.reasonForVisit}
+              </Badge>
             )}
           </div>
           <p className="mt-1.5 text-sm font-semibold">{c.clinicianName}</p>
@@ -416,8 +473,15 @@ function ConsultationCard({ c, isExpanded }: { c: ConsultationEntry; isExpanded:
       >
         <div className="space-y-1.5 border-t border-border/50 pt-3 text-xs">
           {c.diagnosis && <DetailRow label="Diagnostic" value={c.diagnosis} />}
-          {c.treatmentPrescribed && <DetailRow label="Traitement" value={c.treatmentPrescribed} />}
-          {c.followUpDate && <DetailRow label="Suivi prévu" value={formatDateFr(c.followUpDate)} />}
+          {c.treatmentPrescribed && (
+            <DetailRow label="Traitement" value={c.treatmentPrescribed} />
+          )}
+          {c.followUpDate && (
+            <DetailRow
+              label="Suivi prévu"
+              value={formatDateFr(c.followUpDate)}
+            />
+          )}
           <DetailRow label="Résumé" value={c.summary} />
         </div>
       </div>
@@ -430,7 +494,9 @@ function ConsultationCard({ c, isExpanded }: { c: ConsultationEntry; isExpanded:
 function DetailRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex gap-3">
-      <span className="w-28 shrink-0 font-medium text-muted-foreground">{label}</span>
+      <span className="w-28 shrink-0 font-medium text-muted-foreground">
+        {label}
+      </span>
       <span className="text-foreground">{value}</span>
     </div>
   );

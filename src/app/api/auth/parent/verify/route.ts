@@ -48,7 +48,8 @@ export async function POST(request: NextRequest) {
       message: `Code de vérification envoyé. (MVP : votre code est ${otp})`,
       otp, // À supprimer en production
     });
-  } catch {
+  } catch (err) {
+    console.error("Parent verify error:", err);
     return NextResponse.json({ error: "Échec de la vérification. Veuillez réessayer." }, { status: 500 });
   }
 }

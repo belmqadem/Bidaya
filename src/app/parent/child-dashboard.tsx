@@ -15,17 +15,11 @@ import {
   Stethoscope,
   Heart,
   AlertTriangle,
-  CalendarClock,
   Truck,
   Ruler,
   MapPin,
 } from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
   getMyChild,
@@ -121,7 +115,9 @@ export function ChildDashboard() {
             </div>
             <div className="min-w-0">
               <p className="truncate text-sm font-semibold">{child.fullName}</p>
-              <p className="text-muted-foreground text-[11px]">{child.identifier}</p>
+              <p className="text-muted-foreground text-[11px]">
+                {child.identifier}
+              </p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -156,8 +152,12 @@ export function ChildDashboard() {
                     secondary: `${ordinalFr(latestVacc.dose)} dose · ${latestVacc.clinicName}`,
                     date: latestVacc.date,
                     badge:
-                      latestVacc.nextDoseDate && new Date(latestVacc.nextDoseDate) < new Date()
-                        ? { label: "Rappel en retard", variant: "destructive" as const }
+                      latestVacc.nextDoseDate &&
+                      new Date(latestVacc.nextDoseDate) < new Date()
+                        ? {
+                            label: "Rappel en retard",
+                            variant: "destructive" as const,
+                          }
                         : null,
                   }
                 : null
@@ -173,10 +173,15 @@ export function ChildDashboard() {
               latestConsult
                 ? {
                     primary: latestConsult.clinicianName,
-                    secondary: latestConsult.reasonForVisit || latestConsult.summary.slice(0, 60),
+                    secondary:
+                      latestConsult.reasonForVisit ||
+                      latestConsult.summary.slice(0, 60),
                     date: latestConsult.date,
                     badge: latestConsult.followUpRequired
-                      ? { label: "Suivi requis", variant: "destructive" as const }
+                      ? {
+                          label: "Suivi requis",
+                          variant: "destructive" as const,
+                        }
                       : null,
                   }
                 : null
@@ -198,15 +203,21 @@ export function ChildDashboard() {
             <Activity className="size-3.5 text-healthcare" />
           </div>
           <div>
-            <h2 className="text-base font-semibold leading-none">Chronologie Médicale</h2>
+            <h2 className="text-base font-semibold leading-none">
+              Chronologie Médicale
+            </h2>
             <p className="text-muted-foreground mt-0.5 text-xs">
-              {vaccinations.length + consultations.length} événement{vaccinations.length + consultations.length !== 1 ? "s" : ""}
+              {vaccinations.length + consultations.length} événement
+              {vaccinations.length + consultations.length !== 1 ? "s" : ""}
             </p>
           </div>
         </div>
 
         {/* ── Timeline ───────────────────────────────────────────────── */}
-        <MedicalTimeline vaccinations={vaccinations} consultations={consultations} />
+        <MedicalTimeline
+          vaccinations={vaccinations}
+          consultations={consultations}
+        />
       </div>
     </>
   );
@@ -237,24 +248,35 @@ function SummaryCard({
   return (
     <Card className="gap-0 py-0 overflow-hidden">
       <div className="flex items-stretch">
-        <div className={`flex w-12 shrink-0 items-center justify-center ${iconBg}`}>
+        <div
+          className={`flex w-12 shrink-0 items-center justify-center ${iconBg}`}
+        >
           <Icon className={`size-5 ${iconColor}`} />
         </div>
         <div className="flex-1 px-4 py-3.5">
-          <p className="text-muted-foreground text-[11px] font-medium uppercase tracking-wide">{title}</p>
+          <p className="text-muted-foreground text-[11px] font-medium uppercase tracking-wide">
+            {title}
+          </p>
           {entry ? (
             <div className="mt-1">
               <div className="flex items-center gap-2">
                 <p className="text-sm font-semibold">{entry.primary}</p>
                 {entry.badge && (
-                  <Badge variant={entry.badge.variant} className="gap-0.5 text-[9px] px-1.5 py-0">
+                  <Badge
+                    variant={entry.badge.variant}
+                    className="gap-0.5 text-[9px] px-1.5 py-0"
+                  >
                     <AlertTriangle className="size-2" />
                     {entry.badge.label}
                   </Badge>
                 )}
               </div>
-              <p className="text-muted-foreground mt-0.5 text-xs">{entry.secondary}</p>
-              <p className="text-muted-foreground mt-1 text-[11px] tabular-nums">{entry.date}</p>
+              <p className="text-muted-foreground mt-0.5 text-xs">
+                {entry.secondary}
+              </p>
+              <p className="text-muted-foreground mt-1 text-[11px] tabular-nums">
+                {entry.date}
+              </p>
             </div>
           ) : (
             <p className="text-muted-foreground mt-1 text-xs italic">{empty}</p>
@@ -287,7 +309,7 @@ function ChildProfileCard({ child }: { child: ChildProfile }) {
   return (
     <Card className="overflow-hidden print:shadow-none print:border">
       {/* Hero band */}
-      <div className="relative bg-gradient-to-br from-healthcare/8 via-healthcare/4 to-transparent px-6 pt-6 pb-0">
+      <div className="relative bg-linear-to-br from-healthcare/8 via-healthcare/4 to-transparent px-6 pt-6 pb-0">
         <div className="flex items-start gap-4">
           {/* Avatar */}
           <div className="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-healthcare text-healthcare-foreground shadow-md sm:size-16">
@@ -296,8 +318,12 @@ function ChildProfileCard({ child }: { child: ChildProfile }) {
           <div className="min-w-0 flex-1">
             <div className="flex items-start justify-between gap-3">
               <div>
-                <h1 className="text-xl font-bold tracking-tight sm:text-2xl">{child.fullName}</h1>
-                <p className="text-muted-foreground mt-0.5 text-sm">Carnet de santé numérique — vérifié par la clinique</p>
+                <h1 className="text-xl font-bold tracking-tight sm:text-2xl">
+                  {child.fullName}
+                </h1>
+                <p className="text-muted-foreground mt-0.5 text-sm">
+                  Carnet de santé numérique — vérifié par la clinique
+                </p>
               </div>
               <button
                 type="button"
@@ -305,7 +331,11 @@ function ChildProfileCard({ child }: { child: ChildProfile }) {
                 className="flex shrink-0 items-center gap-1.5 rounded-lg bg-background/80 px-3 py-1.5 font-mono text-[11px] font-semibold tracking-wider text-healthcare shadow-sm backdrop-blur-sm transition-all hover:bg-background hover:shadow-md print:hidden"
               >
                 {child.identifier}
-                {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
+                {copied ? (
+                  <Check className="size-3" />
+                ) : (
+                  <Copy className="size-3" />
+                )}
               </button>
               <span className="hidden font-mono text-xs font-semibold tracking-wider text-healthcare print:inline">
                 {child.identifier}
@@ -318,24 +348,62 @@ function ChildProfileCard({ child }: { child: ChildProfile }) {
       <CardContent className="pt-5">
         {/* Info enfant */}
         <div className="mb-4">
-          <p className="text-muted-foreground mb-2 text-[11px] font-semibold uppercase tracking-wider">Informations enfant</p>
+          <p className="text-muted-foreground mb-2 text-[11px] font-semibold uppercase tracking-wider">
+            Informations enfant
+          </p>
           <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
-            <InfoCell icon={Calendar} label="Naissance" value={child.birthDate} />
+            <InfoCell
+              icon={Calendar}
+              label="Naissance"
+              value={child.birthDate}
+            />
             <InfoCell icon={Baby} label="Sexe" value={child.gender} />
-            <InfoCell icon={Weight} label="Poids" value={child.birthWeight ? `${child.birthWeight} kg` : "N/D"} />
-            <InfoCell icon={Ruler} label="Taille" value={child.birthLength ? `${child.birthLength} cm` : "N/D"} />
-            <InfoCell icon={Ruler} label="Périmètre crânien" value={child.headCircumferenceAtBirth ? `${child.headCircumferenceAtBirth} cm` : "N/D"} />
-            <InfoCell icon={Truck} label="Accouchement" value={child.deliveryType} />
-            {child.placeOfBirth && <InfoCell icon={MapPin} label="Lieu de naissance" value={child.placeOfBirth} />}
+            <InfoCell
+              icon={Weight}
+              label="Poids"
+              value={child.birthWeight ? `${child.birthWeight} kg` : "N/D"}
+            />
+            <InfoCell
+              icon={Ruler}
+              label="Taille"
+              value={child.birthLength ? `${child.birthLength} cm` : "N/D"}
+            />
+            <InfoCell
+              icon={Ruler}
+              label="Périmètre crânien"
+              value={
+                child.headCircumferenceAtBirth
+                  ? `${child.headCircumferenceAtBirth} cm`
+                  : "N/D"
+              }
+            />
+            <InfoCell
+              icon={Truck}
+              label="Accouchement"
+              value={child.deliveryType}
+            />
+            {child.placeOfBirth && (
+              <InfoCell
+                icon={MapPin}
+                label="Lieu de naissance"
+                value={child.placeOfBirth}
+              />
+            )}
           </div>
         </div>
 
         {/* Info parent */}
         <div>
-          <p className="text-muted-foreground mb-2 text-[11px] font-semibold uppercase tracking-wider">Informations parent</p>
+          <p className="text-muted-foreground mb-2 text-[11px] font-semibold uppercase tracking-wider">
+            Informations parent
+          </p>
           <div className="grid grid-cols-2 gap-2.5">
             <InfoCell icon={User} label="Nom" value={child.parentName} />
-            <InfoCell icon={Phone} label="Téléphone" value={child.parentContact} />
+            <InfoCell
+              icon={Phone}
+              label="Téléphone"
+              value={child.parentContact}
+            />
           </div>
         </div>
       </CardContent>
@@ -361,7 +429,9 @@ function InfoCell({
         <p className="text-muted-foreground text-[10px] font-medium uppercase tracking-wide">
           {label}
         </p>
-        <p className="truncate text-[13px] font-semibold leading-snug">{value}</p>
+        <p className="truncate text-[13px] font-semibold leading-snug">
+          {value}
+        </p>
       </div>
     </div>
   );
