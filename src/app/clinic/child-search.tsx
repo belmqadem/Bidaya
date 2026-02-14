@@ -12,6 +12,11 @@ import {
   Syringe,
   ClipboardList,
   Plus,
+  ChevronDown,
+  ChevronUp,
+  Baby,
+  Weight,
+  AlertTriangle,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -19,7 +24,6 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -50,7 +54,7 @@ import type { z } from "zod";
 type VaccinationFormValues = z.input<typeof addVaccinationSchema>;
 type ConsultationFormValues = z.input<typeof addConsultationSchema>;
 
-// ── Main component ───────────────────────────────────────────────────────────
+// ── Composant principal ──────────────────────────────────────────────────────
 
 export function ChildSearch() {
   const [query, setQuery] = useState("");
@@ -91,109 +95,125 @@ export function ChildSearch() {
   }
 
   return (
-    <div className="space-y-4">
-      {/* Search bar */}
+    <div className="space-y-6">
+      {/* Barre de recherche */}
       <form onSubmit={handleSearch} className="flex gap-2">
         <div className="relative flex-1">
           <Search className="text-muted-foreground pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2" />
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search by identifier (e.g. CHR-K7NP-3WFG)"
-            className="pl-9"
+            placeholder="Rechercher par identifiant (ex : CHR-K7NP-3WFG)"
+            className="h-11 pl-10"
           />
         </div>
         <Button
           type="submit"
           disabled={isPending || !query.trim()}
-          className="bg-healthcare text-healthcare-foreground hover:bg-healthcare/90"
+          className="h-11 bg-healthcare text-healthcare-foreground hover:bg-healthcare/90"
         >
-          {isPending ? "Searching…" : "Search"}
+          {isPending ? "Recherche…" : "Rechercher"}
         </Button>
       </form>
 
-      {/* Error */}
       {error && (
         <p className="text-muted-foreground text-center text-sm">{error}</p>
       )}
 
-      {/* Child result */}
       {child && (
-        <>
-          {/* Summary card */}
-          <Card className="border-l-4 border-l-healthcare">
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-base">{child.fullName}</CardTitle>
-                <span className="rounded-md bg-muted px-2 py-1 font-mono text-xs font-medium tracking-wider">
+        <div className="space-y-6">
+          {/* Carte résumé */}
+          <Card>
+            <CardHeader className="pb-4">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <CardTitle className="text-xl">{child.fullName}</CardTitle>
+                  <p className="text-muted-foreground mt-0.5 text-sm">
+                    Résumé du dossier de santé
+                  </p>
+                </div>
+                <span className="shrink-0 rounded-lg bg-healthcare/10 px-3 py-1.5 font-mono text-xs font-semibold tracking-wider text-healthcare">
                   {child.identifier}
                 </span>
               </div>
-              <CardDescription>Child health record summary</CardDescription>
             </CardHeader>
             <CardContent>
-              <dl className="grid grid-cols-2 gap-x-6 gap-y-3 text-sm">
-                <InfoRow icon={Calendar} label="Birth date" value={child.birthDate} />
-                <InfoRow icon={User} label="Parent" value={child.parentName} />
-                <InfoRow icon={Phone} label="Contact" value={child.parentContact} />
-                <InfoRow icon={Clock} label="Registered" value={child.createdAt} />
-              </dl>
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                <InfoCell icon={Calendar} label="Date de naissance" value={child.birthDate} />
+                <InfoCell icon={Baby} label="Sexe" value={child.gender} />
+                <InfoCell icon={Weight} label="Poids" value={child.birthWeight ? `${child.birthWeight} kg` : "N/D"} />
+                <InfoCell icon={User} label="Parent" value={child.parentName} />
+                <InfoCell icon={Phone} label="Contact" value={child.parentContact} />
+                <InfoCell icon={Clock} label="Accouchement" value={child.deliveryType} />
+              </div>
             </CardContent>
           </Card>
 
-          {/* Vaccination section */}
-          <VaccinationList vaccinations={vaccinations} />
-          <VaccinationForm
-            childIdentifier={child.identifier}
-            onAdded={refreshVaccinations}
-          />
+          {/* Vaccinations */}
+          <section className="space-y-3">
+            <SectionHeading icon={Syringe} title="Vaccinations" count={vaccinations.length} />
+            <VaccinationList vaccinations={vaccinations} />
+            <VaccinationForm childIdentifier={child.identifier} onAdded={refreshVaccinations} />
+          </section>
 
-          {/* Consultation section */}
-          <ConsultationList consultations={consultations} />
-          <ConsultationForm
-            childIdentifier={child.identifier}
-            onAdded={refreshConsultations}
-          />
-        </>
+          {/* Consultations */}
+          <section className="space-y-3">
+            <SectionHeading icon={ClipboardList} title="Consultations" count={consultations.length} />
+            <ConsultationList consultations={consultations} />
+            <ConsultationForm childIdentifier={child.identifier} onAdded={refreshConsultations} />
+          </section>
+        </div>
       )}
     </div>
   );
 }
 
-// ── Vaccination list ─────────────────────────────────────────────────────────
+// ── En-tête de section ───────────────────────────────────────────────────────
 
-function VaccinationList({
-  vaccinations,
-}: {
-  vaccinations: VaccinationRecord[];
-}) {
+function SectionHeading({ icon: Icon, title, count }: { icon: React.ComponentType<{ className?: string }>; title: string; count: number }) {
+  return (
+    <div className="flex items-center gap-2">
+      <Icon className="size-4 text-healthcare" />
+      <h2 className="text-base font-semibold">{title}</h2>
+      {count > 0 && (
+        <span className="rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">{count}</span>
+      )}
+    </div>
+  );
+}
+
+// ── Liste des vaccinations ───────────────────────────────────────────────────
+
+function VaccinationList({ vaccinations }: { vaccinations: VaccinationRecord[] }) {
   if (vaccinations.length === 0) {
     return (
-      <p className="text-muted-foreground py-2 text-center text-sm">
-        No vaccinations recorded yet.
-      </p>
+      <Card>
+        <CardContent className="py-8">
+          <p className="text-muted-foreground text-center text-sm">Aucune vaccination enregistrée.</p>
+        </CardContent>
+      </Card>
     );
   }
 
   return (
     <Card>
-      <CardHeader className="pb-3">
-        <CardTitle className="flex items-center gap-2 text-base">
-          <Syringe className="size-4" />
-          Vaccinations ({vaccinations.length})
-        </CardTitle>
-      </CardHeader>
       <CardContent className="p-0">
         <div className="divide-y">
           {vaccinations.map((v) => (
-            <div key={v.id} className="flex items-center justify-between px-6 py-3 text-sm">
-              <div>
-                <p className="font-medium">{v.vaccine}</p>
-                <p className="text-muted-foreground text-xs">
+            <div key={v.id} className="flex items-center justify-between px-5 py-3.5">
+              <div className="min-w-0">
+                <p className="text-sm font-medium">{v.vaccine}</p>
+                <p className="text-muted-foreground mt-0.5 text-xs">
                   Dose {v.dose} &middot; {v.clinicName}
+                  {v.healthcareProfessionalName && <> &middot; {v.healthcareProfessionalName}</>}
                 </p>
+                {v.nextDoseDate && (
+                  <p className="mt-0.5 flex items-center gap-1 text-xs text-amber-600">
+                    <AlertTriangle className="size-3" /> Prochaine dose : {v.nextDoseDate}
+                  </p>
+                )}
               </div>
-              <span className="text-muted-foreground text-xs">{v.date}</span>
+              <span className="text-muted-foreground shrink-0 pl-4 text-xs tabular-nums">{v.date}</span>
             </div>
           ))}
         </div>
@@ -202,17 +222,12 @@ function VaccinationList({
   );
 }
 
-// ── Vaccination form ─────────────────────────────────────────────────────────
+// ── Formulaire vaccination ───────────────────────────────────────────────────
 
-function VaccinationForm({
-  childIdentifier,
-  onAdded,
-}: {
-  childIdentifier: string;
-  onAdded: () => void;
-}) {
+function VaccinationForm({ childIdentifier, onAdded }: { childIdentifier: string; onAdded: () => void }) {
   const [formError, setFormError] = useState<string | null>(null);
   const [isAdding, startAdding] = useTransition();
+  const [open, setOpen] = useState(false);
 
   const form = useForm<VaccinationFormValues>({
     resolver: zodResolver(addVaccinationSchema),
@@ -222,6 +237,8 @@ function VaccinationForm({
       dose: 1,
       date: new Date().toISOString().split("T")[0],
       clinicName: "",
+      nextDoseDate: "",
+      healthcareProfessionalName: "",
     },
   });
 
@@ -234,94 +251,83 @@ function VaccinationForm({
         dose: Number(values.dose),
       } as AddVaccinationInput);
       if (result.success) {
-        form.reset({
-          childIdentifier,
-          vaccine: "",
-          dose: 1,
-          date: new Date().toISOString().split("T")[0],
-          clinicName: "",
-        });
+        form.reset({ childIdentifier, vaccine: "", dose: 1, date: new Date().toISOString().split("T")[0], clinicName: "", nextDoseDate: "", healthcareProfessionalName: "" });
         onAdded();
+        setOpen(false);
       } else {
         setFormError(result.error);
       }
     });
   }
 
+  if (!open) {
+    return (
+      <Button variant="outline" size="sm" className="w-full" onClick={() => setOpen(true)}>
+        <Plus className="mr-1.5 size-3.5" /> Ajouter une vaccination
+      </Button>
+    );
+  }
+
   return (
     <Card>
       <CardHeader className="pb-3">
-        <CardTitle className="flex items-center gap-2 text-base">
-          <Plus className="size-4" />
-          Add vaccination
-        </CardTitle>
+        <div className="flex items-center justify-between">
+          <CardTitle className="flex items-center gap-2 text-sm font-medium"><Plus className="size-4" /> Nouvelle vaccination</CardTitle>
+          <button type="button" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-foreground text-xs">
+            {open ? <ChevronUp className="size-4" /> : <ChevronDown className="size-4" />}
+          </button>
+        </div>
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <CardContent className="grid grid-cols-2 gap-4">
-            <FormField
-              control={form.control}
-              name="vaccine"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Vaccine name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="e.g. BCG, DTP, Polio" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="dose"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Dose number</FormLabel>
-                  <FormControl>
-                    <Input type="number" min={1} max={10} {...field} value={Number(field.value) || ""} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="date"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Administration date</FormLabel>
-                  <FormControl>
-                    <Input type="date" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="clinicName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Clinic name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="e.g. CHU Ibn Rochd" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            {formError && (
-              <p className="col-span-2 text-destructive text-sm">{formError}</p>
-            )}
+          <CardContent className="grid grid-cols-2 gap-3 pt-0">
+            <FormField control={form.control} name="vaccine" render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-xs">Nom du vaccin</FormLabel>
+                <FormControl><Input placeholder="ex : BCG, DTP" className="h-9 text-sm" {...field} /></FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+            <FormField control={form.control} name="dose" render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-xs">Dose</FormLabel>
+                <FormControl><Input type="number" min={1} max={10} className="h-9 text-sm" {...field} value={Number(field.value) || ""} /></FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+            <FormField control={form.control} name="date" render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-xs">Date</FormLabel>
+                <FormControl><Input type="date" className="h-9 text-sm" {...field} /></FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+            <FormField control={form.control} name="clinicName" render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-xs">Clinique</FormLabel>
+                <FormControl><Input placeholder="ex : CHU Ibn Rochd" className="h-9 text-sm" {...field} /></FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+            <FormField control={form.control} name="healthcareProfessionalName" render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-xs">Professionnel</FormLabel>
+                <FormControl><Input placeholder="ex : Dr. Alaoui" className="h-9 text-sm" {...field} /></FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+            <FormField control={form.control} name="nextDoseDate" render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-xs">Date prochaine dose</FormLabel>
+                <FormControl><Input type="date" className="h-9 text-sm" {...field} /></FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+            {formError && <p className="col-span-2 text-destructive text-sm">{formError}</p>}
           </CardContent>
-          <div className="px-6 pb-6">
-            <Button
-              type="submit"
-              disabled={isAdding}
-              className="w-full bg-healthcare text-healthcare-foreground hover:bg-healthcare/90"
-            >
-              {isAdding ? "Saving…" : "Save vaccination"}
+          <div className="px-5 pb-5">
+            <Button type="submit" size="sm" disabled={isAdding} className="w-full bg-healthcare text-healthcare-foreground hover:bg-healthcare/90">
+              {isAdding ? "Enregistrement…" : "Enregistrer la vaccination"}
             </Button>
           </div>
         </form>
@@ -330,40 +336,37 @@ function VaccinationForm({
   );
 }
 
-// ── Consultation list ────────────────────────────────────────────────────────
+// ── Liste des consultations ──────────────────────────────────────────────────
 
-function ConsultationList({
-  consultations,
-}: {
-  consultations: ConsultationRecord[];
-}) {
+function ConsultationList({ consultations }: { consultations: ConsultationRecord[] }) {
   if (consultations.length === 0) {
     return (
-      <p className="text-muted-foreground py-2 text-center text-sm">
-        No consultations recorded yet.
-      </p>
+      <Card>
+        <CardContent className="py-8">
+          <p className="text-muted-foreground text-center text-sm">Aucune consultation enregistrée.</p>
+        </CardContent>
+      </Card>
     );
   }
 
   return (
     <Card>
-      <CardHeader className="pb-3">
-        <CardTitle className="flex items-center gap-2 text-base">
-          <ClipboardList className="size-4" />
-          Consultations ({consultations.length})
-        </CardTitle>
-      </CardHeader>
       <CardContent className="p-0">
         <div className="divide-y">
           {consultations.map((c) => (
-            <div key={c.id} className="px-6 py-3 text-sm">
+            <div key={c.id} className="px-5 py-3.5">
               <div className="flex items-center justify-between">
-                <p className="font-medium">{c.clinicianName}</p>
-                <span className="text-muted-foreground text-xs">{c.date}</span>
+                <div className="flex items-center gap-2">
+                  <p className="text-sm font-medium">{c.clinicianName}</p>
+                  {c.followUpRequired && (
+                    <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-700">Suivi</span>
+                  )}
+                </div>
+                <span className="text-muted-foreground text-xs tabular-nums">{c.date}</span>
               </div>
-              <p className="text-muted-foreground mt-1 text-xs leading-relaxed">
-                {c.summary}
-              </p>
+              {c.reasonForVisit && <p className="text-muted-foreground mt-0.5 text-xs">Motif : {c.reasonForVisit}</p>}
+              {c.diagnosis && <p className="mt-0.5 text-xs font-medium">Dx : {c.diagnosis}</p>}
+              <p className="text-muted-foreground mt-1 text-sm leading-relaxed">{c.summary}</p>
             </div>
           ))}
         </div>
@@ -372,17 +375,12 @@ function ConsultationList({
   );
 }
 
-// ── Consultation form ────────────────────────────────────────────────────────
+// ── Formulaire consultation ──────────────────────────────────────────────────
 
-function ConsultationForm({
-  childIdentifier,
-  onAdded,
-}: {
-  childIdentifier: string;
-  onAdded: () => void;
-}) {
+function ConsultationForm({ childIdentifier, onAdded }: { childIdentifier: string; onAdded: () => void }) {
   const [formError, setFormError] = useState<string | null>(null);
   const [isAdding, startAdding] = useTransition();
+  const [open, setOpen] = useState(false);
 
   const form = useForm<ConsultationFormValues>({
     resolver: zodResolver(addConsultationSchema),
@@ -391,6 +389,9 @@ function ConsultationForm({
       date: new Date().toISOString().split("T")[0],
       summary: "",
       clinicianName: "",
+      reasonForVisit: "",
+      diagnosis: "",
+      followUpRequired: false,
     },
   });
 
@@ -402,86 +403,93 @@ function ConsultationForm({
         childIdentifier,
       } as AddConsultationInput);
       if (result.success) {
-        form.reset({
-          childIdentifier,
-          date: new Date().toISOString().split("T")[0],
-          summary: "",
-          clinicianName: "",
-        });
+        form.reset({ childIdentifier, date: new Date().toISOString().split("T")[0], summary: "", clinicianName: "", reasonForVisit: "", diagnosis: "", followUpRequired: false });
         onAdded();
+        setOpen(false);
       } else {
         setFormError(result.error);
       }
     });
   }
 
+  if (!open) {
+    return (
+      <Button variant="outline" size="sm" className="w-full" onClick={() => setOpen(true)}>
+        <Plus className="mr-1.5 size-3.5" /> Ajouter une consultation
+      </Button>
+    );
+  }
+
   return (
     <Card>
       <CardHeader className="pb-3">
-        <CardTitle className="flex items-center gap-2 text-base">
-          <Plus className="size-4" />
-          Add consultation
-        </CardTitle>
+        <div className="flex items-center justify-between">
+          <CardTitle className="flex items-center gap-2 text-sm font-medium"><Plus className="size-4" /> Nouvelle consultation</CardTitle>
+          <button type="button" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-foreground text-xs">
+            {open ? <ChevronUp className="size-4" /> : <ChevronDown className="size-4" />}
+          </button>
+        </div>
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="date"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Consultation date</FormLabel>
-                    <FormControl>
-                      <Input type="date" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="clinicianName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Clinician name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="e.g. Dr. Benali" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <FormField
-              control={form.control}
-              name="summary"
-              render={({ field }) => (
+          <CardContent className="space-y-3 pt-0">
+            <div className="grid grid-cols-2 gap-3">
+              <FormField control={form.control} name="date" render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Summary</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Brief consultation notes…"
-                      rows={3}
-                      {...field}
-                    />
-                  </FormControl>
+                  <FormLabel className="text-xs">Date</FormLabel>
+                  <FormControl><Input type="date" className="h-9 text-sm" {...field} /></FormControl>
                   <FormMessage />
                 </FormItem>
-              )}
-            />
-            {formError && (
-              <p className="text-destructive text-sm">{formError}</p>
-            )}
+              )} />
+              <FormField control={form.control} name="clinicianName" render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xs">Clinicien</FormLabel>
+                  <FormControl><Input placeholder="ex : Dr. Benali" className="h-9 text-sm" {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <FormField control={form.control} name="reasonForVisit" render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xs">Motif de visite</FormLabel>
+                  <FormControl><Input placeholder="ex : Fièvre, bilan de routine" className="h-9 text-sm" {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              <FormField control={form.control} name="diagnosis" render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xs">Diagnostic</FormLabel>
+                  <FormControl><Input placeholder="ex : Infection respiratoire" className="h-9 text-sm" {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+            </div>
+            <FormField control={form.control} name="summary" render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-xs">Résumé</FormLabel>
+                <FormControl><Textarea placeholder="Notes de consultation…" rows={3} className="text-sm" {...field} /></FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+            <FormField control={form.control} name="followUpRequired" render={({ field }) => (
+              <FormItem className="flex items-center gap-2">
+                <FormControl>
+                  <input
+                    type="checkbox"
+                    className="size-4 rounded border-input"
+                    checked={field.value as boolean}
+                    onChange={field.onChange}
+                  />
+                </FormControl>
+                <FormLabel className="!mt-0 text-xs">Suivi nécessaire</FormLabel>
+              </FormItem>
+            )} />
+            {formError && <p className="text-destructive text-sm">{formError}</p>}
           </CardContent>
-          <div className="px-6 pb-6">
-            <Button
-              type="submit"
-              disabled={isAdding}
-              className="w-full bg-healthcare text-healthcare-foreground hover:bg-healthcare/90"
-            >
-              {isAdding ? "Saving…" : "Save consultation"}
+          <div className="px-5 pb-5">
+            <Button type="submit" size="sm" disabled={isAdding} className="w-full bg-healthcare text-healthcare-foreground hover:bg-healthcare/90">
+              {isAdding ? "Enregistrement…" : "Enregistrer la consultation"}
             </Button>
           </div>
         </form>
@@ -490,23 +498,15 @@ function ConsultationForm({
   );
 }
 
-// ── Shared ───────────────────────────────────────────────────────────────────
+// ── Partagé ──────────────────────────────────────────────────────────────────
 
-function InfoRow({
-  icon: Icon,
-  label,
-  value,
-}: {
-  icon: React.ComponentType<{ className?: string }>;
-  label: string;
-  value: string;
-}) {
+function InfoCell({ icon: Icon, label, value }: { icon: React.ComponentType<{ className?: string }>; label: string; value: string }) {
   return (
-    <div className="flex items-start gap-2">
+    <div className="flex items-start gap-2.5 rounded-lg bg-muted/50 px-3 py-2.5">
       <Icon className="text-muted-foreground mt-0.5 size-4 shrink-0" />
-      <div>
-        <dt className="text-muted-foreground text-xs">{label}</dt>
-        <dd className="font-medium">{value}</dd>
+      <div className="min-w-0">
+        <p className="text-muted-foreground text-[11px] font-medium uppercase tracking-wide">{label}</p>
+        <p className="mt-0.5 truncate text-sm font-semibold">{value}</p>
       </div>
     </div>
   );

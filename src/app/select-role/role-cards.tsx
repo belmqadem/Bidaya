@@ -7,15 +7,15 @@ const roles = [
   {
     role: "parent" as const,
     label: "Parent",
-    description: "View my child's vaccination record",
+    description: "Consultez le carnet de vaccination et l'historique des consultations de votre enfant",
     image: "/patient-side.png",
-    overlay: "bg-black/40",
+    overlay: "bg-black/45",
     href: "/login/parent",
   },
   {
     role: "clinic" as const,
-    label: "Clinic staff",
-    description: "Search children and record vaccinations",
+    label: "Personnel Médical",
+    description: "Recherchez des dossiers, enregistrez les vaccinations et gérez les données de santé",
     image: "/staff-side.png",
     overlay: "bg-black/55",
     href: "/login?role=clinic",
@@ -31,15 +31,16 @@ export function RoleCards() {
           href={href}
           className="group relative flex min-h-[50vh] flex-1 cursor-pointer overflow-hidden md:min-h-screen"
         >
-          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 p-8 text-center">
-            <span className="text-3xl font-bold text-white drop-shadow-lg transition-transform duration-300 ease-out group-hover:-translate-y-1">
+          {/* Contenu texte */}
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 p-10 text-center">
+            <span className="text-5xl font-extrabold tracking-tight text-white drop-shadow-xl transition-transform duration-300 ease-out group-hover:-translate-y-1 md:text-6xl lg:text-7xl">
               {label}
             </span>
-            <span className="max-w-xs text-sm text-white/80 drop-shadow-md transition-opacity duration-300 group-hover:text-white">
+            <span className="max-w-md text-lg leading-relaxed text-white/85 drop-shadow-lg md:text-xl">
               {description}
             </span>
-            <span className="mt-4 inline-block rounded-full border border-white/40 px-6 py-2 text-sm font-medium text-white/90 transition-all duration-300 group-hover:border-white group-hover:bg-white/10 group-hover:text-white">
-              Continue
+            <span className="mt-6 inline-block rounded-full border-2 border-white/50 px-8 py-3 text-base font-semibold text-white transition-all duration-300 group-hover:border-white group-hover:bg-white/15 group-hover:text-white md:text-lg">
+              Continuer &rarr;
             </span>
           </div>
 

@@ -4,15 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Stethoscope, ArrowLeft, ShieldCheck, KeyRound } from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Stethoscope, ShieldCheck, KeyRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -29,7 +21,6 @@ export default function ParentLoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // ── Step 1: Verify child + phone ──────────────────────────────────────────
   async function handleVerify(e: React.FormEvent) {
     e.preventDefault();
     setError("");
@@ -43,20 +34,18 @@ export default function ParentLoginPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error ?? "Verification failed.");
+        setError(data.error ?? "Échec de la vérification.");
         return;
       }
-      // MVP: show the OTP hint
       setOtpHint(data.otp ?? "");
       setStep("otp");
     } catch {
-      setError("Network error. Please try again.");
+      setError("Erreur réseau. Veuillez réessayer.");
     } finally {
       setLoading(false);
     }
   }
 
-  // ── Step 2: Submit OTP ────────────────────────────────────────────────────
   async function handleOtp(e: React.FormEvent) {
     e.preventDefault();
     setError("");
@@ -74,20 +63,20 @@ export default function ParentLoginPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error ?? "Verification failed.");
+        setError(data.error ?? "Échec de la vérification.");
         return;
       }
       router.push(data.redirect);
     } catch {
-      setError("Network error. Please try again.");
+      setError("Erreur réseau. Veuillez réessayer.");
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <div className="relative flex min-h-screen flex-col">
-      {/* Background */}
+    <div className="relative flex min-h-screen">
+      {/* Fond */}
       <div className="fixed inset-0 -z-10">
         <Image
           src="/image.png"
@@ -97,134 +86,132 @@ export default function ParentLoginPage() {
           priority
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-background/75 backdrop-blur-[2px]" />
+        <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
       </div>
 
-      {/* Navbar */}
-      <nav className="flex items-center justify-between border-b border-border/50 bg-background/80 px-4 py-3 backdrop-blur-sm">
-        <Link
-          href="/select-role"
-          className="text-muted-foreground hover:text-foreground flex items-center gap-1.5 text-sm font-medium transition-colors"
-        >
-          <ArrowLeft className="size-4" />
-          Back
-        </Link>
-        <span className="text-sm font-medium">Child health record</span>
-        <div className="w-16" />
-      </nav>
-
-      {/* Card */}
-      <div className="flex flex-1 flex-col items-center justify-center p-4">
-        <div className="mb-6 flex items-center gap-2">
-          <div className="flex size-10 items-center justify-center rounded-lg bg-healthcare text-healthcare-foreground">
-            <Stethoscope className="size-5" aria-hidden />
+      {/* Contenu centré */}
+      <div className="flex flex-1 flex-col items-center justify-center px-4 py-12">
+        {/* Logo */}
+        <div className="mb-10 flex flex-col items-center gap-3">
+          <div className="flex size-14 items-center justify-center rounded-2xl bg-healthcare text-healthcare-foreground shadow-md">
+            <Stethoscope className="size-7" aria-hidden />
           </div>
-          <span className="text-xl font-semibold tracking-tight">
-            Parent access
-          </span>
+          <div className="text-center">
+            <h1 className="text-2xl font-bold tracking-tight">Accès Parent</h1>
+            <p className="text-muted-foreground mt-1 text-sm">
+              Consultez le dossier de santé de votre enfant en toute sécurité
+            </p>
+          </div>
         </div>
 
-        <Card className="w-full max-w-sm border-t-4 border-t-healthcare shadow-lg">
+        {/* Carte */}
+        <div className="w-full max-w-sm rounded-2xl border bg-card p-8 shadow-xl">
           {step === "identify" ? (
-            <form onSubmit={handleVerify}>
-              <CardHeader className="pb-2">
-                <CardTitle className="flex items-center gap-2">
-                  <ShieldCheck className="size-5" />
-                  Verify identity
-                </CardTitle>
-                <CardDescription>
-                  Enter your child&apos;s identifier and your phone number to
-                  receive a verification code.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="identifier">Child identifier</Label>
-                  <Input
-                    id="identifier"
-                    value={identifier}
-                    onChange={(e) => setIdentifier(e.target.value)}
-                    placeholder="CHR-XXXX-XXXX"
-                    className="font-mono tracking-wider uppercase"
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="phone">Phone number</Label>
-                  <Input
-                    id="phone"
-                    type="tel"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    placeholder="+212 600 000 000"
-                    required
-                  />
-                </div>
-                {error && (
-                  <p className="text-destructive text-sm">{error}</p>
-                )}
-              </CardContent>
-              <CardFooter className="flex flex-col gap-3">
-                <Button
-                  type="submit"
-                  className="w-full bg-healthcare text-healthcare-foreground hover:bg-healthcare/90"
-                  disabled={loading || !identifier.trim() || !phone.trim()}
-                >
-                  {loading ? "Verifying…" : "Send verification code"}
-                </Button>
+            <form onSubmit={handleVerify} className="space-y-5">
+              <div>
+                <h2 className="flex items-center gap-2 text-lg font-semibold">
+                  <ShieldCheck className="size-5 text-healthcare" />
+                  Vérifier l&apos;identité
+                </h2>
+                <p className="text-muted-foreground mt-1 text-sm">
+                  Entrez l&apos;identifiant de votre enfant et votre numéro de téléphone.
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="identifier">Identifiant enfant</Label>
+                <Input
+                  id="identifier"
+                  value={identifier}
+                  onChange={(e) => setIdentifier(e.target.value)}
+                  placeholder="CHR-XXXX-XXXX"
+                  className="h-11 font-mono tracking-wider uppercase"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="phone">Numéro de téléphone</Label>
+                <Input
+                  id="phone"
+                  type="tel"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder="+212 600 000 000"
+                  className="h-11"
+                  required
+                />
+              </div>
+
+              {error && (
+                <p className="text-destructive text-sm">{error}</p>
+              )}
+
+              <Button
+                type="submit"
+                className="h-11 w-full bg-healthcare text-healthcare-foreground hover:bg-healthcare/90"
+                disabled={loading || !identifier.trim() || !phone.trim()}
+              >
+                {loading ? "Vérification…" : "Envoyer le code"}
+              </Button>
+
+              <div className="text-center">
                 <Link
                   href="/select-role"
-                  className="text-muted-foreground text-center text-xs underline transition-colors hover:text-foreground"
+                  className="text-muted-foreground hover:text-foreground text-sm transition-colors"
                 >
-                  Switch role
+                  &larr; Changer de rôle
                 </Link>
-              </CardFooter>
+              </div>
             </form>
           ) : (
-            <form onSubmit={handleOtp}>
-              <CardHeader className="pb-2">
-                <CardTitle className="flex items-center gap-2">
-                  <KeyRound className="size-5" />
-                  Enter verification code
-                </CardTitle>
-                <CardDescription>
-                  A 6-digit code was sent to your phone number.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {otpHint && (
-                  <div className="rounded-md border border-dashed border-healthcare/40 bg-healthcare/5 px-3 py-2 text-center text-sm">
-                    <span className="text-muted-foreground">MVP code: </span>
-                    <span className="font-mono text-base font-semibold tracking-widest">
-                      {otpHint}
-                    </span>
-                  </div>
-                )}
-                <div className="space-y-2">
-                  <Label htmlFor="otp">Verification code</Label>
-                  <Input
-                    id="otp"
-                    value={otp}
-                    onChange={(e) => setOtp(e.target.value)}
-                    placeholder="123456"
-                    maxLength={6}
-                    className="text-center font-mono text-lg tracking-[0.5em]"
-                    required
-                    autoFocus
-                  />
+            <form onSubmit={handleOtp} className="space-y-5">
+              <div>
+                <h2 className="flex items-center gap-2 text-lg font-semibold">
+                  <KeyRound className="size-5 text-healthcare" />
+                  Entrer le code de vérification
+                </h2>
+                <p className="text-muted-foreground mt-1 text-sm">
+                  Un code à 6 chiffres a été envoyé sur votre téléphone.
+                </p>
+              </div>
+
+              {otpHint && (
+                <div className="rounded-xl border border-dashed border-healthcare/30 bg-healthcare/5 px-4 py-3 text-center">
+                  <span className="text-muted-foreground text-xs">Code démo MVP</span>
+                  <p className="mt-0.5 font-mono text-xl font-bold tracking-[0.3em]">
+                    {otpHint}
+                  </p>
                 </div>
-                {error && (
-                  <p className="text-destructive text-sm">{error}</p>
-                )}
-              </CardContent>
-              <CardFooter className="flex flex-col gap-3">
-                <Button
-                  type="submit"
-                  className="w-full bg-healthcare text-healthcare-foreground hover:bg-healthcare/90"
-                  disabled={loading || otp.trim().length < 6}
-                >
-                  {loading ? "Verifying…" : "Access dashboard"}
-                </Button>
+              )}
+
+              <div className="space-y-2">
+                <Label htmlFor="otp">Code de vérification</Label>
+                <Input
+                  id="otp"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
+                  placeholder="000000"
+                  maxLength={6}
+                  className="h-12 text-center font-mono text-xl tracking-[0.5em]"
+                  required
+                  autoFocus
+                />
+              </div>
+
+              {error && (
+                <p className="text-destructive text-sm">{error}</p>
+              )}
+
+              <Button
+                type="submit"
+                className="h-11 w-full bg-healthcare text-healthcare-foreground hover:bg-healthcare/90"
+                disabled={loading || otp.trim().length < 6}
+              >
+                {loading ? "Vérification…" : "Accéder au tableau de bord"}
+              </Button>
+
+              <div className="text-center">
                 <button
                   type="button"
                   onClick={() => {
@@ -233,14 +220,14 @@ export default function ParentLoginPage() {
                     setOtpHint("");
                     setError("");
                   }}
-                  className="text-muted-foreground text-center text-xs underline transition-colors hover:text-foreground"
+                  className="text-muted-foreground hover:text-foreground text-sm transition-colors"
                 >
-                  Go back
+                  &larr; Retour
                 </button>
-              </CardFooter>
+              </div>
             </form>
           )}
-        </Card>
+        </div>
       </div>
     </div>
   );

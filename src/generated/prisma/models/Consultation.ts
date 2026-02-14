@@ -30,6 +30,9 @@ export type ConsultationMinAggregateOutputType = {
   date: Date | null
   summary: string | null
   clinicianName: string | null
+  reasonForVisit: string | null
+  diagnosis: string | null
+  followUpRequired: boolean | null
   createdAt: Date | null
 }
 
@@ -39,6 +42,9 @@ export type ConsultationMaxAggregateOutputType = {
   date: Date | null
   summary: string | null
   clinicianName: string | null
+  reasonForVisit: string | null
+  diagnosis: string | null
+  followUpRequired: boolean | null
   createdAt: Date | null
 }
 
@@ -48,6 +54,9 @@ export type ConsultationCountAggregateOutputType = {
   date: number
   summary: number
   clinicianName: number
+  reasonForVisit: number
+  diagnosis: number
+  followUpRequired: number
   createdAt: number
   _all: number
 }
@@ -59,6 +68,9 @@ export type ConsultationMinAggregateInputType = {
   date?: true
   summary?: true
   clinicianName?: true
+  reasonForVisit?: true
+  diagnosis?: true
+  followUpRequired?: true
   createdAt?: true
 }
 
@@ -68,6 +80,9 @@ export type ConsultationMaxAggregateInputType = {
   date?: true
   summary?: true
   clinicianName?: true
+  reasonForVisit?: true
+  diagnosis?: true
+  followUpRequired?: true
   createdAt?: true
 }
 
@@ -77,6 +92,9 @@ export type ConsultationCountAggregateInputType = {
   date?: true
   summary?: true
   clinicianName?: true
+  reasonForVisit?: true
+  diagnosis?: true
+  followUpRequired?: true
   createdAt?: true
   _all?: true
 }
@@ -159,6 +177,9 @@ export type ConsultationGroupByOutputType = {
   date: Date
   summary: string
   clinicianName: string
+  reasonForVisit: string
+  diagnosis: string
+  followUpRequired: boolean
   createdAt: Date
   _count: ConsultationCountAggregateOutputType | null
   _min: ConsultationMinAggregateOutputType | null
@@ -189,6 +210,9 @@ export type ConsultationWhereInput = {
   date?: Prisma.DateTimeFilter<"Consultation"> | Date | string
   summary?: Prisma.StringFilter<"Consultation"> | string
   clinicianName?: Prisma.StringFilter<"Consultation"> | string
+  reasonForVisit?: Prisma.StringFilter<"Consultation"> | string
+  diagnosis?: Prisma.StringFilter<"Consultation"> | string
+  followUpRequired?: Prisma.BoolFilter<"Consultation"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Consultation"> | Date | string
   child?: Prisma.XOR<Prisma.ChildScalarRelationFilter, Prisma.ChildWhereInput>
 }
@@ -199,6 +223,9 @@ export type ConsultationOrderByWithRelationInput = {
   date?: Prisma.SortOrder
   summary?: Prisma.SortOrder
   clinicianName?: Prisma.SortOrder
+  reasonForVisit?: Prisma.SortOrder
+  diagnosis?: Prisma.SortOrder
+  followUpRequired?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   child?: Prisma.ChildOrderByWithRelationInput
 }
@@ -212,6 +239,9 @@ export type ConsultationWhereUniqueInput = Prisma.AtLeast<{
   date?: Prisma.DateTimeFilter<"Consultation"> | Date | string
   summary?: Prisma.StringFilter<"Consultation"> | string
   clinicianName?: Prisma.StringFilter<"Consultation"> | string
+  reasonForVisit?: Prisma.StringFilter<"Consultation"> | string
+  diagnosis?: Prisma.StringFilter<"Consultation"> | string
+  followUpRequired?: Prisma.BoolFilter<"Consultation"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Consultation"> | Date | string
   child?: Prisma.XOR<Prisma.ChildScalarRelationFilter, Prisma.ChildWhereInput>
 }, "id">
@@ -222,6 +252,9 @@ export type ConsultationOrderByWithAggregationInput = {
   date?: Prisma.SortOrder
   summary?: Prisma.SortOrder
   clinicianName?: Prisma.SortOrder
+  reasonForVisit?: Prisma.SortOrder
+  diagnosis?: Prisma.SortOrder
+  followUpRequired?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.ConsultationCountOrderByAggregateInput
   _max?: Prisma.ConsultationMaxOrderByAggregateInput
@@ -237,6 +270,9 @@ export type ConsultationScalarWhereWithAggregatesInput = {
   date?: Prisma.DateTimeWithAggregatesFilter<"Consultation"> | Date | string
   summary?: Prisma.StringWithAggregatesFilter<"Consultation"> | string
   clinicianName?: Prisma.StringWithAggregatesFilter<"Consultation"> | string
+  reasonForVisit?: Prisma.StringWithAggregatesFilter<"Consultation"> | string
+  diagnosis?: Prisma.StringWithAggregatesFilter<"Consultation"> | string
+  followUpRequired?: Prisma.BoolWithAggregatesFilter<"Consultation"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Consultation"> | Date | string
 }
 
@@ -245,6 +281,9 @@ export type ConsultationCreateInput = {
   date: Date | string
   summary: string
   clinicianName: string
+  reasonForVisit?: string
+  diagnosis?: string
+  followUpRequired?: boolean
   createdAt?: Date | string
   child: Prisma.ChildCreateNestedOneWithoutConsultationsInput
 }
@@ -255,6 +294,9 @@ export type ConsultationUncheckedCreateInput = {
   date: Date | string
   summary: string
   clinicianName: string
+  reasonForVisit?: string
+  diagnosis?: string
+  followUpRequired?: boolean
   createdAt?: Date | string
 }
 
@@ -263,6 +305,9 @@ export type ConsultationUpdateInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   summary?: Prisma.StringFieldUpdateOperationsInput | string
   clinicianName?: Prisma.StringFieldUpdateOperationsInput | string
+  reasonForVisit?: Prisma.StringFieldUpdateOperationsInput | string
+  diagnosis?: Prisma.StringFieldUpdateOperationsInput | string
+  followUpRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   child?: Prisma.ChildUpdateOneRequiredWithoutConsultationsNestedInput
 }
@@ -273,6 +318,9 @@ export type ConsultationUncheckedUpdateInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   summary?: Prisma.StringFieldUpdateOperationsInput | string
   clinicianName?: Prisma.StringFieldUpdateOperationsInput | string
+  reasonForVisit?: Prisma.StringFieldUpdateOperationsInput | string
+  diagnosis?: Prisma.StringFieldUpdateOperationsInput | string
+  followUpRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -282,6 +330,9 @@ export type ConsultationCreateManyInput = {
   date: Date | string
   summary: string
   clinicianName: string
+  reasonForVisit?: string
+  diagnosis?: string
+  followUpRequired?: boolean
   createdAt?: Date | string
 }
 
@@ -290,6 +341,9 @@ export type ConsultationUpdateManyMutationInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   summary?: Prisma.StringFieldUpdateOperationsInput | string
   clinicianName?: Prisma.StringFieldUpdateOperationsInput | string
+  reasonForVisit?: Prisma.StringFieldUpdateOperationsInput | string
+  diagnosis?: Prisma.StringFieldUpdateOperationsInput | string
+  followUpRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -299,6 +353,9 @@ export type ConsultationUncheckedUpdateManyInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   summary?: Prisma.StringFieldUpdateOperationsInput | string
   clinicianName?: Prisma.StringFieldUpdateOperationsInput | string
+  reasonForVisit?: Prisma.StringFieldUpdateOperationsInput | string
+  diagnosis?: Prisma.StringFieldUpdateOperationsInput | string
+  followUpRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -318,6 +375,9 @@ export type ConsultationCountOrderByAggregateInput = {
   date?: Prisma.SortOrder
   summary?: Prisma.SortOrder
   clinicianName?: Prisma.SortOrder
+  reasonForVisit?: Prisma.SortOrder
+  diagnosis?: Prisma.SortOrder
+  followUpRequired?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -327,6 +387,9 @@ export type ConsultationMaxOrderByAggregateInput = {
   date?: Prisma.SortOrder
   summary?: Prisma.SortOrder
   clinicianName?: Prisma.SortOrder
+  reasonForVisit?: Prisma.SortOrder
+  diagnosis?: Prisma.SortOrder
+  followUpRequired?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -336,6 +399,9 @@ export type ConsultationMinOrderByAggregateInput = {
   date?: Prisma.SortOrder
   summary?: Prisma.SortOrder
   clinicianName?: Prisma.SortOrder
+  reasonForVisit?: Prisma.SortOrder
+  diagnosis?: Prisma.SortOrder
+  followUpRequired?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -381,11 +447,18 @@ export type ConsultationUncheckedUpdateManyWithoutChildNestedInput = {
   deleteMany?: Prisma.ConsultationScalarWhereInput | Prisma.ConsultationScalarWhereInput[]
 }
 
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
+}
+
 export type ConsultationCreateWithoutChildInput = {
   id?: string
   date: Date | string
   summary: string
   clinicianName: string
+  reasonForVisit?: string
+  diagnosis?: string
+  followUpRequired?: boolean
   createdAt?: Date | string
 }
 
@@ -394,6 +467,9 @@ export type ConsultationUncheckedCreateWithoutChildInput = {
   date: Date | string
   summary: string
   clinicianName: string
+  reasonForVisit?: string
+  diagnosis?: string
+  followUpRequired?: boolean
   createdAt?: Date | string
 }
 
@@ -432,6 +508,9 @@ export type ConsultationScalarWhereInput = {
   date?: Prisma.DateTimeFilter<"Consultation"> | Date | string
   summary?: Prisma.StringFilter<"Consultation"> | string
   clinicianName?: Prisma.StringFilter<"Consultation"> | string
+  reasonForVisit?: Prisma.StringFilter<"Consultation"> | string
+  diagnosis?: Prisma.StringFilter<"Consultation"> | string
+  followUpRequired?: Prisma.BoolFilter<"Consultation"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Consultation"> | Date | string
 }
 
@@ -440,6 +519,9 @@ export type ConsultationCreateManyChildInput = {
   date: Date | string
   summary: string
   clinicianName: string
+  reasonForVisit?: string
+  diagnosis?: string
+  followUpRequired?: boolean
   createdAt?: Date | string
 }
 
@@ -448,6 +530,9 @@ export type ConsultationUpdateWithoutChildInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   summary?: Prisma.StringFieldUpdateOperationsInput | string
   clinicianName?: Prisma.StringFieldUpdateOperationsInput | string
+  reasonForVisit?: Prisma.StringFieldUpdateOperationsInput | string
+  diagnosis?: Prisma.StringFieldUpdateOperationsInput | string
+  followUpRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -456,6 +541,9 @@ export type ConsultationUncheckedUpdateWithoutChildInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   summary?: Prisma.StringFieldUpdateOperationsInput | string
   clinicianName?: Prisma.StringFieldUpdateOperationsInput | string
+  reasonForVisit?: Prisma.StringFieldUpdateOperationsInput | string
+  diagnosis?: Prisma.StringFieldUpdateOperationsInput | string
+  followUpRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -464,6 +552,9 @@ export type ConsultationUncheckedUpdateManyWithoutChildInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   summary?: Prisma.StringFieldUpdateOperationsInput | string
   clinicianName?: Prisma.StringFieldUpdateOperationsInput | string
+  reasonForVisit?: Prisma.StringFieldUpdateOperationsInput | string
+  diagnosis?: Prisma.StringFieldUpdateOperationsInput | string
+  followUpRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -475,6 +566,9 @@ export type ConsultationSelect<ExtArgs extends runtime.Types.Extensions.Internal
   date?: boolean
   summary?: boolean
   clinicianName?: boolean
+  reasonForVisit?: boolean
+  diagnosis?: boolean
+  followUpRequired?: boolean
   createdAt?: boolean
   child?: boolean | Prisma.ChildDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["consultation"]>
@@ -485,6 +579,9 @@ export type ConsultationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   date?: boolean
   summary?: boolean
   clinicianName?: boolean
+  reasonForVisit?: boolean
+  diagnosis?: boolean
+  followUpRequired?: boolean
   createdAt?: boolean
   child?: boolean | Prisma.ChildDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["consultation"]>
@@ -495,6 +592,9 @@ export type ConsultationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   date?: boolean
   summary?: boolean
   clinicianName?: boolean
+  reasonForVisit?: boolean
+  diagnosis?: boolean
+  followUpRequired?: boolean
   createdAt?: boolean
   child?: boolean | Prisma.ChildDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["consultation"]>
@@ -505,10 +605,13 @@ export type ConsultationSelectScalar = {
   date?: boolean
   summary?: boolean
   clinicianName?: boolean
+  reasonForVisit?: boolean
+  diagnosis?: boolean
+  followUpRequired?: boolean
   createdAt?: boolean
 }
 
-export type ConsultationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "childId" | "date" | "summary" | "clinicianName" | "createdAt", ExtArgs["result"]["consultation"]>
+export type ConsultationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "childId" | "date" | "summary" | "clinicianName" | "reasonForVisit" | "diagnosis" | "followUpRequired" | "createdAt", ExtArgs["result"]["consultation"]>
 export type ConsultationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   child?: boolean | Prisma.ChildDefaultArgs<ExtArgs>
 }
@@ -530,6 +633,9 @@ export type $ConsultationPayload<ExtArgs extends runtime.Types.Extensions.Intern
     date: Date
     summary: string
     clinicianName: string
+    reasonForVisit: string
+    diagnosis: string
+    followUpRequired: boolean
     createdAt: Date
   }, ExtArgs["result"]["consultation"]>
   composites: {}
@@ -960,6 +1066,9 @@ export interface ConsultationFieldRefs {
   readonly date: Prisma.FieldRef<"Consultation", 'DateTime'>
   readonly summary: Prisma.FieldRef<"Consultation", 'String'>
   readonly clinicianName: Prisma.FieldRef<"Consultation", 'String'>
+  readonly reasonForVisit: Prisma.FieldRef<"Consultation", 'String'>
+  readonly diagnosis: Prisma.FieldRef<"Consultation", 'String'>
+  readonly followUpRequired: Prisma.FieldRef<"Consultation", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Consultation", 'DateTime'>
 }
     

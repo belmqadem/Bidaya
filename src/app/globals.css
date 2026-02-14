@@ -133,3 +133,74 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* ── Timeline animations ────────────────────────────────────────────────── */
+@keyframes timeline-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.timeline-group {
+  animation: timeline-fade-in 0.3s ease-out both;
+}
+
+.timeline-enter {
+  animation: timeline-fade-in 0.4s ease-out both;
+}
+
+/* Smooth expand/collapse for details */
+.timeline-details {
+  will-change: max-height, opacity;
+}
+
+/* ── Print styles for medical timeline ──────────────────────────────────── */
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12px !important;
+  }
+
+  /* Hide navigation, toolbars, buttons */
+  header,
+  nav,
+  .print\:hidden {
+    display: none !important;
+  }
+
+  /* Show print-only elements */
+  .print\:inline {
+    display: inline !important;
+  }
+
+  .print\:block {
+    display: block !important;
+  }
+
+  /* Force expand all timeline cards */
+  details[open] > summary ~ * {
+    display: block !important;
+  }
+
+  /* Clean card appearance */
+  [class*="shadow"] {
+    box-shadow: none !important;
+  }
+
+  /* Prevent page breaks inside cards */
+  [class*="CardContent"],
+  [class*="card"] {
+    break-inside: avoid;
+  }
+
+  /* Tighten spacing */
+  .space-y-6 > * + * {
+    margin-top: 0.75rem !important;
+  }
+}

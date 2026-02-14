@@ -17,6 +17,9 @@ export type ChildRecord = {
   identifier: string;
   fullName: string;
   birthDate: string;
+  gender: string;
+  birthWeight: number | null;
+  deliveryType: string;
   parentName: string;
   parentContact: string;
   createdAt: string;
@@ -28,6 +31,8 @@ export type VaccinationRecord = {
   dose: number;
   date: string;
   clinicName: string;
+  nextDoseDate: string | null;
+  healthcareProfessionalName: string | null;
 };
 
 export type ConsultationRecord = {
@@ -35,6 +40,9 @@ export type ConsultationRecord = {
   date: string;
   summary: string;
   clinicianName: string;
+  reasonForVisit: string;
+  diagnosis: string;
+  followUpRequired: boolean;
 };
 
 type SearchResult =
@@ -52,7 +60,7 @@ export async function searchChild(identifier: string): Promise<SearchResult> {
 
   const trimmed = identifier.trim().toUpperCase();
   if (!trimmed) {
-    return { found: false, error: "Please enter an identifier." };
+    return { found: false, error: "Veuillez entrer un identifiant." };
   }
 
   try {
@@ -65,7 +73,7 @@ export async function searchChild(identifier: string): Promise<SearchResult> {
     });
 
     if (!child) {
-      return { found: false, error: "No child found with this identifier." };
+      return { found: false, error: "Aucun enfant trouvé avec cet identifiant." };
     }
 
     return {
@@ -74,6 +82,9 @@ export async function searchChild(identifier: string): Promise<SearchResult> {
         identifier: child.identifier,
         fullName: child.fullName,
         birthDate: child.birthDate.toISOString().split("T")[0],
+        gender: child.gender,
+        birthWeight: child.birthWeight,
+        deliveryType: child.deliveryType,
         parentName: child.parentName,
         parentContact: child.parentContact,
         createdAt: child.createdAt.toISOString().split("T")[0],
@@ -84,16 +95,21 @@ export async function searchChild(identifier: string): Promise<SearchResult> {
         dose: v.dose,
         date: v.date.toISOString().split("T")[0],
         clinicName: v.clinicName,
+        nextDoseDate: v.nextDoseDate?.toISOString().split("T")[0] ?? null,
+        healthcareProfessionalName: v.healthcareProfessionalName,
       })),
       consultations: child.consultations.map((c) => ({
         id: c.id,
         date: c.date.toISOString().split("T")[0],
         summary: c.summary,
         clinicianName: c.clinicianName,
+        reasonForVisit: c.reasonForVisit,
+        diagnosis: c.diagnosis,
+        followUpRequired: c.followUpRequired,
       })),
     };
   } catch {
-    return { found: false, error: "Search failed. Please try again." };
+    return { found: false, error: "La recherche a échoué. Veuillez réessayer." };
   }
 }
 
@@ -110,7 +126,7 @@ export async function addVaccination(
     return { success: false, error: msg };
   }
 
-  const { childIdentifier, vaccine, dose, date, clinicName } = parsed.data;
+  const { childIdentifier, vaccine, dose, date, clinicName, nextDoseDate, healthcareProfessionalName } = parsed.data;
 
   try {
     const child = await prisma.child.findUnique({
@@ -118,7 +134,7 @@ export async function addVaccination(
     });
 
     if (!child) {
-      return { success: false, error: "Child not found." };
+      return { success: false, error: "Enfant introuvable." };
     }
 
     await prisma.vaccination.create({
@@ -128,12 +144,14 @@ export async function addVaccination(
         dose,
         date: new Date(date),
         clinicName,
+        nextDoseDate: nextDoseDate ? new Date(nextDoseDate) : null,
+        healthcareProfessionalName: healthcareProfessionalName || null,
       },
     });
 
     return { success: true };
   } catch {
-    return { success: false, error: "Failed to save vaccination. Please try again." };
+    return { success: false, error: "Échec de l'enregistrement de la vaccination. Veuillez réessayer." };
   }
 }
 
@@ -158,6 +176,8 @@ export async function getVaccinations(
       dose: v.dose,
       date: v.date.toISOString().split("T")[0],
       clinicName: v.clinicName,
+      nextDoseDate: v.nextDoseDate?.toISOString().split("T")[0] ?? null,
+      healthcareProfessionalName: v.healthcareProfessionalName,
     }));
   } catch {
     return [];
@@ -177,7 +197,7 @@ export async function addConsultation(
     return { success: false, error: msg };
   }
 
-  const { childIdentifier, date, summary, clinicianName } = parsed.data;
+  const { childIdentifier, date, summary, clinicianName, reasonForVisit, diagnosis, followUpRequired } = parsed.data;
 
   try {
     const child = await prisma.child.findUnique({
@@ -185,7 +205,7 @@ export async function addConsultation(
     });
 
     if (!child) {
-      return { success: false, error: "Child not found." };
+      return { success: false, error: "Enfant introuvable." };
     }
 
     await prisma.consultation.create({
@@ -194,12 +214,15 @@ export async function addConsultation(
         date: new Date(date),
         summary,
         clinicianName,
+        reasonForVisit: reasonForVisit || "",
+        diagnosis: diagnosis || "",
+        followUpRequired: followUpRequired ?? false,
       },
     });
 
     return { success: true };
   } catch {
-    return { success: false, error: "Failed to save consultation. Please try again." };
+    return { success: false, error: "Échec de l'enregistrement de la consultation. Veuillez réessayer." };
   }
 }
 
@@ -223,6 +246,9 @@ export async function getConsultations(
       date: c.date.toISOString().split("T")[0],
       summary: c.summary,
       clinicianName: c.clinicianName,
+      reasonForVisit: c.reasonForVisit,
+      diagnosis: c.diagnosis,
+      followUpRequired: c.followUpRequired,
     }));
   } catch {
     return [];

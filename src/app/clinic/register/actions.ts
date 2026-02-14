@@ -10,19 +10,16 @@ type ActionResult =
   | { success: false; error: string };
 
 export async function registerChild(input: RegisterChildInput): Promise<ActionResult> {
-  // Auth guard — clinic only
   await requireRole("clinic");
 
-  // Validate
   const parsed = registerChildSchema.safeParse(input);
   if (!parsed.success) {
     const msg = parsed.error.issues.map((e) => e.message).join(", ");
     return { success: false, error: msg };
   }
 
-  const { fullName, birthDate, parentName, parentContact } = parsed.data;
+  const { fullName, birthDate, gender, birthWeight, deliveryType, parentName, parentContact } = parsed.data;
 
-  // Generate unique identifier (retry on collision)
   let identifier = generateChildId();
   let retries = 5;
   while (retries > 0) {
@@ -32,7 +29,7 @@ export async function registerChild(input: RegisterChildInput): Promise<ActionRe
     retries--;
   }
   if (retries === 0) {
-    return { success: false, error: "Failed to generate unique identifier. Please try again." };
+    return { success: false, error: "Échec de génération de l'identifiant unique. Veuillez réessayer." };
   }
 
   try {
@@ -41,12 +38,15 @@ export async function registerChild(input: RegisterChildInput): Promise<ActionRe
         identifier,
         fullName,
         birthDate: new Date(birthDate),
+        gender: gender ?? "unknown",
+        birthWeight: birthWeight ?? null,
+        deliveryType: deliveryType ?? "normal",
         parentName,
         parentContact,
       },
     });
   } catch {
-    return { success: false, error: "Failed to save record. Please try again." };
+    return { success: false, error: "Échec de l'enregistrement. Veuillez réessayer." };
   }
 
   return { success: true, identifier };

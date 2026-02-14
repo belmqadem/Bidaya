@@ -1,8 +1,8 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// Fichier de schéma Prisma
+// En savoir plus : https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// Pour accélérer vos requêtes ou évoluer facilement avec les fonctions serverless ou edge ?
+// Essayez Prisma Accelerate : https://pris.ly/cli/accelerate-init
 
 generator client {
   provider = "prisma-client"
@@ -18,6 +18,9 @@ model Child {
   identifier    String         @unique
   fullName      String
   birthDate     DateTime
+  gender        String         @default("unknown")
+  birthWeight   Float?
+  deliveryType  String         @default("normal")
   parentName    String
   parentContact String
   vaccinations  Vaccination[]
@@ -27,26 +30,31 @@ model Child {
 }
 
 model Vaccination {
-  id         String   @id @default(cuid())
-  childId    String
-  child      Child    @relation(fields: [childId], references: [id], onDelete: Cascade)
-  vaccine    String
-  dose       Int
-  date       DateTime
-  clinicName String
-  createdAt  DateTime @default(now())
+  id                         String    @id @default(cuid())
+  childId                    String
+  child                      Child     @relation(fields: [childId], references: [id], onDelete: Cascade)
+  vaccine                    String
+  dose                       Int
+  date                       DateTime
+  clinicName                 String
+  nextDoseDate               DateTime?
+  healthcareProfessionalName String?
+  createdAt                  DateTime  @default(now())
 
   @@index([childId])
 }
 
 model Consultation {
-  id            String   @id @default(cuid())
-  childId       String
-  child         Child    @relation(fields: [childId], references: [id], onDelete: Cascade)
-  date          DateTime
-  summary       String
-  clinicianName String
-  createdAt     DateTime @default(now())
+  id               String   @id @default(cuid())
+  childId          String
+  child            Child    @relation(fields: [childId], references: [id], onDelete: Cascade)
+  date             DateTime
+  summary          String
+  clinicianName    String
+  reasonForVisit   String   @default("")
+  diagnosis        String   @default("")
+  followUpRequired Boolean  @default(false)
+  createdAt        DateTime @default(now())
 
   @@index([childId])
 }

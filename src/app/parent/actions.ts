@@ -9,6 +9,9 @@ export type ChildProfile = {
   identifier: string;
   fullName: string;
   birthDate: string;
+  gender: string;
+  birthWeight: number | null;
+  deliveryType: string;
   parentName: string;
   parentContact: string;
   createdAt: string;
@@ -20,6 +23,8 @@ export type VaccinationEntry = {
   dose: number;
   date: string;
   clinicName: string;
+  nextDoseDate: string | null;
+  healthcareProfessionalName: string | null;
 };
 
 export type ConsultationEntry = {
@@ -27,6 +32,9 @@ export type ConsultationEntry = {
   date: string;
   summary: string;
   clinicianName: string;
+  reasonForVisit: string;
+  diagnosis: string;
+  followUpRequired: boolean;
 };
 
 type MyChildResult =
@@ -40,10 +48,6 @@ type MyChildResult =
 
 // ── Get my child (from session) ──────────────────────────────────────────────
 
-/**
- * Fetch the child record linked to the current parent session.
- * The childIdentifier is stored in the session cookie — no user input needed.
- */
 export async function getMyChild(): Promise<MyChildResult> {
   const session = await requireParent();
   const identifier = session.childIdentifier;
@@ -58,7 +62,7 @@ export async function getMyChild(): Promise<MyChildResult> {
     });
 
     if (!child) {
-      return { found: false, error: "Child record not found." };
+      return { found: false, error: "Dossier enfant introuvable." };
     }
 
     return {
@@ -67,6 +71,9 @@ export async function getMyChild(): Promise<MyChildResult> {
         identifier: child.identifier,
         fullName: child.fullName,
         birthDate: child.birthDate.toISOString().split("T")[0],
+        gender: child.gender,
+        birthWeight: child.birthWeight,
+        deliveryType: child.deliveryType,
         parentName: child.parentName,
         parentContact: child.parentContact,
         createdAt: child.createdAt.toISOString().split("T")[0],
@@ -77,15 +84,20 @@ export async function getMyChild(): Promise<MyChildResult> {
         dose: v.dose,
         date: v.date.toISOString().split("T")[0],
         clinicName: v.clinicName,
+        nextDoseDate: v.nextDoseDate?.toISOString().split("T")[0] ?? null,
+        healthcareProfessionalName: v.healthcareProfessionalName,
       })),
       consultations: child.consultations.map((c) => ({
         id: c.id,
         date: c.date.toISOString().split("T")[0],
         summary: c.summary,
         clinicianName: c.clinicianName,
+        reasonForVisit: c.reasonForVisit,
+        diagnosis: c.diagnosis,
+        followUpRequired: c.followUpRequired,
       })),
     };
   } catch {
-    return { found: false, error: "Failed to load child record. Please try again." };
+    return { found: false, error: "Échec du chargement du dossier. Veuillez réessayer." };
   }
 }

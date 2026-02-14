@@ -77,6 +77,9 @@ export const ChildScalarFieldEnum = {
   identifier: 'identifier',
   fullName: 'fullName',
   birthDate: 'birthDate',
+  gender: 'gender',
+  birthWeight: 'birthWeight',
+  deliveryType: 'deliveryType',
   parentName: 'parentName',
   parentContact: 'parentContact',
   createdAt: 'createdAt',
@@ -93,6 +96,8 @@ export const VaccinationScalarFieldEnum = {
   dose: 'dose',
   date: 'date',
   clinicName: 'clinicName',
+  nextDoseDate: 'nextDoseDate',
+  healthcareProfessionalName: 'healthcareProfessionalName',
   createdAt: 'createdAt'
 } as const
 
@@ -105,6 +110,9 @@ export const ConsultationScalarFieldEnum = {
   date: 'date',
   summary: 'summary',
   clinicianName: 'clinicianName',
+  reasonForVisit: 'reasonForVisit',
+  diagnosis: 'diagnosis',
+  followUpRequired: 'followUpRequired',
   createdAt: 'createdAt'
 } as const
 
@@ -125,4 +133,12 @@ export const QueryMode = {
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 

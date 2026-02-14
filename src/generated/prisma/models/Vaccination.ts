@@ -41,6 +41,8 @@ export type VaccinationMinAggregateOutputType = {
   dose: number | null
   date: Date | null
   clinicName: string | null
+  nextDoseDate: Date | null
+  healthcareProfessionalName: string | null
   createdAt: Date | null
 }
 
@@ -51,6 +53,8 @@ export type VaccinationMaxAggregateOutputType = {
   dose: number | null
   date: Date | null
   clinicName: string | null
+  nextDoseDate: Date | null
+  healthcareProfessionalName: string | null
   createdAt: Date | null
 }
 
@@ -61,6 +65,8 @@ export type VaccinationCountAggregateOutputType = {
   dose: number
   date: number
   clinicName: number
+  nextDoseDate: number
+  healthcareProfessionalName: number
   createdAt: number
   _all: number
 }
@@ -81,6 +87,8 @@ export type VaccinationMinAggregateInputType = {
   dose?: true
   date?: true
   clinicName?: true
+  nextDoseDate?: true
+  healthcareProfessionalName?: true
   createdAt?: true
 }
 
@@ -91,6 +99,8 @@ export type VaccinationMaxAggregateInputType = {
   dose?: true
   date?: true
   clinicName?: true
+  nextDoseDate?: true
+  healthcareProfessionalName?: true
   createdAt?: true
 }
 
@@ -101,6 +111,8 @@ export type VaccinationCountAggregateInputType = {
   dose?: true
   date?: true
   clinicName?: true
+  nextDoseDate?: true
+  healthcareProfessionalName?: true
   createdAt?: true
   _all?: true
 }
@@ -198,6 +210,8 @@ export type VaccinationGroupByOutputType = {
   dose: number
   date: Date
   clinicName: string
+  nextDoseDate: Date | null
+  healthcareProfessionalName: string | null
   createdAt: Date
   _count: VaccinationCountAggregateOutputType | null
   _avg: VaccinationAvgAggregateOutputType | null
@@ -231,6 +245,8 @@ export type VaccinationWhereInput = {
   dose?: Prisma.IntFilter<"Vaccination"> | number
   date?: Prisma.DateTimeFilter<"Vaccination"> | Date | string
   clinicName?: Prisma.StringFilter<"Vaccination"> | string
+  nextDoseDate?: Prisma.DateTimeNullableFilter<"Vaccination"> | Date | string | null
+  healthcareProfessionalName?: Prisma.StringNullableFilter<"Vaccination"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Vaccination"> | Date | string
   child?: Prisma.XOR<Prisma.ChildScalarRelationFilter, Prisma.ChildWhereInput>
 }
@@ -242,6 +258,8 @@ export type VaccinationOrderByWithRelationInput = {
   dose?: Prisma.SortOrder
   date?: Prisma.SortOrder
   clinicName?: Prisma.SortOrder
+  nextDoseDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  healthcareProfessionalName?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   child?: Prisma.ChildOrderByWithRelationInput
 }
@@ -256,6 +274,8 @@ export type VaccinationWhereUniqueInput = Prisma.AtLeast<{
   dose?: Prisma.IntFilter<"Vaccination"> | number
   date?: Prisma.DateTimeFilter<"Vaccination"> | Date | string
   clinicName?: Prisma.StringFilter<"Vaccination"> | string
+  nextDoseDate?: Prisma.DateTimeNullableFilter<"Vaccination"> | Date | string | null
+  healthcareProfessionalName?: Prisma.StringNullableFilter<"Vaccination"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Vaccination"> | Date | string
   child?: Prisma.XOR<Prisma.ChildScalarRelationFilter, Prisma.ChildWhereInput>
 }, "id">
@@ -267,6 +287,8 @@ export type VaccinationOrderByWithAggregationInput = {
   dose?: Prisma.SortOrder
   date?: Prisma.SortOrder
   clinicName?: Prisma.SortOrder
+  nextDoseDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  healthcareProfessionalName?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.VaccinationCountOrderByAggregateInput
   _avg?: Prisma.VaccinationAvgOrderByAggregateInput
@@ -285,6 +307,8 @@ export type VaccinationScalarWhereWithAggregatesInput = {
   dose?: Prisma.IntWithAggregatesFilter<"Vaccination"> | number
   date?: Prisma.DateTimeWithAggregatesFilter<"Vaccination"> | Date | string
   clinicName?: Prisma.StringWithAggregatesFilter<"Vaccination"> | string
+  nextDoseDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Vaccination"> | Date | string | null
+  healthcareProfessionalName?: Prisma.StringNullableWithAggregatesFilter<"Vaccination"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Vaccination"> | Date | string
 }
 
@@ -294,6 +318,8 @@ export type VaccinationCreateInput = {
   dose: number
   date: Date | string
   clinicName: string
+  nextDoseDate?: Date | string | null
+  healthcareProfessionalName?: string | null
   createdAt?: Date | string
   child: Prisma.ChildCreateNestedOneWithoutVaccinationsInput
 }
@@ -305,6 +331,8 @@ export type VaccinationUncheckedCreateInput = {
   dose: number
   date: Date | string
   clinicName: string
+  nextDoseDate?: Date | string | null
+  healthcareProfessionalName?: string | null
   createdAt?: Date | string
 }
 
@@ -314,6 +342,8 @@ export type VaccinationUpdateInput = {
   dose?: Prisma.IntFieldUpdateOperationsInput | number
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clinicName?: Prisma.StringFieldUpdateOperationsInput | string
+  nextDoseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  healthcareProfessionalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   child?: Prisma.ChildUpdateOneRequiredWithoutVaccinationsNestedInput
 }
@@ -325,6 +355,8 @@ export type VaccinationUncheckedUpdateInput = {
   dose?: Prisma.IntFieldUpdateOperationsInput | number
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clinicName?: Prisma.StringFieldUpdateOperationsInput | string
+  nextDoseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  healthcareProfessionalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -335,6 +367,8 @@ export type VaccinationCreateManyInput = {
   dose: number
   date: Date | string
   clinicName: string
+  nextDoseDate?: Date | string | null
+  healthcareProfessionalName?: string | null
   createdAt?: Date | string
 }
 
@@ -344,6 +378,8 @@ export type VaccinationUpdateManyMutationInput = {
   dose?: Prisma.IntFieldUpdateOperationsInput | number
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clinicName?: Prisma.StringFieldUpdateOperationsInput | string
+  nextDoseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  healthcareProfessionalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -354,6 +390,8 @@ export type VaccinationUncheckedUpdateManyInput = {
   dose?: Prisma.IntFieldUpdateOperationsInput | number
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clinicName?: Prisma.StringFieldUpdateOperationsInput | string
+  nextDoseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  healthcareProfessionalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -374,6 +412,8 @@ export type VaccinationCountOrderByAggregateInput = {
   dose?: Prisma.SortOrder
   date?: Prisma.SortOrder
   clinicName?: Prisma.SortOrder
+  nextDoseDate?: Prisma.SortOrder
+  healthcareProfessionalName?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -388,6 +428,8 @@ export type VaccinationMaxOrderByAggregateInput = {
   dose?: Prisma.SortOrder
   date?: Prisma.SortOrder
   clinicName?: Prisma.SortOrder
+  nextDoseDate?: Prisma.SortOrder
+  healthcareProfessionalName?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -398,6 +440,8 @@ export type VaccinationMinOrderByAggregateInput = {
   dose?: Prisma.SortOrder
   date?: Prisma.SortOrder
   clinicName?: Prisma.SortOrder
+  nextDoseDate?: Prisma.SortOrder
+  healthcareProfessionalName?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -455,12 +499,22 @@ export type IntFieldUpdateOperationsInput = {
   divide?: number
 }
 
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
+}
+
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
+}
+
 export type VaccinationCreateWithoutChildInput = {
   id?: string
   vaccine: string
   dose: number
   date: Date | string
   clinicName: string
+  nextDoseDate?: Date | string | null
+  healthcareProfessionalName?: string | null
   createdAt?: Date | string
 }
 
@@ -470,6 +524,8 @@ export type VaccinationUncheckedCreateWithoutChildInput = {
   dose: number
   date: Date | string
   clinicName: string
+  nextDoseDate?: Date | string | null
+  healthcareProfessionalName?: string | null
   createdAt?: Date | string
 }
 
@@ -509,6 +565,8 @@ export type VaccinationScalarWhereInput = {
   dose?: Prisma.IntFilter<"Vaccination"> | number
   date?: Prisma.DateTimeFilter<"Vaccination"> | Date | string
   clinicName?: Prisma.StringFilter<"Vaccination"> | string
+  nextDoseDate?: Prisma.DateTimeNullableFilter<"Vaccination"> | Date | string | null
+  healthcareProfessionalName?: Prisma.StringNullableFilter<"Vaccination"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Vaccination"> | Date | string
 }
 
@@ -518,6 +576,8 @@ export type VaccinationCreateManyChildInput = {
   dose: number
   date: Date | string
   clinicName: string
+  nextDoseDate?: Date | string | null
+  healthcareProfessionalName?: string | null
   createdAt?: Date | string
 }
 
@@ -527,6 +587,8 @@ export type VaccinationUpdateWithoutChildInput = {
   dose?: Prisma.IntFieldUpdateOperationsInput | number
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clinicName?: Prisma.StringFieldUpdateOperationsInput | string
+  nextDoseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  healthcareProfessionalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -536,6 +598,8 @@ export type VaccinationUncheckedUpdateWithoutChildInput = {
   dose?: Prisma.IntFieldUpdateOperationsInput | number
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clinicName?: Prisma.StringFieldUpdateOperationsInput | string
+  nextDoseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  healthcareProfessionalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -545,6 +609,8 @@ export type VaccinationUncheckedUpdateManyWithoutChildInput = {
   dose?: Prisma.IntFieldUpdateOperationsInput | number
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clinicName?: Prisma.StringFieldUpdateOperationsInput | string
+  nextDoseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  healthcareProfessionalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -557,6 +623,8 @@ export type VaccinationSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   dose?: boolean
   date?: boolean
   clinicName?: boolean
+  nextDoseDate?: boolean
+  healthcareProfessionalName?: boolean
   createdAt?: boolean
   child?: boolean | Prisma.ChildDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["vaccination"]>
@@ -568,6 +636,8 @@ export type VaccinationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   dose?: boolean
   date?: boolean
   clinicName?: boolean
+  nextDoseDate?: boolean
+  healthcareProfessionalName?: boolean
   createdAt?: boolean
   child?: boolean | Prisma.ChildDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["vaccination"]>
@@ -579,6 +649,8 @@ export type VaccinationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   dose?: boolean
   date?: boolean
   clinicName?: boolean
+  nextDoseDate?: boolean
+  healthcareProfessionalName?: boolean
   createdAt?: boolean
   child?: boolean | Prisma.ChildDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["vaccination"]>
@@ -590,10 +662,12 @@ export type VaccinationSelectScalar = {
   dose?: boolean
   date?: boolean
   clinicName?: boolean
+  nextDoseDate?: boolean
+  healthcareProfessionalName?: boolean
   createdAt?: boolean
 }
 
-export type VaccinationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "childId" | "vaccine" | "dose" | "date" | "clinicName" | "createdAt", ExtArgs["result"]["vaccination"]>
+export type VaccinationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "childId" | "vaccine" | "dose" | "date" | "clinicName" | "nextDoseDate" | "healthcareProfessionalName" | "createdAt", ExtArgs["result"]["vaccination"]>
 export type VaccinationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   child?: boolean | Prisma.ChildDefaultArgs<ExtArgs>
 }
@@ -616,6 +690,8 @@ export type $VaccinationPayload<ExtArgs extends runtime.Types.Extensions.Interna
     dose: number
     date: Date
     clinicName: string
+    nextDoseDate: Date | null
+    healthcareProfessionalName: string | null
     createdAt: Date
   }, ExtArgs["result"]["vaccination"]>
   composites: {}
@@ -1047,6 +1123,8 @@ export interface VaccinationFieldRefs {
   readonly dose: Prisma.FieldRef<"Vaccination", 'Int'>
   readonly date: Prisma.FieldRef<"Vaccination", 'DateTime'>
   readonly clinicName: Prisma.FieldRef<"Vaccination", 'String'>
+  readonly nextDoseDate: Prisma.FieldRef<"Vaccination", 'DateTime'>
+  readonly healthcareProfessionalName: Prisma.FieldRef<"Vaccination", 'String'>
   readonly createdAt: Prisma.FieldRef<"Vaccination", 'DateTime'>
 }
     

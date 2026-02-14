@@ -8,12 +8,12 @@ export default async function ClinicDashboardPage() {
   const session = await requireAuth();
 
   return (
-    <div className="mx-auto max-w-2xl p-4">
-      <div className="flex items-center justify-between">
+    <>
+      <div className="flex items-end justify-between">
         <div>
-          <h1 className="text-lg font-semibold">Clinic dashboard</h1>
-          <p className="text-muted-foreground text-sm">
-            Signed in as {session.email}
+          <h1 className="text-2xl font-bold tracking-tight">Tableau de bord</h1>
+          <p className="text-muted-foreground mt-1 text-sm">
+            Connecté en tant que {session.email}
           </p>
         </div>
         <Link href="/clinic/register">
@@ -22,14 +22,14 @@ export default async function ClinicDashboardPage() {
             className="bg-healthcare text-healthcare-foreground hover:bg-healthcare/90"
           >
             <UserPlus className="mr-1.5 size-4" />
-            Register
+            Inscrire un enfant
           </Button>
         </Link>
       </div>
 
-      <div className="mt-6">
+      <div className="mt-8">
         <ChildSearch />
       </div>
-    </div>
+    </>
   );
 }

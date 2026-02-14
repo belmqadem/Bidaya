@@ -3,26 +3,26 @@ import { prisma } from "@/lib/prisma";
 import { createOtp } from "@/lib/otp-store";
 
 /**
- * Step 1: Parent enters child identifier + phone.
- * Server validates child exists and phone matches parentContact.
- * Generates OTP and returns it in the response (MVP — no SMS).
+ * Étape 1 : Le parent entre l'identifiant enfant + téléphone.
+ * Le serveur vérifie que l'enfant existe et que le téléphone correspond.
+ * Génère un OTP et le renvoie dans la réponse (MVP — pas de SMS).
  */
 export async function POST(request: NextRequest) {
   let body: { identifier?: string; phone?: string };
   try {
     body = await request.json();
   } catch {
-    return NextResponse.json({ error: "Invalid body" }, { status: 400 });
+    return NextResponse.json({ error: "Corps de requête invalide" }, { status: 400 });
   }
 
   const identifier = typeof body.identifier === "string" ? body.identifier.trim().toUpperCase() : "";
   const phone = typeof body.phone === "string" ? body.phone.trim() : "";
 
   if (!identifier) {
-    return NextResponse.json({ error: "Child identifier is required." }, { status: 400 });
+    return NextResponse.json({ error: "L'identifiant enfant est requis." }, { status: 400 });
   }
   if (!phone) {
-    return NextResponse.json({ error: "Phone number is required." }, { status: 400 });
+    return NextResponse.json({ error: "Le numéro de téléphone est requis." }, { status: 400 });
   }
 
   try {
@@ -32,23 +32,23 @@ export async function POST(request: NextRequest) {
     });
 
     if (!child) {
-      return NextResponse.json({ error: "No child found with this identifier." }, { status: 404 });
+      return NextResponse.json({ error: "Aucun enfant trouvé avec cet identifiant." }, { status: 404 });
     }
 
-    // MVP: loose phone match (trim and compare)
+    // MVP : comparaison simple du téléphone
     if (child.parentContact.trim() !== phone) {
-      return NextResponse.json({ error: "Phone number does not match our records." }, { status: 403 });
+      return NextResponse.json({ error: "Le numéro de téléphone ne correspond pas à nos enregistrements." }, { status: 403 });
     }
 
     const otp = createOtp(identifier, phone);
 
-    // MVP: return OTP in response (no SMS)
+    // MVP : retourner l'OTP dans la réponse (pas de SMS)
     return NextResponse.json({
       success: true,
-      message: `Verification code sent. (MVP: your code is ${otp})`,
-      otp, // Remove in production
+      message: `Code de vérification envoyé. (MVP : votre code est ${otp})`,
+      otp, // À supprimer en production
     });
   } catch {
-    return NextResponse.json({ error: "Verification failed. Please try again." }, { status: 500 });
+    return NextResponse.json({ error: "Échec de la vérification. Veuillez réessayer." }, { status: 500 });
   }
 }
