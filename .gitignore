@@ -39,3 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Python / ML
+ML/venv/
+__pycache__/
+*.pyc
+*.pyo
+ML/predictions_output.csv
+ML/coefs_output.json
