@@ -18,7 +18,7 @@ export async function registerChild(input: RegisterChildInput): Promise<ActionRe
     return { success: false, error: msg };
   }
 
-  const { fullName, birthDate, gender, birthWeight, deliveryType, parentName, parentContact } = parsed.data;
+  const { fullName, birthDate, gender, birthWeight, birthLength, headCircumferenceAtBirth, placeOfBirth, deliveryType, parentName, parentContact } = parsed.data;
 
   let identifier = generateChildId();
   let retries = 5;
@@ -40,6 +40,9 @@ export async function registerChild(input: RegisterChildInput): Promise<ActionRe
         birthDate: new Date(birthDate),
         gender: gender ?? "unknown",
         birthWeight: birthWeight ?? null,
+        birthLength: birthLength ?? null,
+        headCircumferenceAtBirth: headCircumferenceAtBirth ?? null,
+        placeOfBirth: placeOfBirth || null,
         deliveryType: deliveryType ?? "normal",
         parentName,
         parentContact,

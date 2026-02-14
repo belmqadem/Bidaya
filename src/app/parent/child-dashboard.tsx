@@ -17,6 +17,8 @@ import {
   AlertTriangle,
   CalendarClock,
   Truck,
+  Ruler,
+  MapPin,
 } from "lucide-react";
 import {
   Card,
@@ -321,7 +323,10 @@ function ChildProfileCard({ child }: { child: ChildProfile }) {
             <InfoCell icon={Calendar} label="Naissance" value={child.birthDate} />
             <InfoCell icon={Baby} label="Sexe" value={child.gender} />
             <InfoCell icon={Weight} label="Poids" value={child.birthWeight ? `${child.birthWeight} kg` : "N/D"} />
+            <InfoCell icon={Ruler} label="Taille" value={child.birthLength ? `${child.birthLength} cm` : "N/D"} />
+            <InfoCell icon={Ruler} label="Périmètre crânien" value={child.headCircumferenceAtBirth ? `${child.headCircumferenceAtBirth} cm` : "N/D"} />
             <InfoCell icon={Truck} label="Accouchement" value={child.deliveryType} />
+            {child.placeOfBirth && <InfoCell icon={MapPin} label="Lieu de naissance" value={child.placeOfBirth} />}
           </div>
         </div>
 

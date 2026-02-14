@@ -11,7 +11,10 @@ export const registerChildSchema = z.object({
     .refine((v) => !isNaN(Date.parse(v)), "Date invalide"),
   gender: z.enum(["male", "female", "unknown"]).default("unknown"),
   birthWeight: z.coerce.number().min(0.1).max(10).optional(),
-  deliveryType: z.enum(["vb", "cesarean"]).default("vb"),
+  birthLength: z.coerce.number().min(10).max(70).optional(),
+  headCircumferenceAtBirth: z.coerce.number().min(15).max(50).optional(),
+  placeOfBirth: z.string().max(200).optional(),
+  deliveryType: z.enum(["voie basse", "cesarean"]).default("voie basse"),
   parentName: z
     .string()
     .min(2, "Le nom du parent doit contenir au moins 2 caractères")

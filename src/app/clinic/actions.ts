@@ -19,6 +19,9 @@ export type ChildRecord = {
   birthDate: string;
   gender: string;
   birthWeight: number | null;
+  birthLength: number | null;
+  headCircumferenceAtBirth: number | null;
+  placeOfBirth: string | null;
   deliveryType: string;
   parentName: string;
   parentContact: string;
@@ -33,6 +36,9 @@ export type VaccinationRecord = {
   clinicName: string;
   nextDoseDate: string | null;
   healthcareProfessionalName: string | null;
+  batchNumber: string | null;
+  injectionSite: string | null;
+  notes: string | null;
 };
 
 export type ConsultationRecord = {
@@ -43,6 +49,8 @@ export type ConsultationRecord = {
   reasonForVisit: string;
   diagnosis: string;
   followUpRequired: boolean;
+  treatmentPrescribed: string | null;
+  followUpDate: string | null;
 };
 
 type SearchResult =
@@ -84,6 +92,9 @@ export async function searchChild(identifier: string): Promise<SearchResult> {
         birthDate: child.birthDate.toISOString().split("T")[0],
         gender: child.gender,
         birthWeight: child.birthWeight,
+        birthLength: child.birthLength,
+        headCircumferenceAtBirth: child.headCircumferenceAtBirth,
+        placeOfBirth: child.placeOfBirth,
         deliveryType: child.deliveryType,
         parentName: child.parentName,
         parentContact: child.parentContact,
@@ -97,6 +108,9 @@ export async function searchChild(identifier: string): Promise<SearchResult> {
         clinicName: v.clinicName,
         nextDoseDate: v.nextDoseDate?.toISOString().split("T")[0] ?? null,
         healthcareProfessionalName: v.healthcareProfessionalName,
+        batchNumber: v.batchNumber,
+        injectionSite: v.injectionSite,
+        notes: v.notes,
       })),
       consultations: child.consultations.map((c) => ({
         id: c.id,
@@ -106,6 +120,8 @@ export async function searchChild(identifier: string): Promise<SearchResult> {
         reasonForVisit: c.reasonForVisit,
         diagnosis: c.diagnosis,
         followUpRequired: c.followUpRequired,
+        treatmentPrescribed: c.treatmentPrescribed,
+        followUpDate: c.followUpDate?.toISOString().split("T")[0] ?? null,
       })),
     };
   } catch {
@@ -126,7 +142,7 @@ export async function addVaccination(
     return { success: false, error: msg };
   }
 
-  const { childIdentifier, vaccine, dose, date, clinicName, nextDoseDate, healthcareProfessionalName } = parsed.data;
+  const { childIdentifier, vaccine, dose, date, clinicName, nextDoseDate, healthcareProfessionalName, batchNumber, injectionSite, notes } = parsed.data;
 
   try {
     const child = await prisma.child.findUnique({
@@ -146,6 +162,9 @@ export async function addVaccination(
         clinicName,
         nextDoseDate: nextDoseDate ? new Date(nextDoseDate) : null,
         healthcareProfessionalName: healthcareProfessionalName || null,
+        batchNumber: batchNumber || null,
+        injectionSite: injectionSite || null,
+        notes: notes || null,
       },
     });
 
@@ -178,6 +197,9 @@ export async function getVaccinations(
       clinicName: v.clinicName,
       nextDoseDate: v.nextDoseDate?.toISOString().split("T")[0] ?? null,
       healthcareProfessionalName: v.healthcareProfessionalName,
+      batchNumber: v.batchNumber,
+      injectionSite: v.injectionSite,
+      notes: v.notes,
     }));
   } catch {
     return [];
@@ -197,7 +219,7 @@ export async function addConsultation(
     return { success: false, error: msg };
   }
 
-  const { childIdentifier, date, summary, clinicianName, reasonForVisit, diagnosis, followUpRequired } = parsed.data;
+  const { childIdentifier, date, summary, clinicianName, reasonForVisit, diagnosis, followUpRequired, treatmentPrescribed, followUpDate } = parsed.data;
 
   try {
     const child = await prisma.child.findUnique({
@@ -217,6 +239,8 @@ export async function addConsultation(
         reasonForVisit: reasonForVisit || "",
         diagnosis: diagnosis || "",
         followUpRequired: followUpRequired ?? false,
+        treatmentPrescribed: treatmentPrescribed || null,
+        followUpDate: followUpDate ? new Date(followUpDate) : null,
       },
     });
 
@@ -249,6 +273,8 @@ export async function getConsultations(
       reasonForVisit: c.reasonForVisit,
       diagnosis: c.diagnosis,
       followUpRequired: c.followUpRequired,
+      treatmentPrescribed: c.treatmentPrescribed,
+      followUpDate: c.followUpDate?.toISOString().split("T")[0] ?? null,
     }));
   } catch {
     return [];

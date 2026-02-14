@@ -357,6 +357,15 @@ function VaccinationCard({ v, isExpanded }: { v: VaccinationEntry; isExpanded: b
           {v.healthcareProfessionalName && (
             <DetailRow label="Administré par" value={v.healthcareProfessionalName} />
           )}
+          {v.batchNumber && (
+            <DetailRow label="N° de lot" value={v.batchNumber} />
+          )}
+          {v.injectionSite && (
+            <DetailRow label="Site d'injection" value={v.injectionSite} />
+          )}
+          {v.notes && (
+            <DetailRow label="Notes" value={v.notes} />
+          )}
           {v.nextDoseDate && (
             <DetailRow label="Prochaine dose" value={formatDateFr(v.nextDoseDate)} />
           )}
@@ -407,6 +416,8 @@ function ConsultationCard({ c, isExpanded }: { c: ConsultationEntry; isExpanded:
       >
         <div className="space-y-1.5 border-t border-border/50 pt-3 text-xs">
           {c.diagnosis && <DetailRow label="Diagnostic" value={c.diagnosis} />}
+          {c.treatmentPrescribed && <DetailRow label="Traitement" value={c.treatmentPrescribed} />}
+          {c.followUpDate && <DetailRow label="Suivi prévu" value={formatDateFr(c.followUpDate)} />}
           <DetailRow label="Résumé" value={c.summary} />
         </div>
       </div>

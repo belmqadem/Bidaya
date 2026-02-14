@@ -11,6 +11,9 @@ export type ChildProfile = {
   birthDate: string;
   gender: string;
   birthWeight: number | null;
+  birthLength: number | null;
+  headCircumferenceAtBirth: number | null;
+  placeOfBirth: string | null;
   deliveryType: string;
   parentName: string;
   parentContact: string;
@@ -25,6 +28,9 @@ export type VaccinationEntry = {
   clinicName: string;
   nextDoseDate: string | null;
   healthcareProfessionalName: string | null;
+  batchNumber: string | null;
+  injectionSite: string | null;
+  notes: string | null;
 };
 
 export type ConsultationEntry = {
@@ -35,6 +41,8 @@ export type ConsultationEntry = {
   reasonForVisit: string;
   diagnosis: string;
   followUpRequired: boolean;
+  treatmentPrescribed: string | null;
+  followUpDate: string | null;
 };
 
 type MyChildResult =
@@ -73,6 +81,9 @@ export async function getMyChild(): Promise<MyChildResult> {
         birthDate: child.birthDate.toISOString().split("T")[0],
         gender: child.gender,
         birthWeight: child.birthWeight,
+        birthLength: child.birthLength,
+        headCircumferenceAtBirth: child.headCircumferenceAtBirth,
+        placeOfBirth: child.placeOfBirth,
         deliveryType: child.deliveryType,
         parentName: child.parentName,
         parentContact: child.parentContact,
@@ -86,6 +97,9 @@ export async function getMyChild(): Promise<MyChildResult> {
         clinicName: v.clinicName,
         nextDoseDate: v.nextDoseDate?.toISOString().split("T")[0] ?? null,
         healthcareProfessionalName: v.healthcareProfessionalName,
+        batchNumber: v.batchNumber,
+        injectionSite: v.injectionSite,
+        notes: v.notes,
       })),
       consultations: child.consultations.map((c) => ({
         id: c.id,
@@ -95,6 +109,8 @@ export async function getMyChild(): Promise<MyChildResult> {
         reasonForVisit: c.reasonForVisit,
         diagnosis: c.diagnosis,
         followUpRequired: c.followUpRequired,
+        treatmentPrescribed: c.treatmentPrescribed,
+        followUpDate: c.followUpDate?.toISOString().split("T")[0] ?? null,
       })),
     };
   } catch {

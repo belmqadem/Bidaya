@@ -14,19 +14,22 @@ datasource db {
 }
 
 model Child {
-  id            String         @id @default(cuid())
-  identifier    String         @unique
-  fullName      String
-  birthDate     DateTime
-  gender        String         @default("unknown")
-  birthWeight   Float?
-  deliveryType  String         @default("normal")
-  parentName    String
-  parentContact String
-  vaccinations  Vaccination[]
-  consultations Consultation[]
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
+  id                        String         @id @default(cuid())
+  identifier                String         @unique
+  fullName                  String
+  birthDate                 DateTime
+  gender                    String         @default("unknown")
+  birthWeight               Float?
+  birthLength               Float?         // Taille à la naissance (cm)
+  headCircumferenceAtBirth  Float?         // Périmètre crânien à la naissance (cm)
+  placeOfBirth              String?        // Lieu de naissance
+  deliveryType              String         @default("normal")
+  parentName                String
+  parentContact             String
+  vaccinations              Vaccination[]
+  consultations             Consultation[]
+  createdAt                 DateTime       @default(now())
+  updatedAt                 DateTime       @updatedAt
 }
 
 model Vaccination {
@@ -39,22 +42,27 @@ model Vaccination {
   clinicName                 String
   nextDoseDate               DateTime?
   healthcareProfessionalName String?
+  batchNumber                String?   // Numéro de lot du vaccin
+  injectionSite              String?   // Site d'injection (ex : cuisse gauche, bras droit)
+  notes                      String?   // Observations complémentaires
   createdAt                  DateTime  @default(now())
 
   @@index([childId])
 }
 
 model Consultation {
-  id               String   @id @default(cuid())
-  childId          String
-  child            Child    @relation(fields: [childId], references: [id], onDelete: Cascade)
-  date             DateTime
-  summary          String
-  clinicianName    String
-  reasonForVisit   String   @default("")
-  diagnosis        String   @default("")
-  followUpRequired Boolean  @default(false)
-  createdAt        DateTime @default(now())
+  id                   String    @id @default(cuid())
+  childId              String
+  child                Child     @relation(fields: [childId], references: [id], onDelete: Cascade)
+  date                 DateTime
+  summary              String
+  clinicianName        String
+  reasonForVisit       String    @default("")
+  diagnosis            String    @default("")
+  followUpRequired     Boolean   @default(false)
+  treatmentPrescribed  String?   // Traitement prescrit
+  followUpDate         DateTime? // Date de suivi prévue
+  createdAt            DateTime  @default(now())
 
   @@index([childId])
 }

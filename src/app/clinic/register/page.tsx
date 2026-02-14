@@ -16,6 +16,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   Form,
   FormControl,
   FormField,
@@ -46,7 +53,10 @@ export default function RegisterChildPage() {
       birthDate: "",
       gender: "unknown",
       birthWeight: undefined,
-      deliveryType: "vb",
+      birthLength: undefined,
+      headCircumferenceAtBirth: undefined,
+      placeOfBirth: "",
+      deliveryType: "voie basse",
       parentName: "",
       parentContact: "",
     },
@@ -164,16 +174,18 @@ export default function RegisterChildPage() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Sexe</FormLabel>
-                      <FormControl>
-                        <select
-                          className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs transition-colors focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
-                          {...field}
-                        >
-                          <option value="male">Masculin</option>
-                          <option value="female">Féminin</option>
-                          <option value="unknown">Inconnu</option>
-                        </select>
-                      </FormControl>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Sélectionner" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="male">Masculin</SelectItem>
+                          <SelectItem value="female">Féminin</SelectItem>
+                          <SelectItem value="unknown">Inconnu</SelectItem>
+                        </SelectContent>
+                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -207,20 +219,79 @@ export default function RegisterChildPage() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Type d&apos;accouchement</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Sélectionner" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="voie basse">Voie Basse</SelectItem>
+                          <SelectItem value="cesarean">Césarienne</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="birthLength"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Taille à la naissance (cm)</FormLabel>
                       <FormControl>
-                        <select
-                          className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs transition-colors focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
+                        <Input
+                          type="number"
+                          step="0.1"
+                          min="10"
+                          max="70"
+                          placeholder="ex : 50"
                           {...field}
-                        >
-                          <option value="vb">Voie Basse</option>
-                          <option value="cesarean">Césarienne</option>
-                        </select>
+                          value={field.value != null ? String(field.value) : ""}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="headCircumferenceAtBirth"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Périmètre crânien (cm)</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          step="0.1"
+                          min="15"
+                          max="50"
+                          placeholder="ex : 35"
+                          {...field}
+                          value={field.value != null ? String(field.value) : ""}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
               </div>
+              <FormField
+                control={form.control}
+                name="placeOfBirth"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Lieu de naissance</FormLabel>
+                    <FormControl>
+                      <Input placeholder="ex : CHU Ibn Rochd, Casablanca" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="parentName"
@@ -254,7 +325,7 @@ export default function RegisterChildPage() {
                 <p className="text-destructive text-sm">{result.error}</p>
               )}
             </CardContent>
-            <CardFooter>
+            <CardFooter className="pt-2">
               <Button
                 type="submit"
                 className="w-full bg-healthcare text-healthcare-foreground hover:bg-healthcare/90"

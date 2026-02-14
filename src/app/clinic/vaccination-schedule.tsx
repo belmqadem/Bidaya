@@ -1,6 +1,9 @@
 "use client";
 
 import { useState, useMemo, useTransition } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import {
   Syringe,
   Check,
@@ -14,6 +17,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { addVaccination, getVaccinations } from "./actions";
 import type { AddVaccinationInput } from "@/lib/schemas/vaccination";
 
@@ -27,6 +38,9 @@ export type VaccinationScheduleRecord = {
   clinicName: string;
   nextDoseDate?: string | null;
   healthcareProfessionalName?: string | null;
+  batchNumber?: string | null;
+  injectionSite?: string | null;
+  notes?: string | null;
 };
 
 // ── Programme National d'Immunisation du Maroc ───────────────────────────────
@@ -321,6 +335,7 @@ export function VaccinationSchedule({
                           {row.record.date}
                           {row.record.clinicName && <> · {row.record.clinicName}</>}
                           {row.record.healthcareProfessionalName && <> · {row.record.healthcareProfessionalName}</>}
+                          {row.record.batchNumber && <> · Lot {row.record.batchNumber}</>}
                         </p>
                       )}
                     </div>
@@ -375,6 +390,16 @@ export function VaccinationSchedule({
   );
 }
 
+// ── Schéma Zod pour le modal ──────────────────────────────────────────────────
+
+const markDoneSchema = z.object({
+  date: z.string().min(1, "La date est requise").refine((v) => !isNaN(Date.parse(v)), "Date invalide"),
+  clinicName: z.string().min(1, "Le nom de la clinique est requis").max(120),
+  healthcareProfessionalName: z.string().max(120).optional(),
+});
+
+type MarkDoneValues = z.infer<typeof markDoneSchema>;
+
 // ── Modal "Marquer fait" ─────────────────────────────────────────────────────
 
 function MarkDoneModal({
@@ -392,42 +417,41 @@ function MarkDoneModal({
   onClose: () => void;
   onSaved: () => void;
 }) {
-  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
-  const [clinicName, setClinicName] = useState("");
-  const [professional, setProfessional] = useState("");
-  const [error, setError] = useState<string | null>(null);
+  const [serverError, setServerError] = useState<string | null>(null);
   const [isSaving, startSaving] = useTransition();
 
-  function handleSave(e: React.FormEvent) {
-    e.preventDefault();
-    if (!clinicName.trim()) {
-      setError("Le nom de la clinique est requis.");
-      return;
-    }
-    setError(null);
+  const form = useForm<MarkDoneValues>({
+    resolver: zodResolver(markDoneSchema),
+    defaultValues: {
+      date: new Date().toISOString().split("T")[0],
+      clinicName: "",
+      healthcareProfessionalName: "",
+    },
+  });
+
+  function onSubmit(values: MarkDoneValues) {
+    setServerError(null);
     startSaving(async () => {
       const result = await addVaccination({
         childIdentifier,
         vaccine,
         dose,
-        date,
-        clinicName: clinicName.trim(),
-        healthcareProfessionalName: professional.trim() || undefined,
+        date: values.date,
+        clinicName: values.clinicName.trim(),
+        healthcareProfessionalName: values.healthcareProfessionalName?.trim() || undefined,
       } as AddVaccinationInput);
       if (result.success) {
-        // refresh the parent's vaccination list
-        const freshList = await getVaccinations(childIdentifier);
-        void freshList; // consumed by parent via callback
+        await getVaccinations(childIdentifier);
         onSaved();
       } else {
-        setError(result.error);
+        setServerError(result.error);
       }
     });
   }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-      <Card className="w-full max-w-md mx-4 shadow-2xl">
+      <Card className="mx-4 w-full max-w-md shadow-2xl">
         <CardHeader className="pb-3">
           <div className="flex items-start justify-between gap-3">
             <div>
@@ -446,55 +470,67 @@ function MarkDoneModal({
             </button>
           </div>
         </CardHeader>
-        <form onSubmit={handleSave}>
-          <CardContent className="space-y-3 pt-0">
-            <div>
-              <label className="mb-1 block text-xs font-medium">Date d&apos;administration</label>
-              <Input
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                className="h-9 text-sm"
-                required
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <CardContent className="space-y-3 pt-0">
+              <FormField
+                control={form.control}
+                name="date"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs">Date d&apos;administration</FormLabel>
+                    <FormControl>
+                      <Input type="date" className="h-9 text-sm" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </div>
-            <div>
-              <label className="mb-1 block text-xs font-medium">Clinique / Centre de santé</label>
-              <Input
-                value={clinicName}
-                onChange={(e) => setClinicName(e.target.value)}
-                placeholder="ex : CHU Ibn Rochd"
-                className="h-9 text-sm"
-                required
+              <FormField
+                control={form.control}
+                name="clinicName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs">Clinique / Centre de santé</FormLabel>
+                    <FormControl>
+                      <Input placeholder="ex : CHU Ibn Rochd" className="h-9 text-sm" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </div>
-            <div>
-              <label className="mb-1 block text-xs font-medium">
-                Professionnel de santé <span className="text-muted-foreground">(optionnel)</span>
-              </label>
-              <Input
-                value={professional}
-                onChange={(e) => setProfessional(e.target.value)}
-                placeholder="ex : Dr. Alaoui"
-                className="h-9 text-sm"
+              <FormField
+                control={form.control}
+                name="healthcareProfessionalName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs">
+                      Professionnel de santé <span className="text-muted-foreground">(optionnel)</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder="ex : Dr. Alaoui" className="h-9 text-sm" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
+              {serverError && <p className="text-destructive text-sm">{serverError}</p>}
+            </CardContent>
+            <div className="flex gap-2 px-6 pb-6 pt-2">
+              <Button type="button" variant="outline" size="sm" className="flex-1" onClick={onClose} disabled={isSaving}>
+                Annuler
+              </Button>
+              <Button
+                type="submit"
+                size="sm"
+                className="flex-1 bg-healthcare text-healthcare-foreground hover:bg-healthcare/90"
+                disabled={isSaving}
+              >
+                {isSaving ? "Enregistrement…" : "Enregistrer"}
+              </Button>
             </div>
-            {error && <p className="text-destructive text-sm">{error}</p>}
-          </CardContent>
-          <div className="flex gap-2 px-6 pb-6">
-            <Button type="button" variant="outline" size="sm" className="flex-1" onClick={onClose} disabled={isSaving}>
-              Annuler
-            </Button>
-            <Button
-              type="submit"
-              size="sm"
-              className="flex-1 bg-healthcare text-healthcare-foreground hover:bg-healthcare/90"
-              disabled={isSaving}
-            >
-              {isSaving ? "Enregistrement…" : "Enregistrer"}
-            </Button>
-          </div>
-        </form>
+          </form>
+        </Form>
       </Card>
     </div>
   );

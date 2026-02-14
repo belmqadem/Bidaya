@@ -79,6 +79,9 @@ export const ChildScalarFieldEnum = {
   birthDate: 'birthDate',
   gender: 'gender',
   birthWeight: 'birthWeight',
+  birthLength: 'birthLength',
+  headCircumferenceAtBirth: 'headCircumferenceAtBirth',
+  placeOfBirth: 'placeOfBirth',
   deliveryType: 'deliveryType',
   parentName: 'parentName',
   parentContact: 'parentContact',
@@ -98,6 +101,9 @@ export const VaccinationScalarFieldEnum = {
   clinicName: 'clinicName',
   nextDoseDate: 'nextDoseDate',
   healthcareProfessionalName: 'healthcareProfessionalName',
+  batchNumber: 'batchNumber',
+  injectionSite: 'injectionSite',
+  notes: 'notes',
   createdAt: 'createdAt'
 } as const
 
@@ -113,6 +119,8 @@ export const ConsultationScalarFieldEnum = {
   reasonForVisit: 'reasonForVisit',
   diagnosis: 'diagnosis',
   followUpRequired: 'followUpRequired',
+  treatmentPrescribed: 'treatmentPrescribed',
+  followUpDate: 'followUpDate',
   createdAt: 'createdAt'
 } as const
 

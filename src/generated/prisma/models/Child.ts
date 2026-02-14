@@ -28,10 +28,14 @@ export type AggregateChild = {
 
 export type ChildAvgAggregateOutputType = {
   birthWeight: number | null
+  birthLength: number | null
+  headCircumferenceAtBirth: number | null
 }
 
 export type ChildSumAggregateOutputType = {
   birthWeight: number | null
+  birthLength: number | null
+  headCircumferenceAtBirth: number | null
 }
 
 export type ChildMinAggregateOutputType = {
@@ -41,6 +45,9 @@ export type ChildMinAggregateOutputType = {
   birthDate: Date | null
   gender: string | null
   birthWeight: number | null
+  birthLength: number | null
+  headCircumferenceAtBirth: number | null
+  placeOfBirth: string | null
   deliveryType: string | null
   parentName: string | null
   parentContact: string | null
@@ -55,6 +62,9 @@ export type ChildMaxAggregateOutputType = {
   birthDate: Date | null
   gender: string | null
   birthWeight: number | null
+  birthLength: number | null
+  headCircumferenceAtBirth: number | null
+  placeOfBirth: string | null
   deliveryType: string | null
   parentName: string | null
   parentContact: string | null
@@ -69,6 +79,9 @@ export type ChildCountAggregateOutputType = {
   birthDate: number
   gender: number
   birthWeight: number
+  birthLength: number
+  headCircumferenceAtBirth: number
+  placeOfBirth: number
   deliveryType: number
   parentName: number
   parentContact: number
@@ -80,10 +93,14 @@ export type ChildCountAggregateOutputType = {
 
 export type ChildAvgAggregateInputType = {
   birthWeight?: true
+  birthLength?: true
+  headCircumferenceAtBirth?: true
 }
 
 export type ChildSumAggregateInputType = {
   birthWeight?: true
+  birthLength?: true
+  headCircumferenceAtBirth?: true
 }
 
 export type ChildMinAggregateInputType = {
@@ -93,6 +110,9 @@ export type ChildMinAggregateInputType = {
   birthDate?: true
   gender?: true
   birthWeight?: true
+  birthLength?: true
+  headCircumferenceAtBirth?: true
+  placeOfBirth?: true
   deliveryType?: true
   parentName?: true
   parentContact?: true
@@ -107,6 +127,9 @@ export type ChildMaxAggregateInputType = {
   birthDate?: true
   gender?: true
   birthWeight?: true
+  birthLength?: true
+  headCircumferenceAtBirth?: true
+  placeOfBirth?: true
   deliveryType?: true
   parentName?: true
   parentContact?: true
@@ -121,6 +144,9 @@ export type ChildCountAggregateInputType = {
   birthDate?: true
   gender?: true
   birthWeight?: true
+  birthLength?: true
+  headCircumferenceAtBirth?: true
+  placeOfBirth?: true
   deliveryType?: true
   parentName?: true
   parentContact?: true
@@ -222,6 +248,9 @@ export type ChildGroupByOutputType = {
   birthDate: Date
   gender: string
   birthWeight: number | null
+  birthLength: number | null
+  headCircumferenceAtBirth: number | null
+  placeOfBirth: string | null
   deliveryType: string
   parentName: string
   parentContact: string
@@ -259,6 +288,9 @@ export type ChildWhereInput = {
   birthDate?: Prisma.DateTimeFilter<"Child"> | Date | string
   gender?: Prisma.StringFilter<"Child"> | string
   birthWeight?: Prisma.FloatNullableFilter<"Child"> | number | null
+  birthLength?: Prisma.FloatNullableFilter<"Child"> | number | null
+  headCircumferenceAtBirth?: Prisma.FloatNullableFilter<"Child"> | number | null
+  placeOfBirth?: Prisma.StringNullableFilter<"Child"> | string | null
   deliveryType?: Prisma.StringFilter<"Child"> | string
   parentName?: Prisma.StringFilter<"Child"> | string
   parentContact?: Prisma.StringFilter<"Child"> | string
@@ -275,6 +307,9 @@ export type ChildOrderByWithRelationInput = {
   birthDate?: Prisma.SortOrder
   gender?: Prisma.SortOrder
   birthWeight?: Prisma.SortOrderInput | Prisma.SortOrder
+  birthLength?: Prisma.SortOrderInput | Prisma.SortOrder
+  headCircumferenceAtBirth?: Prisma.SortOrderInput | Prisma.SortOrder
+  placeOfBirth?: Prisma.SortOrderInput | Prisma.SortOrder
   deliveryType?: Prisma.SortOrder
   parentName?: Prisma.SortOrder
   parentContact?: Prisma.SortOrder
@@ -294,6 +329,9 @@ export type ChildWhereUniqueInput = Prisma.AtLeast<{
   birthDate?: Prisma.DateTimeFilter<"Child"> | Date | string
   gender?: Prisma.StringFilter<"Child"> | string
   birthWeight?: Prisma.FloatNullableFilter<"Child"> | number | null
+  birthLength?: Prisma.FloatNullableFilter<"Child"> | number | null
+  headCircumferenceAtBirth?: Prisma.FloatNullableFilter<"Child"> | number | null
+  placeOfBirth?: Prisma.StringNullableFilter<"Child"> | string | null
   deliveryType?: Prisma.StringFilter<"Child"> | string
   parentName?: Prisma.StringFilter<"Child"> | string
   parentContact?: Prisma.StringFilter<"Child"> | string
@@ -310,6 +348,9 @@ export type ChildOrderByWithAggregationInput = {
   birthDate?: Prisma.SortOrder
   gender?: Prisma.SortOrder
   birthWeight?: Prisma.SortOrderInput | Prisma.SortOrder
+  birthLength?: Prisma.SortOrderInput | Prisma.SortOrder
+  headCircumferenceAtBirth?: Prisma.SortOrderInput | Prisma.SortOrder
+  placeOfBirth?: Prisma.SortOrderInput | Prisma.SortOrder
   deliveryType?: Prisma.SortOrder
   parentName?: Prisma.SortOrder
   parentContact?: Prisma.SortOrder
@@ -332,6 +373,9 @@ export type ChildScalarWhereWithAggregatesInput = {
   birthDate?: Prisma.DateTimeWithAggregatesFilter<"Child"> | Date | string
   gender?: Prisma.StringWithAggregatesFilter<"Child"> | string
   birthWeight?: Prisma.FloatNullableWithAggregatesFilter<"Child"> | number | null
+  birthLength?: Prisma.FloatNullableWithAggregatesFilter<"Child"> | number | null
+  headCircumferenceAtBirth?: Prisma.FloatNullableWithAggregatesFilter<"Child"> | number | null
+  placeOfBirth?: Prisma.StringNullableWithAggregatesFilter<"Child"> | string | null
   deliveryType?: Prisma.StringWithAggregatesFilter<"Child"> | string
   parentName?: Prisma.StringWithAggregatesFilter<"Child"> | string
   parentContact?: Prisma.StringWithAggregatesFilter<"Child"> | string
@@ -346,6 +390,9 @@ export type ChildCreateInput = {
   birthDate: Date | string
   gender?: string
   birthWeight?: number | null
+  birthLength?: number | null
+  headCircumferenceAtBirth?: number | null
+  placeOfBirth?: string | null
   deliveryType?: string
   parentName: string
   parentContact: string
@@ -362,6 +409,9 @@ export type ChildUncheckedCreateInput = {
   birthDate: Date | string
   gender?: string
   birthWeight?: number | null
+  birthLength?: number | null
+  headCircumferenceAtBirth?: number | null
+  placeOfBirth?: string | null
   deliveryType?: string
   parentName: string
   parentContact: string
@@ -378,6 +428,9 @@ export type ChildUpdateInput = {
   birthDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gender?: Prisma.StringFieldUpdateOperationsInput | string
   birthWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  birthLength?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  headCircumferenceAtBirth?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  placeOfBirth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deliveryType?: Prisma.StringFieldUpdateOperationsInput | string
   parentName?: Prisma.StringFieldUpdateOperationsInput | string
   parentContact?: Prisma.StringFieldUpdateOperationsInput | string
@@ -394,6 +447,9 @@ export type ChildUncheckedUpdateInput = {
   birthDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gender?: Prisma.StringFieldUpdateOperationsInput | string
   birthWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  birthLength?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  headCircumferenceAtBirth?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  placeOfBirth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deliveryType?: Prisma.StringFieldUpdateOperationsInput | string
   parentName?: Prisma.StringFieldUpdateOperationsInput | string
   parentContact?: Prisma.StringFieldUpdateOperationsInput | string
@@ -410,6 +466,9 @@ export type ChildCreateManyInput = {
   birthDate: Date | string
   gender?: string
   birthWeight?: number | null
+  birthLength?: number | null
+  headCircumferenceAtBirth?: number | null
+  placeOfBirth?: string | null
   deliveryType?: string
   parentName: string
   parentContact: string
@@ -424,6 +483,9 @@ export type ChildUpdateManyMutationInput = {
   birthDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gender?: Prisma.StringFieldUpdateOperationsInput | string
   birthWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  birthLength?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  headCircumferenceAtBirth?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  placeOfBirth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deliveryType?: Prisma.StringFieldUpdateOperationsInput | string
   parentName?: Prisma.StringFieldUpdateOperationsInput | string
   parentContact?: Prisma.StringFieldUpdateOperationsInput | string
@@ -438,6 +500,9 @@ export type ChildUncheckedUpdateManyInput = {
   birthDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gender?: Prisma.StringFieldUpdateOperationsInput | string
   birthWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  birthLength?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  headCircumferenceAtBirth?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  placeOfBirth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deliveryType?: Prisma.StringFieldUpdateOperationsInput | string
   parentName?: Prisma.StringFieldUpdateOperationsInput | string
   parentContact?: Prisma.StringFieldUpdateOperationsInput | string
@@ -452,6 +517,9 @@ export type ChildCountOrderByAggregateInput = {
   birthDate?: Prisma.SortOrder
   gender?: Prisma.SortOrder
   birthWeight?: Prisma.SortOrder
+  birthLength?: Prisma.SortOrder
+  headCircumferenceAtBirth?: Prisma.SortOrder
+  placeOfBirth?: Prisma.SortOrder
   deliveryType?: Prisma.SortOrder
   parentName?: Prisma.SortOrder
   parentContact?: Prisma.SortOrder
@@ -461,6 +529,8 @@ export type ChildCountOrderByAggregateInput = {
 
 export type ChildAvgOrderByAggregateInput = {
   birthWeight?: Prisma.SortOrder
+  birthLength?: Prisma.SortOrder
+  headCircumferenceAtBirth?: Prisma.SortOrder
 }
 
 export type ChildMaxOrderByAggregateInput = {
@@ -470,6 +540,9 @@ export type ChildMaxOrderByAggregateInput = {
   birthDate?: Prisma.SortOrder
   gender?: Prisma.SortOrder
   birthWeight?: Prisma.SortOrder
+  birthLength?: Prisma.SortOrder
+  headCircumferenceAtBirth?: Prisma.SortOrder
+  placeOfBirth?: Prisma.SortOrder
   deliveryType?: Prisma.SortOrder
   parentName?: Prisma.SortOrder
   parentContact?: Prisma.SortOrder
@@ -484,6 +557,9 @@ export type ChildMinOrderByAggregateInput = {
   birthDate?: Prisma.SortOrder
   gender?: Prisma.SortOrder
   birthWeight?: Prisma.SortOrder
+  birthLength?: Prisma.SortOrder
+  headCircumferenceAtBirth?: Prisma.SortOrder
+  placeOfBirth?: Prisma.SortOrder
   deliveryType?: Prisma.SortOrder
   parentName?: Prisma.SortOrder
   parentContact?: Prisma.SortOrder
@@ -493,6 +569,8 @@ export type ChildMinOrderByAggregateInput = {
 
 export type ChildSumOrderByAggregateInput = {
   birthWeight?: Prisma.SortOrder
+  birthLength?: Prisma.SortOrder
+  headCircumferenceAtBirth?: Prisma.SortOrder
 }
 
 export type ChildScalarRelationFilter = {
@@ -514,6 +592,10 @@ export type NullableFloatFieldUpdateOperationsInput = {
   decrement?: number
   multiply?: number
   divide?: number
+}
+
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
 }
 
 export type ChildCreateNestedOneWithoutVaccinationsInput = {
@@ -551,6 +633,9 @@ export type ChildCreateWithoutVaccinationsInput = {
   birthDate: Date | string
   gender?: string
   birthWeight?: number | null
+  birthLength?: number | null
+  headCircumferenceAtBirth?: number | null
+  placeOfBirth?: string | null
   deliveryType?: string
   parentName: string
   parentContact: string
@@ -566,6 +651,9 @@ export type ChildUncheckedCreateWithoutVaccinationsInput = {
   birthDate: Date | string
   gender?: string
   birthWeight?: number | null
+  birthLength?: number | null
+  headCircumferenceAtBirth?: number | null
+  placeOfBirth?: string | null
   deliveryType?: string
   parentName: string
   parentContact: string
@@ -597,6 +685,9 @@ export type ChildUpdateWithoutVaccinationsInput = {
   birthDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gender?: Prisma.StringFieldUpdateOperationsInput | string
   birthWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  birthLength?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  headCircumferenceAtBirth?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  placeOfBirth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deliveryType?: Prisma.StringFieldUpdateOperationsInput | string
   parentName?: Prisma.StringFieldUpdateOperationsInput | string
   parentContact?: Prisma.StringFieldUpdateOperationsInput | string
@@ -612,6 +703,9 @@ export type ChildUncheckedUpdateWithoutVaccinationsInput = {
   birthDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gender?: Prisma.StringFieldUpdateOperationsInput | string
   birthWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  birthLength?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  headCircumferenceAtBirth?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  placeOfBirth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deliveryType?: Prisma.StringFieldUpdateOperationsInput | string
   parentName?: Prisma.StringFieldUpdateOperationsInput | string
   parentContact?: Prisma.StringFieldUpdateOperationsInput | string
@@ -627,6 +721,9 @@ export type ChildCreateWithoutConsultationsInput = {
   birthDate: Date | string
   gender?: string
   birthWeight?: number | null
+  birthLength?: number | null
+  headCircumferenceAtBirth?: number | null
+  placeOfBirth?: string | null
   deliveryType?: string
   parentName: string
   parentContact: string
@@ -642,6 +739,9 @@ export type ChildUncheckedCreateWithoutConsultationsInput = {
   birthDate: Date | string
   gender?: string
   birthWeight?: number | null
+  birthLength?: number | null
+  headCircumferenceAtBirth?: number | null
+  placeOfBirth?: string | null
   deliveryType?: string
   parentName: string
   parentContact: string
@@ -673,6 +773,9 @@ export type ChildUpdateWithoutConsultationsInput = {
   birthDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gender?: Prisma.StringFieldUpdateOperationsInput | string
   birthWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  birthLength?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  headCircumferenceAtBirth?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  placeOfBirth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deliveryType?: Prisma.StringFieldUpdateOperationsInput | string
   parentName?: Prisma.StringFieldUpdateOperationsInput | string
   parentContact?: Prisma.StringFieldUpdateOperationsInput | string
@@ -688,6 +791,9 @@ export type ChildUncheckedUpdateWithoutConsultationsInput = {
   birthDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gender?: Prisma.StringFieldUpdateOperationsInput | string
   birthWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  birthLength?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  headCircumferenceAtBirth?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  placeOfBirth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deliveryType?: Prisma.StringFieldUpdateOperationsInput | string
   parentName?: Prisma.StringFieldUpdateOperationsInput | string
   parentContact?: Prisma.StringFieldUpdateOperationsInput | string
@@ -743,6 +849,9 @@ export type ChildSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   birthDate?: boolean
   gender?: boolean
   birthWeight?: boolean
+  birthLength?: boolean
+  headCircumferenceAtBirth?: boolean
+  placeOfBirth?: boolean
   deliveryType?: boolean
   parentName?: boolean
   parentContact?: boolean
@@ -760,6 +869,9 @@ export type ChildSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   birthDate?: boolean
   gender?: boolean
   birthWeight?: boolean
+  birthLength?: boolean
+  headCircumferenceAtBirth?: boolean
+  placeOfBirth?: boolean
   deliveryType?: boolean
   parentName?: boolean
   parentContact?: boolean
@@ -774,6 +886,9 @@ export type ChildSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   birthDate?: boolean
   gender?: boolean
   birthWeight?: boolean
+  birthLength?: boolean
+  headCircumferenceAtBirth?: boolean
+  placeOfBirth?: boolean
   deliveryType?: boolean
   parentName?: boolean
   parentContact?: boolean
@@ -788,6 +903,9 @@ export type ChildSelectScalar = {
   birthDate?: boolean
   gender?: boolean
   birthWeight?: boolean
+  birthLength?: boolean
+  headCircumferenceAtBirth?: boolean
+  placeOfBirth?: boolean
   deliveryType?: boolean
   parentName?: boolean
   parentContact?: boolean
@@ -795,7 +913,7 @@ export type ChildSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ChildOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "identifier" | "fullName" | "birthDate" | "gender" | "birthWeight" | "deliveryType" | "parentName" | "parentContact" | "createdAt" | "updatedAt", ExtArgs["result"]["child"]>
+export type ChildOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "identifier" | "fullName" | "birthDate" | "gender" | "birthWeight" | "birthLength" | "headCircumferenceAtBirth" | "placeOfBirth" | "deliveryType" | "parentName" | "parentContact" | "createdAt" | "updatedAt", ExtArgs["result"]["child"]>
 export type ChildInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   vaccinations?: boolean | Prisma.Child$vaccinationsArgs<ExtArgs>
   consultations?: boolean | Prisma.Child$consultationsArgs<ExtArgs>
@@ -817,6 +935,9 @@ export type $ChildPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     birthDate: Date
     gender: string
     birthWeight: number | null
+    birthLength: number | null
+    headCircumferenceAtBirth: number | null
+    placeOfBirth: string | null
     deliveryType: string
     parentName: string
     parentContact: string
@@ -1253,6 +1374,9 @@ export interface ChildFieldRefs {
   readonly birthDate: Prisma.FieldRef<"Child", 'DateTime'>
   readonly gender: Prisma.FieldRef<"Child", 'String'>
   readonly birthWeight: Prisma.FieldRef<"Child", 'Float'>
+  readonly birthLength: Prisma.FieldRef<"Child", 'Float'>
+  readonly headCircumferenceAtBirth: Prisma.FieldRef<"Child", 'Float'>
+  readonly placeOfBirth: Prisma.FieldRef<"Child", 'String'>
   readonly deliveryType: Prisma.FieldRef<"Child", 'String'>
   readonly parentName: Prisma.FieldRef<"Child", 'String'>
   readonly parentContact: Prisma.FieldRef<"Child", 'String'>

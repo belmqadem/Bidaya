@@ -8,6 +8,8 @@ export const addConsultationSchema = z.object({
   reasonForVisit: z.string().max(500).optional(),
   diagnosis: z.string().max(500).optional(),
   followUpRequired: z.boolean().default(false),
+  treatmentPrescribed: z.string().max(1000).optional(),
+  followUpDate: z.string().optional().refine((v) => !v || !isNaN(Date.parse(v)), "Date invalide"),
 });
 
 export type AddConsultationInput = z.infer<typeof addConsultationSchema>;

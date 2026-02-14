@@ -4,73 +4,103 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { Stethoscope, ShieldCheck, KeyRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 
+// ── Schémas Zod ──────────────────────────────────────────────────────────────
+
+const identifySchema = z.object({
+  identifier: z.string().min(1, "L'identifiant est requis"),
+  phone: z.string().min(5, "Numéro de téléphone invalide"),
+});
+
+const otpSchema = z.object({
+  otp: z.string().length(6, "Le code doit contenir 6 chiffres"),
+});
+
+type IdentifyValues = z.infer<typeof identifySchema>;
+type OtpValues = z.infer<typeof otpSchema>;
 type Step = "identify" | "otp";
+
+// ── Composant principal ──────────────────────────────────────────────────────
 
 export default function ParentLoginPage() {
   const router = useRouter();
   const [step, setStep] = useState<Step>("identify");
-  const [identifier, setIdentifier] = useState("");
-  const [phone, setPhone] = useState("");
-  const [otp, setOtp] = useState("");
   const [otpHint, setOtpHint] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [serverError, setServerError] = useState("");
 
-  async function handleVerify(e: React.FormEvent) {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
+  // Conserver identifiant + phone entre les étapes
+  const [savedIdentifier, setSavedIdentifier] = useState("");
+  const [savedPhone, setSavedPhone] = useState("");
 
+  const identifyForm = useForm<IdentifyValues>({
+    resolver: zodResolver(identifySchema),
+    defaultValues: { identifier: "", phone: "" },
+  });
+
+  const otpForm = useForm<OtpValues>({
+    resolver: zodResolver(otpSchema),
+    defaultValues: { otp: "" },
+  });
+
+  async function onIdentifySubmit(values: IdentifyValues) {
+    setServerError("");
     try {
       const res = await fetch("/api/auth/parent/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ identifier: identifier.trim(), phone: phone.trim() }),
+        body: JSON.stringify({
+          identifier: values.identifier.trim(),
+          phone: values.phone.trim(),
+        }),
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error ?? "Échec de la vérification.");
+        setServerError(data.error ?? "Échec de la vérification.");
         return;
       }
+      setSavedIdentifier(values.identifier.trim());
+      setSavedPhone(values.phone.trim());
       setOtpHint(data.otp ?? "");
       setStep("otp");
     } catch {
-      setError("Erreur réseau. Veuillez réessayer.");
-    } finally {
-      setLoading(false);
+      setServerError("Erreur réseau. Veuillez réessayer.");
     }
   }
 
-  async function handleOtp(e: React.FormEvent) {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
-
+  async function onOtpSubmit(values: OtpValues) {
+    setServerError("");
     try {
       const res = await fetch("/api/auth/parent/otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          identifier: identifier.trim(),
-          phone: phone.trim(),
-          otp: otp.trim(),
+          identifier: savedIdentifier,
+          phone: savedPhone,
+          otp: values.otp.trim(),
         }),
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error ?? "Échec de la vérification.");
+        setServerError(data.error ?? "Échec de la vérification.");
         return;
       }
       router.push(data.redirect);
     } catch {
-      setError("Erreur réseau. Veuillez réessayer.");
-    } finally {
-      setLoading(false);
+      setServerError("Erreur réseau. Veuillez réessayer.");
     }
   }
 
@@ -107,8 +137,8 @@ export default function ParentLoginPage() {
         {/* Carte */}
         <div className="w-full max-w-sm rounded-2xl border bg-card p-8 shadow-xl">
           {step === "identify" ? (
-            <form onSubmit={handleVerify} className="space-y-5">
-              <div>
+            <>
+              <div className="mb-5">
                 <h2 className="flex items-center gap-2 text-lg font-semibold">
                   <ShieldCheck className="size-5 text-healthcare" />
                   Identification
@@ -118,55 +148,71 @@ export default function ParentLoginPage() {
                 </p>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="identifier">Identifiant unique de l&apos;enfant</Label>
-                <Input
-                  id="identifier"
-                  value={identifier}
-                  onChange={(e) => setIdentifier(e.target.value)}
-                  placeholder="CHR-XXXX-XXXX"
-                  className="h-11 font-mono tracking-wider uppercase"
-                  required
-                />
-              </div>
+              <Form {...identifyForm}>
+                <form onSubmit={identifyForm.handleSubmit(onIdentifySubmit)} className="space-y-5">
+                  <FormField
+                    control={identifyForm.control}
+                    name="identifier"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Identifiant unique de l&apos;enfant</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="CHR-XXXX-XXXX"
+                            className="h-11 font-mono tracking-wider uppercase"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-              <div className="space-y-2">
-                <Label htmlFor="phone">Numéro de téléphone</Label>
-                <Input
-                  id="phone"
-                  type="tel"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="+212 600 000 000"
-                  className="h-11"
-                  required
-                />
-              </div>
+                  <FormField
+                    control={identifyForm.control}
+                    name="phone"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Numéro de téléphone</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="tel"
+                            placeholder="+212 600 000 000"
+                            className="h-11"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-              {error && (
-                <p className="text-destructive text-sm">{error}</p>
-              )}
+                  {serverError && (
+                    <p className="text-destructive text-sm">{serverError}</p>
+                  )}
 
-              <Button
-                type="submit"
-                className="h-11 w-full bg-healthcare text-healthcare-foreground hover:bg-healthcare/90"
-                disabled={loading || !identifier.trim() || !phone.trim()}
-              >
-                {loading ? "Vérification…" : "Recevoir le code de vérification"}
-              </Button>
+                  <Button
+                    type="submit"
+                    className="h-11 w-full bg-healthcare text-healthcare-foreground hover:bg-healthcare/90"
+                    disabled={identifyForm.formState.isSubmitting}
+                  >
+                    {identifyForm.formState.isSubmitting ? "Vérification…" : "Recevoir le code de vérification"}
+                  </Button>
 
-              <div className="text-center">
-                <Link
-                  href="/select-role"
-                  className="text-muted-foreground hover:text-foreground text-sm transition-colors"
-                >
-                  &larr; Retour à l&apos;accueil
-                </Link>
-              </div>
-            </form>
+                  <div className="text-center">
+                    <Link
+                      href="/select-role"
+                      className="text-muted-foreground hover:text-foreground text-sm transition-colors"
+                    >
+                      &larr; Retour à l&apos;accueil
+                    </Link>
+                  </div>
+                </form>
+              </Form>
+            </>
           ) : (
-            <form onSubmit={handleOtp} className="space-y-5">
-              <div>
+            <>
+              <div className="mb-5">
                 <h2 className="flex items-center gap-2 text-lg font-semibold">
                   <KeyRound className="size-5 text-healthcare" />
                   Code de vérification
@@ -177,7 +223,7 @@ export default function ParentLoginPage() {
               </div>
 
               {otpHint && (
-                <div className="rounded-xl border border-dashed border-healthcare/30 bg-healthcare/5 px-4 py-3 text-center">
+                <div className="mb-5 rounded-xl border border-dashed border-healthcare/30 bg-healthcare/5 px-4 py-3 text-center">
                   <span className="text-muted-foreground text-xs">Code démo MVP</span>
                   <p className="mt-0.5 font-mono text-xl font-bold tracking-[0.3em]">
                     {otpHint}
@@ -185,47 +231,57 @@ export default function ParentLoginPage() {
                 </div>
               )}
 
-              <div className="space-y-2">
-                <Label htmlFor="otp">Code de vérification</Label>
-                <Input
-                  id="otp"
-                  value={otp}
-                  onChange={(e) => setOtp(e.target.value)}
-                  placeholder="000000"
-                  maxLength={6}
-                  className="h-12 text-center font-mono text-xl tracking-[0.5em]"
-                  required
-                  autoFocus
-                />
-              </div>
+              <Form {...otpForm}>
+                <form onSubmit={otpForm.handleSubmit(onOtpSubmit)} className="space-y-5">
+                  <FormField
+                    control={otpForm.control}
+                    name="otp"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Code de vérification</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="000000"
+                            maxLength={6}
+                            className="h-12 text-center font-mono text-xl tracking-[0.5em]"
+                            autoFocus
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-              {error && (
-                <p className="text-destructive text-sm">{error}</p>
-              )}
+                  {serverError && (
+                    <p className="text-destructive text-sm">{serverError}</p>
+                  )}
 
-              <Button
-                type="submit"
-                className="h-11 w-full bg-healthcare text-healthcare-foreground hover:bg-healthcare/90"
-                disabled={loading || otp.trim().length < 6}
-              >
-                {loading ? "Vérification…" : "Consulter le carnet de santé"}
-              </Button>
+                  <Button
+                    type="submit"
+                    className="h-11 w-full bg-healthcare text-healthcare-foreground hover:bg-healthcare/90"
+                    disabled={otpForm.formState.isSubmitting}
+                  >
+                    {otpForm.formState.isSubmitting ? "Vérification…" : "Consulter le carnet de santé"}
+                  </Button>
 
-              <div className="text-center">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setStep("identify");
-                    setOtp("");
-                    setOtpHint("");
-                    setError("");
-                  }}
-                  className="text-muted-foreground hover:text-foreground text-sm transition-colors"
-                >
-                  &larr; Retour
-                </button>
-              </div>
-            </form>
+                  <div className="text-center">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setStep("identify");
+                        otpForm.reset();
+                        setOtpHint("");
+                        setServerError("");
+                      }}
+                      className="text-muted-foreground hover:text-foreground text-sm transition-colors"
+                    >
+                      &larr; Retour
+                    </button>
+                  </div>
+                </form>
+              </Form>
+            </>
           )}
         </div>
       </div>

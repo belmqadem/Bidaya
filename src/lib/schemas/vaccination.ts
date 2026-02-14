@@ -8,6 +8,9 @@ export const addVaccinationSchema = z.object({
   clinicName: z.string().min(1, "Le nom de la clinique est requis").max(120),
   nextDoseDate: z.string().optional().refine((v) => !v || !isNaN(Date.parse(v)), "Date invalide"),
   healthcareProfessionalName: z.string().max(120).optional(),
+  batchNumber: z.string().max(80).optional(),
+  injectionSite: z.string().max(120).optional(),
+  notes: z.string().max(500).optional(),
 });
 
 export type AddVaccinationInput = z.infer<typeof addVaccinationSchema>;
