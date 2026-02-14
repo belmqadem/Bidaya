@@ -1,6 +1,6 @@
-# Carnet de Santé Numérique
+# Bidaya
 
-Dossier de santé numérique de l'enfant, vérifié par la clinique.
+Carnet de santé numérique de l'enfant, vérifié par la clinique.
 
 ## Le problème
 

@@ -18,7 +18,7 @@ export default async function ClinicLayout({
               <Stethoscope className="size-4" aria-hidden />
             </div>
             <span className="text-sm font-semibold tracking-tight">
-              Carnet de Santé — Clinique
+              Bidaya
             </span>
           </Link>
           <form action="/api/auth/logout" method="POST">
