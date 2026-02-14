@@ -41,3 +41,11 @@ yarn-error.log*
 next-env.d.ts
 
 /generated/prisma
+
+# Python / ML
+ML/venv/
+__pycache__/
+*.pyc
+*.pyo
+ML/predictions_output.csv
+ML/coefs_output.json

@@ -107,7 +107,7 @@ export function ChildSearch() {
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Rechercher par identifiant (ex : CHR-K7NP-3WFG)"
+            placeholder="Entrez l'identifiant (ex : CHR-K7NP-3WFG)"
             className="h-11 pl-10"
           />
         </div>
@@ -121,7 +121,10 @@ export function ChildSearch() {
       </form>
 
       {error && (
-        <p className="text-muted-foreground text-center text-sm">{error}</p>
+        <div className="flex flex-col items-center gap-2 py-8 text-center">
+          <Search className="size-8 text-muted-foreground/40" />
+          <p className="text-muted-foreground text-sm">{error}</p>
+        </div>
       )}
 
       {child && (
@@ -545,7 +548,7 @@ function ConsultationForm({ childIdentifier, onAdded }: { childIdentifier: strin
                       onCheckedChange={field.onChange}
                     />
                   </FormControl>
-                  <FormLabel className="!mt-0 text-xs">Suivi nécessaire</FormLabel>
+                  <FormLabel className="mt-0! text-xs">Suivi nécessaire</FormLabel>
                 </FormItem>
               )} />
             </div>

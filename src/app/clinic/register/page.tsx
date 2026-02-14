@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, CheckCircle2, Copy } from "lucide-react";
+import type { z } from "zod";
+
 import {
   Card,
   CardContent,
@@ -30,12 +32,12 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+
 import {
   registerChildSchema,
   type RegisterChildInput,
 } from "@/lib/schemas/child";
 import { registerChild } from "./actions";
-import type { z } from "zod";
 
 type RegisterFormValues = z.input<typeof registerChildSchema>;
 
@@ -71,7 +73,7 @@ export default function RegisterChildPage() {
     }
   }
 
-  // ── État de succès ──────────────────────────────────────────────────────
+  // ── Success screen ────────────────────────────────────────────────────────
   if (result?.success && result.identifier) {
     return (
       <div className="flex min-h-[80vh] items-center justify-center p-4">
@@ -80,7 +82,9 @@ export default function RegisterChildPage() {
             <CheckCircle2 className="size-12 text-healthcare" />
             <CardTitle className="mt-2">Dossier créé avec succès</CardTitle>
             <CardDescription>
-              Voici l&apos;identifiant unique de l&apos;enfant. Remettez-le au parent — c&apos;est sa clé d&apos;accès au carnet de santé numérique.
+              Voici l&apos;identifiant unique de l&apos;enfant. Remettez-le au
+              parent — c&apos;est sa clé d&apos;accès au carnet de santé
+              numérique.
             </CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col items-center gap-3">
@@ -119,7 +123,7 @@ export default function RegisterChildPage() {
     );
   }
 
-  // ── État du formulaire ──────────────────────────────────────────────────
+  // ── Form ──────────────────────────────────────────────────────────────────
   return (
     <div className="flex min-h-[80vh] items-center justify-center p-4">
       <Card className="w-full max-w-md border-t-4 border-t-healthcare shadow-lg">
@@ -133,7 +137,8 @@ export default function RegisterChildPage() {
             <div>
               <CardTitle>Nouveau dossier de santé</CardTitle>
               <CardDescription>
-                Créez un carnet de santé numérique vérifié. Un identifiant unique sera généré automatiquement.
+                Créez un carnet de santé numérique vérifié. Un identifiant
+                unique sera généré automatiquement.
               </CardDescription>
             </div>
           </div>
@@ -174,9 +179,12 @@ export default function RegisterChildPage() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Sexe</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
                         <FormControl>
-                          <SelectTrigger>
+                          <SelectTrigger className="w-full">
                             <SelectValue placeholder="Sélectionner" />
                           </SelectTrigger>
                         </FormControl>
@@ -206,7 +214,9 @@ export default function RegisterChildPage() {
                           max="10"
                           placeholder="ex : 3.2"
                           {...field}
-                          value={field.value != null ? String(field.value) : ""}
+                          value={
+                            field.value != null ? String(field.value) : ""
+                          }
                         />
                       </FormControl>
                       <FormMessage />
@@ -219,14 +229,19 @@ export default function RegisterChildPage() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Type d&apos;accouchement</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
                         <FormControl>
-                          <SelectTrigger>
+                          <SelectTrigger className="w-full">
                             <SelectValue placeholder="Sélectionner" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="voie basse">Voie Basse</SelectItem>
+                          <SelectItem value="voie basse">
+                            Voie Basse
+                          </SelectItem>
                           <SelectItem value="cesarean">Césarienne</SelectItem>
                         </SelectContent>
                       </Select>
@@ -250,7 +265,9 @@ export default function RegisterChildPage() {
                           max="70"
                           placeholder="ex : 50"
                           {...field}
-                          value={field.value != null ? String(field.value) : ""}
+                          value={
+                            field.value != null ? String(field.value) : ""
+                          }
                         />
                       </FormControl>
                       <FormMessage />
@@ -271,7 +288,9 @@ export default function RegisterChildPage() {
                           max="50"
                           placeholder="ex : 35"
                           {...field}
-                          value={field.value != null ? String(field.value) : ""}
+                          value={
+                            field.value != null ? String(field.value) : ""
+                          }
                         />
                       </FormControl>
                       <FormMessage />
@@ -286,7 +305,10 @@ export default function RegisterChildPage() {
                   <FormItem>
                     <FormLabel>Lieu de naissance</FormLabel>
                     <FormControl>
-                      <Input placeholder="ex : CHU Ibn Rochd, Casablanca" {...field} />
+                      <Input
+                        placeholder="ex : CHU Ibn Rochd, Casablanca"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

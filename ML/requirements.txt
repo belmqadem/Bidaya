@@ -1,0 +1,16 @@
+# LqahCare ML — Python dependencies
+# Install: pip install -r ML/requirements.txt
+
+# Data processing
+pandas>=2.0
+numpy>=1.24
+
+# Machine learning (used in ML.ipynb notebook)
+scikit-learn>=1.3
+
+# Visualization (used in ML.ipynb notebook)
+matplotlib>=3.7
+seaborn>=0.12
+
+# API calls (used in Predict.py for MiniMax LLM)
+requests>=2.31
