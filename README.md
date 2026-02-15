@@ -15,6 +15,7 @@ Une application web qui numérise le carnet de santé de l'enfant et met en plac
 ### 1. Le personnel clinique crée un dossier
 
 Lors de la naissance, la clinique enregistre le nouveau-né dans l'application :
+
 - Informations de l'enfant (nom, date de naissance, poids, taille, etc.)
 - Informations du parent (nom, téléphone)
 
@@ -23,11 +24,13 @@ Un **identifiant unique** est généré automatiquement et remis au parent.
 ### 2. Le parent accède au carnet
 
 Le parent se connecte avec :
+
 - L'identifiant unique de l'enfant
 - Son numéro de téléphone
 - Un code de vérification (OTP)
 
 Il peut alors consulter :
+
 - Le profil complet de son enfant
 - Le calendrier vaccinal marocain
 - L'historique des vaccinations et consultations
@@ -36,6 +39,7 @@ Il peut alors consulter :
 ### 3. La clinique gère le suivi médical
 
 Le personnel clinique peut rechercher un enfant par identifiant et :
+
 - Ajouter des vaccinations (nom, dose, date, clinique, lot, site d'injection)
 - Ajouter des consultations (motif, diagnostic, traitement, suivi)
 - Suivre le calendrier vaccinal officiel marocain
@@ -58,6 +62,7 @@ Ce circuit empêche la réutilisation frauduleuse des ordonnances : une fois dis
 ### 5. Analyse IA du risque néonatal
 
 Un outil d'intelligence artificielle intégré permet d'estimer le risque néonatal à partir des données maternelles :
+
 - Durée de gestation, parité, âge maternel
 - Taille et poids de la mère, tabagisme
 
@@ -65,11 +70,11 @@ Le modèle prédit le poids de naissance estimé et classe le risque en trois ni
 
 ## Les 3 espaces
 
-| Espace | Accès | Fonctionnalités principales |
-|--------|-------|----------------------------|
-| **Parent** | Identifiant enfant + téléphone + OTP | Consulter le carnet, signaler des effets (voix + photo), voir les ordonnances, communiquer avec le médecin |
-| **Clinique** | Email | Créer des dossiers, gérer vaccinations/consultations, répondre aux signalements, émettre des ordonnances |
-| **Pharmacie** | Email | Rechercher une ordonnance par code, vérifier les détails, marquer comme dispensée |
+| Espace        | Accès                                | Fonctionnalités principales                                                                                |
+| ------------- | ------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
+| **Parent**    | Identifiant enfant + téléphone + OTP | Consulter le carnet, signaler des effets (voix + photo), voir les ordonnances, communiquer avec le médecin |
+| **Clinique**  | Email                                | Créer des dossiers, gérer vaccinations/consultations, répondre aux signalements, émettre des ordonnances   |
+| **Pharmacie** | Email                                | Rechercher une ordonnance par code, vérifier les détails, marquer comme dispensée                          |
 
 ## Stack technique
 
@@ -85,10 +90,36 @@ Le modèle prédit le poids de naissance estimé et classe le risque en trois ni
 ```bash
 # Installer les dépendances
 npm install
+```
 
-# Configurer les variables d'environnement
-# Créer un fichier .env avec DATABASE_URL, MINIMAX_API_KEY et ELEVENLABS_API_KEY
+### Variables d'environnement (obligatoires & optionnelles) 🔧
 
+Copier le modèle et renseigner vos clés secrètes :
+
+```bash
+cp .env.example .env
+```
+
+Variables requises (remplir dans `.env`) :
+
+- `DATABASE_URL` — chaîne de connexion PostgreSQL (Neon / Heroku etc.)
+- `MINIMAX_API_KEY` — clé API pour MiniMax (LLM utilisé par l'app)
+- `ELEVENLABS_API_KEY` — clé API pour la transcription vocale
+
+Variables optionnelles (valeurs par défaut gérées par l'app) :
+
+- `MINIMAX_BASE_URL` — (défaut: https://api.minimax.io/v1/chat/completions)
+- `MINIMAX_MODEL` — (défaut: MiniMax-M2.5)
+- `NODE_ENV` — (défaut: development)
+
+Sécurité :
+
+- Le fichier `.env` est listé dans `.gitignore` — **NE LE COMMETTEZ PAS**.
+- `.env.example` contient seulement des exemples et peut être commité.
+
+Ensuite initialiser la base de données et lancer le serveur :
+
+```bash
 # Initialiser la base de données
 npm run db:push
 
