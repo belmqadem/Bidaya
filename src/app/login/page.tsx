@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Stethoscope } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -88,9 +87,7 @@ function LoginContent() {
       <div className="flex flex-1 flex-col items-center justify-center px-4 py-12">
         {/* Logo */}
         <div className="mb-10 flex flex-col items-center gap-3">
-          <div className="flex size-14 items-center justify-center rounded-2xl bg-healthcare text-healthcare-foreground shadow-md">
-            <Stethoscope className="size-7" aria-hidden />
-          </div>
+          <Image src="/Logo.png" alt="Bidaya" width={56} height={56} className="size-14 rounded-2xl object-contain shadow-md" />
           <div className="text-center">
             <h1 className="text-2xl font-bold tracking-tight">
               {role === "pharmacy" ? "Espace Pharmacie" : "Espace Clinique"}

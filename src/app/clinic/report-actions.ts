@@ -68,6 +68,29 @@ function generatePrescriptionCode(): string {
   return `ORD-${code.slice(0, 4)}-${code.slice(4)}`;
 }
 
+// ── Count open / actionable reports ──────────────────────────────────────────
+
+export async function getReportCounts(): Promise<{
+  total: number;
+  open: number;
+  replied: number;
+  prescribed: number;
+}> {
+  await requireRole("clinic");
+
+  try {
+    const [total, open, replied, prescribed] = await Promise.all([
+      prisma.sideEffectReport.count(),
+      prisma.sideEffectReport.count({ where: { status: "open" } }),
+      prisma.sideEffectReport.count({ where: { status: "replied" } }),
+      prisma.sideEffectReport.count({ where: { status: "prescribed" } }),
+    ]);
+    return { total, open, replied, prescribed };
+  } catch {
+    return { total: 0, open: 0, replied: 0, prescribed: 0 };
+  }
+}
+
 // ── Get all reports (clinic) ─────────────────────────────────────────────────
 
 export async function getOpenReports(): Promise<ReportListItem[]> {

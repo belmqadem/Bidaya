@@ -12,9 +12,11 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import { ChildSearch } from "./child-search";
+import { getReportCounts } from "./report-actions";
 
 export default async function ClinicDashboardPage() {
   const session = await requireAuth();
+  const counts = await getReportCounts();
 
   return (
     <div className="space-y-8">
@@ -55,15 +57,29 @@ export default async function ClinicDashboardPage() {
         </Link>
 
         <Link href="/clinic/reports" className="group">
-          <Card className="h-full border-transparent transition-all hover:border-amber-300/40 hover:shadow-md">
+          <Card className={`h-full transition-all hover:shadow-md ${counts.open > 0 ? "border-amber-300/50 bg-amber-50/30" : "border-transparent"} hover:border-amber-300/40`}>
             <CardContent className="flex items-start gap-3.5 p-5">
-              <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-amber-100/60 transition-colors group-hover:bg-amber-100">
+              <div className="relative flex size-10 shrink-0 items-center justify-center rounded-lg bg-amber-100/60 transition-colors group-hover:bg-amber-100">
                 <MessageCircleWarning className="size-5 text-amber-600" />
+                {counts.open > 0 && (
+                  <span className="absolute -right-1.5 -top-1.5 flex size-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white shadow-sm">
+                    {counts.open}
+                  </span>
+                )}
               </div>
               <div className="min-w-0">
-                <p className="text-sm font-semibold">Signalements</p>
+                <div className="flex items-center gap-2">
+                  <p className="text-sm font-semibold">Signalements</p>
+                  {/* {counts.open > 0 && (
+                    <span className="rounded-full bg-red-100 px-2 py-0.5 text-[10px] font-semibold text-red-700">
+                      {counts.open} en attente
+                    </span>
+                  )} */}
+                </div>
                 <p className="text-muted-foreground mt-0.5 text-xs leading-relaxed">
-                  Voir les signalements post-vaccination des parents
+                  {counts.total > 0
+                    ? `${counts.total} signalement${counts.total > 1 ? "s" : ""} au total`
+                    : "Voir les signalements post-vaccination des parents"}
                 </p>
               </div>
             </CardContent>

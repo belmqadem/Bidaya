@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Stethoscope, LogOut } from "lucide-react";
+import Image from "next/image";
+import { LogOut } from "lucide-react";
 import { requireRole } from "@/lib/auth";
 
 export default async function ClinicLayout({
@@ -13,13 +14,8 @@ export default async function ClinicLayout({
     <div className="min-h-screen bg-muted/30">
       <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur-sm">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-3.5">
-          <Link href="/clinic" className="flex items-center gap-2.5">
-            <div className="flex size-8 items-center justify-center rounded-lg bg-healthcare text-healthcare-foreground">
-              <Stethoscope className="size-4" aria-hidden />
-            </div>
-            <span className="text-sm font-semibold tracking-tight">
-              Bidaya
-            </span>
+          <Link href="/clinic">
+            <Image src="/Logo.png" alt="Bidaya" width={32} height={32} className="size-8 object-contain" />
           </Link>
           <form action="/api/auth/logout" method="POST">
             <button

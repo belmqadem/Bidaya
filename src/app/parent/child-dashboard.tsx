@@ -385,17 +385,22 @@ export function ChildDashboard() {
 
         {activeTab === "reports" && (
           <div className="space-y-4">
+            {/* Header + CTA */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <MessageCircleWarning className="size-4 text-amber-500" />
-                <h2 className="text-sm font-semibold">
-                  Signalements post-vaccination
-                </h2>
-                {reports.length > 0 && (
-                  <Badge variant="secondary" className="text-[10px]">
-                    {reports.length}
-                  </Badge>
-                )}
+                <div className="flex size-7 items-center justify-center rounded-lg bg-amber-50">
+                  <MessageCircleWarning className="size-3.5 text-amber-500" />
+                </div>
+                <div>
+                  <h2 className="text-sm font-semibold">
+                    Signalements post-vaccination
+                  </h2>
+                  <p className="text-muted-foreground text-[11px]">
+                    {reports.length > 0
+                      ? `${reports.length} signalement${reports.length > 1 ? "s" : ""} · ${openReports > 0 ? `${openReports} en attente` : "tous traités"}`
+                      : "Aucun effet indésirable signalé"}
+                  </p>
+                </div>
               </div>
               <Link href="/parent/report/new">
                 <Button
@@ -403,17 +408,18 @@ export function ChildDashboard() {
                   className="gap-1.5 text-xs bg-amber-500 text-white hover:bg-amber-600"
                 >
                   <AlertTriangle className="size-3.5" />
-                  Signaler un effet
+                  Signaler
                 </Button>
               </Link>
             </div>
+
             {reports.length === 0 ? (
-              <Card>
-                <CardContent className="flex flex-col items-center gap-2 py-10">
-                  <MessageCircleWarning className="size-8 text-muted-foreground/30" />
-                  <p className="text-muted-foreground text-sm">
-                    Aucun signalement
-                  </p>
+              <Card className="border-dashed">
+                <CardContent className="flex flex-col items-center gap-2 py-12">
+                  <div className="flex size-12 items-center justify-center rounded-2xl bg-muted/60">
+                    <MessageCircleWarning className="size-6 text-muted-foreground/40" />
+                  </div>
+                  <p className="text-sm font-medium">Aucun signalement</p>
                   <p className="text-muted-foreground text-xs text-center max-w-xs">
                     Si votre enfant présente des effets indésirables après une
                     vaccination, signalez-le ici.
@@ -421,72 +427,126 @@ export function ChildDashboard() {
                 </CardContent>
               </Card>
             ) : (
-              <div className="space-y-2.5">
-                {reports.map((r) => (
-                  <Link key={r.id} href={`/parent/report/${r.id}`}>
-                    <Card className="transition-colors hover:bg-muted/30 cursor-pointer">
-                      <CardContent className="flex items-center gap-3 py-3.5 px-4">
-                        <div
-                          className={`flex size-9 shrink-0 items-center justify-center rounded-lg ${
-                            r.severity === "severe"
-                              ? "bg-red-50"
-                              : r.severity === "moderate"
-                                ? "bg-orange-50"
-                                : "bg-yellow-50"
-                          }`}
-                        >
-                          <AlertTriangle
-                            className={`size-4 ${
-                              r.severity === "severe"
-                                ? "text-red-500"
-                                : r.severity === "moderate"
-                                  ? "text-orange-500"
-                                  : "text-yellow-500"
-                            }`}
-                          />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2">
-                            <p className="text-sm font-medium truncate">
-                              {r.vaccineName ?? "Vaccination non précisée"}
-                            </p>
-                            <Badge
-                              className={`text-[10px] ${
-                                r.status === "open"
-                                  ? "bg-blue-100 text-blue-800"
-                                  : r.status === "replied"
-                                    ? "bg-emerald-100 text-emerald-800"
-                                    : r.status === "prescribed"
-                                      ? "bg-purple-100 text-purple-800"
-                                      : "bg-gray-100 text-gray-800"
-                              }`}
-                            >
-                              {r.status === "open"
-                                ? "En attente"
-                                : r.status === "replied"
-                                  ? "Répondu"
-                                  : r.status === "prescribed"
-                                    ? "Ordonnance"
-                                    : "Fermé"}
-                            </Badge>
-                            {r.hasPrescription && (
-                              <FileText className="size-3.5 text-purple-500" />
-                            )}
+              <div className="flex flex-col gap-2.5">
+                {reports.map((r) => {
+                  const sevStrip =
+                    r.severity === "severe"
+                      ? "border-l-red-500"
+                      : r.severity === "moderate"
+                        ? "border-l-orange-400"
+                        : "border-l-yellow-400";
+                  const sevBg =
+                    r.severity === "severe"
+                      ? "bg-red-50 text-red-700"
+                      : r.severity === "moderate"
+                        ? "bg-orange-50 text-orange-700"
+                        : "bg-yellow-50 text-yellow-700";
+                  const sevDot =
+                    r.severity === "severe"
+                      ? "bg-red-500"
+                      : r.severity === "moderate"
+                        ? "bg-orange-400"
+                        : "bg-yellow-400";
+                  const sevLabel =
+                    r.severity === "severe"
+                      ? "Sévère"
+                      : r.severity === "moderate"
+                        ? "Modéré"
+                        : "Léger";
+                  const statBg =
+                    r.status === "open"
+                      ? "bg-blue-50 text-blue-700"
+                      : r.status === "replied"
+                        ? "bg-emerald-50 text-emerald-700"
+                        : r.status === "prescribed"
+                          ? "bg-purple-50 text-purple-700"
+                          : "bg-gray-100 text-gray-600";
+                  const statLabel =
+                    r.status === "open"
+                      ? "En attente"
+                      : r.status === "replied"
+                        ? "Répondu"
+                        : r.status === "prescribed"
+                          ? "Ordonnance"
+                          : "Fermé";
+
+                  return (
+                    <Link key={r.id} href={`/parent/report/${r.id}`}>
+                      <Card
+                        className={`border-l-4 ${sevStrip} transition-all hover:shadow-md hover:-translate-y-0.5 cursor-pointer`}
+                      >
+                        <CardContent className="py-3.5 px-4">
+                          {/* Row 1 */}
+                          <div className="flex items-start justify-between gap-3">
+                            <div className="flex items-center gap-2.5 min-w-0">
+                              <div
+                                className={`flex size-8 shrink-0 items-center justify-center rounded-lg ${
+                                  r.severity === "severe"
+                                    ? "bg-red-50"
+                                    : r.severity === "moderate"
+                                      ? "bg-orange-50"
+                                      : "bg-yellow-50"
+                                }`}
+                              >
+                                <AlertTriangle
+                                  className={`size-3.5 ${
+                                    r.severity === "severe"
+                                      ? "text-red-500"
+                                      : r.severity === "moderate"
+                                        ? "text-orange-500"
+                                        : "text-yellow-500"
+                                  }`}
+                                />
+                              </div>
+                              <p className="text-sm font-medium truncate">
+                                {r.vaccineName ?? "Vaccination non précisée"}
+                              </p>
+                            </div>
+                            <div className="flex items-center gap-1.5 shrink-0">
+                              <span className="text-muted-foreground text-[11px]">
+                                {r.createdAt}
+                              </span>
+                              <ChevronRight className="size-3.5 text-muted-foreground/50" />
+                            </div>
                           </div>
-                          <p className="text-muted-foreground text-xs mt-0.5 truncate">
+
+                          {/* Description */}
+                          <p className="text-muted-foreground text-xs mt-2 line-clamp-2 leading-relaxed pl-10.5">
                             {r.description}
                           </p>
-                        </div>
-                        <div className="flex flex-col items-end gap-1 shrink-0">
-                          <span className="text-muted-foreground text-[11px]">
-                            {r.createdAt}
-                          </span>
-                          <ChevronRight className="size-4 text-muted-foreground" />
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                ))}
+
+                          {/* Badges */}
+                          <div className="flex items-center gap-2 mt-2.5 pl-10.5">
+                            <Badge
+                              variant="secondary"
+                              className={`gap-1 text-[10px] px-2 py-0.5 ${sevBg} border-0`}
+                            >
+                              <span
+                                className={`inline-block size-1.5 rounded-full ${sevDot}`}
+                              />
+                              {sevLabel}
+                            </Badge>
+                            <Badge
+                              variant="secondary"
+                              className={`text-[10px] px-2 py-0.5 ${statBg} border-0`}
+                            >
+                              {statLabel}
+                            </Badge>
+                            {r.hasPrescription && (
+                              <Badge
+                                variant="secondary"
+                                className="gap-1 text-[10px] px-2 py-0.5 bg-purple-50 text-purple-700 border-0"
+                              >
+                                <FileText className="size-3" />
+                                Ordonnance
+                              </Badge>
+                            )}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </Link>
+                  );
+                })}
               </div>
             )}
           </div>

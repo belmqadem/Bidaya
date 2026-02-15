@@ -8,7 +8,6 @@ import {
   Pill,
   Stethoscope,
   ArrowRight,
-  Heart,
   CheckCircle2,
   Brain,
 } from "lucide-react";
@@ -19,11 +18,8 @@ export default function LandingPage() {
       {/* ── Nav ──────────────────────────────────────────────────────────── */}
       <nav className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur-sm">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-3.5">
-          <Link href="/" className="flex items-center gap-2.5">
-            <div className="flex size-8 items-center justify-center rounded-lg bg-healthcare text-healthcare-foreground">
-              <Heart className="size-4" />
-            </div>
-            <span className="text-base font-bold tracking-tight">Bidaya</span>
+          <Link href="/" className="flex items-center gap-2">
+            <Image src="/Logo.png" alt="Bidaya" width={32} height={32} className="size-8 rounded-lg object-contain" />
           </Link>
           <div className="flex items-center gap-3">
             <Link
@@ -396,9 +392,7 @@ export default function LandingPage() {
         <div className="mx-auto max-w-5xl px-6">
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <div className="flex items-center gap-2">
-              <div className="flex size-6 items-center justify-center rounded-md bg-healthcare text-healthcare-foreground">
-                <Heart className="size-3" />
-              </div>
+              <Image src="/Logo.png" alt="Bidaya" width={24} height={24} className="size-6 rounded-md object-contain" />
               <span className="text-sm font-semibold">Bidaya</span>
             </div>
             <p className="text-xs text-muted-foreground">
