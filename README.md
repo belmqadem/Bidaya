@@ -1,130 +1,130 @@
 # Bidaya
 
-Carnet de santé numérique de l'enfant, vérifié par la clinique — avec communication post-vaccination entre parent, médecin et pharmacie.
+A digital child health record, verified by the clinic — with post-vaccination communication between parent, doctor, and pharmacy.
 
-## Le problème
+## The Problem
 
-Au Maroc, le suivi médical des enfants repose encore largement sur des carnets de santé papier. Ces documents se perdent, s'abîment, et ne sont pas accessibles à distance. Les parents n'ont aucun moyen simple de consulter l'historique vaccinal de leur enfant. En cas d'effets secondaires après une vaccination, le parent doit se déplacer physiquement à la clinique, et la communication entre médecin et pharmacie se fait par des ordonnances papier facilement falsifiables ou réutilisables.
+In Morocco, children's medical follow-up still largely relies on paper health booklets. These documents get lost, damaged, and are not remotely accessible. Parents have no simple way to check their child's vaccination history. In case of side effects after a vaccination, the parent must physically go to the clinic, and communication between doctor and pharmacy is done through paper prescriptions that are easily forged or reused.
 
-## Notre solution
+## Our Solution
 
-Une application web qui numérise le carnet de santé de l'enfant et met en place un circuit de communication sécurisé entre trois acteurs : **le parent**, **la clinique** et **la pharmacie**. Chaque dossier est créé et vérifié par la clinique, puis accessible au parent via un identifiant unique.
+A web application that digitizes the child's health record and establishes a secure communication circuit between three actors: **the parent**, **the clinic**, and **the pharmacy**. Each record is created and verified by the clinic, then accessible to the parent via a unique identifier.
 
-## Comment ça marche
+## How It Works
 
-### 1. Le personnel clinique crée un dossier
+### 1. Clinic Staff Creates a Record
 
-Lors de la naissance, la clinique enregistre le nouveau-né dans l'application :
+At birth, the clinic registers the newborn in the application:
 
-- Informations de l'enfant (nom, date de naissance, poids, taille, etc.)
-- Informations du parent (nom, téléphone)
+- Child information (name, date of birth, weight, height, etc.)
+- Parent information (name, phone number)
 
-Un **identifiant unique** est généré automatiquement et remis au parent.
+A **unique identifier** is automatically generated and given to the parent.
 
-### 2. Le parent accède au carnet
+### 2. The Parent Accesses the Health Record
 
-Le parent se connecte avec :
+The parent logs in with:
 
-- L'identifiant unique de l'enfant
-- Son numéro de téléphone
-- Un code de vérification (OTP)
+- The child's unique identifier
+- Their phone number
+- A verification code (OTP)
 
-Il peut alors consulter :
+They can then view:
 
-- Le profil complet de son enfant
-- Le calendrier vaccinal marocain
-- L'historique des vaccinations et consultations
-- La chronologie médicale complète
+- The child's complete profile
+- The Moroccan vaccination schedule
+- Vaccination and consultation history
+- The complete medical timeline
 
-### 3. La clinique gère le suivi médical
+### 3. The Clinic Manages Medical Follow-Up
 
-Le personnel clinique peut rechercher un enfant par identifiant et :
+Clinic staff can search for a child by identifier and:
 
-- Ajouter des vaccinations (nom, dose, date, clinique, lot, site d'injection)
-- Ajouter des consultations (motif, diagnostic, traitement, suivi)
-- Suivre le calendrier vaccinal officiel marocain
-- Marquer les vaccins comme administrés
+- Add vaccinations (name, dose, date, clinic, batch, injection site)
+- Add consultations (reason, diagnosis, treatment, follow-up)
+- Track the official Moroccan vaccination schedule
+- Mark vaccines as administered
 
-### 4. Communication post-vaccination
+### 4. Post-Vaccination Communication
 
-C'est le cœur de l'innovation de Bidaya. Quand un enfant présente des effets secondaires après une vaccination :
+This is the core innovation of Bidaya. When a child experiences side effects after a vaccination:
 
-1. **Le parent signale** les symptômes depuis l'application (description, sévérité, vaccination concernée)
-   - Il peut dicter les symptômes grâce à la **saisie vocale** (transcription automatique via ElevenLabs)
-   - Il peut joindre une **photo** pour illustrer les symptômes (JPG, PNG, WebP — max 5 Mo)
-2. **Le médecin reçoit** le signalement dans son tableau de bord, consulte les détails, la photo jointe et **répond au parent** via un fil de messages
-3. **Le médecin crée une ordonnance numérique** avec un code unique (format ORD-XXXX-XXXX)
-4. **Le parent** voit l'ordonnance et le code directement dans l'application, et le communique à sa pharmacie
-5. **La pharmacie** entre le code, vérifie l'ordonnance, dispense les médicaments et **marque l'ordonnance comme utilisée**
+1. **The parent reports** the symptoms from the application (description, severity, related vaccination)
+   - They can dictate the symptoms using **voice input** (automatic transcription via ElevenLabs)
+   - They can attach a **photo** to illustrate the symptoms (JPG, PNG, WebP — max 5 MB)
+2. **The doctor receives** the report in their dashboard, reviews the details and attached photo, and **responds to the parent** via a message thread
+3. **The doctor creates a digital prescription** with a unique code (format ORD-XXXX-XXXX)
+4. **The parent** sees the prescription and code directly in the application and shares it with their pharmacy
+5. **The pharmacy** enters the code, verifies the prescription, dispenses the medication, and **marks the prescription as used**
 
-Ce circuit empêche la réutilisation frauduleuse des ordonnances : une fois dispensée, l'ordonnance est verrouillée et ne peut plus être utilisée dans une autre pharmacie.
+This circuit prevents fraudulent reuse of prescriptions: once dispensed, the prescription is locked and can no longer be used at another pharmacy.
 
-### 5. Analyse IA du risque néonatal
+### 5. AI-Based Neonatal Risk Analysis
 
-Un outil d'intelligence artificielle intégré permet d'estimer le risque néonatal à partir des données maternelles :
+An integrated artificial intelligence tool estimates neonatal risk based on maternal data:
 
-- Durée de gestation, parité, âge maternel
-- Taille et poids de la mère, tabagisme
+- Gestation duration, parity, maternal age
+- Mother's height and weight, smoking status
 
-Le modèle prédit le poids de naissance estimé et classe le risque en trois niveaux : **faible**, **modéré** ou **élevé**.
+The model predicts the estimated birth weight and classifies the risk into three levels: **low**, **moderate**, or **high**.
 
-## Les 3 espaces
+## The 3 Portals
 
-| Espace        | Accès                                | Fonctionnalités principales                                                                                |
+| Portal        | Access                               | Main Features                                                                                              |
 | ------------- | ------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
-| **Parent**    | Identifiant enfant + téléphone + OTP | Consulter le carnet, signaler des effets (voix + photo), voir les ordonnances, communiquer avec le médecin |
-| **Clinique**  | Email                                | Créer des dossiers, gérer vaccinations/consultations, répondre aux signalements, émettre des ordonnances   |
-| **Pharmacie** | Email                                | Rechercher une ordonnance par code, vérifier les détails, marquer comme dispensée                          |
+| **Parent**    | Child identifier + phone + OTP       | View the health record, report side effects (voice + photo), see prescriptions, communicate with the doctor |
+| **Clinic**    | Email                                | Create records, manage vaccinations/consultations, respond to reports, issue prescriptions                  |
+| **Pharmacy**  | Email                                | Search for a prescription by code, verify details, mark as dispensed                                       |
 
-## Stack technique
+## Tech Stack
 
-- **Frontend** : Next.js, React, Tailwind CSS, shadcn/ui
-- **Backend** : Next.js API Routes, Server Actions
-- **Base de données** : PostgreSQL (Neon) + Prisma ORM
-- **IA** : MiniMax M2.5 (API LLM) pour la prédiction néonatale
-- **Voix** : ElevenLabs Speech-to-Text pour la saisie vocale des symptômes
-- **ML** : Python (pandas, scikit-learn) pour l'analyse exploratoire des données
+- **Frontend**: Next.js, React, Tailwind CSS, shadcn/ui
+- **Backend**: Next.js API Routes, Server Actions
+- **Database**: PostgreSQL (Neon) + Prisma ORM
+- **AI**: MiniMax M2.5 (LLM API) for neonatal prediction
+- **Voice**: ElevenLabs Speech-to-Text for voice-based symptom input
+- **ML**: Python (pandas, scikit-learn) for exploratory data analysis
 
-## Lancer le projet
+## Getting Started
 
 ```bash
-# Installer les dépendances
+# Install dependencies
 npm install
 ```
 
-### Variables d'environnement (obligatoires & optionnelles) 🔧
+### Environment Variables (required & optional) 🔧
 
-Copier le modèle et renseigner vos clés secrètes :
+Copy the template and fill in your secret keys:
 
 ```bash
 cp .env.example .env
 ```
 
-Variables requises (remplir dans `.env`) :
+Required variables (fill in `.env`):
 
-- `DATABASE_URL` — chaîne de connexion PostgreSQL (Neon / Heroku etc.)
-- `MINIMAX_API_KEY` — clé API pour MiniMax (LLM utilisé par l'app)
-- `ELEVENLABS_API_KEY` — clé API pour la transcription vocale
+- `DATABASE_URL` — PostgreSQL connection string (Neon / Heroku etc.)
+- `MINIMAX_API_KEY` — API key for MiniMax (LLM used by the app)
+- `ELEVENLABS_API_KEY` — API key for voice transcription
 
-Variables optionnelles (valeurs par défaut gérées par l'app) :
+Optional variables (defaults managed by the app):
 
-- `MINIMAX_BASE_URL` — (défaut: https://api.minimax.io/v1/chat/completions)
-- `MINIMAX_MODEL` — (défaut: MiniMax-M2.5)
-- `NODE_ENV` — (défaut: development)
+- `MINIMAX_BASE_URL` — (default: https://api.minimax.io/v1/chat/completions)
+- `MINIMAX_MODEL` — (default: MiniMax-M2.5)
+- `NODE_ENV` — (default: development)
 
-Sécurité :
+Security:
 
-- Le fichier `.env` est listé dans `.gitignore` — **NE LE COMMETTEZ PAS**.
-- `.env.example` contient seulement des exemples et peut être commité.
+- The `.env` file is listed in `.gitignore` — **DO NOT COMMIT IT**.
+- `.env.example` contains only examples and can be committed.
 
-Ensuite initialiser la base de données et lancer le serveur :
+Then initialize the database and start the server:
 
 ```bash
-# Initialiser la base de données
+# Initialize the database
 npm run db:push
 
-# Lancer le serveur de développement
+# Start the development server
 npm run dev
 ```
 
-L'application est accessible sur [http://localhost:3000](http://localhost:3000).
+The application is available at [http://localhost:3000](http://localhost:3000).
