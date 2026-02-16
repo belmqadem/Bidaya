@@ -2,6 +2,13 @@
 
 A digital child health record, verified by the clinic — with post-vaccination communication between parent, doctor, and pharmacy.
 
+![Bidaya Platform Overview](image1.png)
+*Three main portals: Parent access to child health records, Clinic management interface, and Pharmacy prescription verification*
+
+![Platform Features](image2.png)
+*Digital health record, secure communication between stakeholders, and prescription management system*
+
+
 ## The Problem
 
 In Morocco, children's medical follow-up still largely relies on paper health booklets. These documents get lost, damaged, and are not remotely accessible. Parents have no simple way to check their child's vaccination history. In case of side effects after a vaccination, the parent must physically go to the clinic, and communication between doctor and pharmacy is done through paper prescriptions that are easily forged or reused.
