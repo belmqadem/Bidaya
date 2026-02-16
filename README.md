@@ -2,11 +2,8 @@
 
 A digital child health record, verified by the clinic — with post-vaccination communication between parent, doctor, and pharmacy.
 
-![Bidaya Platform Overview](image1.png)
+![Bidaya Platform Overview](public/s2.png)
 *Three main portals: Parent access to child health records, Clinic management interface, and Pharmacy prescription verification*
-
-![Platform Features](image2.png)
-*Digital health record, secure communication between stakeholders, and prescription management system*
 
 
 ## The Problem
